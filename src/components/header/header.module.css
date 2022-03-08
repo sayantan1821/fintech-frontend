@@ -1,0 +1,27 @@
+.header {
+    background-color: #2D4250;
+    display: flex;
+    width: 100vw;
+    padding: 7px 0;
+    /* overflow: hidden; */
+}
+.companyLogo {
+    display: flex;
+    color: white;
+    width: 15em;
+    height: 30px;
+    font-size: 25px;
+    margin-left: 15px;
+}
+.companyLogo img {
+    margin-right: 4px;
+}
+
+.logo {
+    position: absolute;
+    left: 50%;
+    transform: translate(-50%, 0)
+}
+.logo img {
+    height: 30px;
+}
