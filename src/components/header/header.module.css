@@ -1,7 +1,7 @@
 .header {
     background-color: #2D4250;
     display: flex;
-    width: 100vw;
+    /* width: 100vw; */
     padding: 7px 0;
     /* overflow: hidden; */
 }

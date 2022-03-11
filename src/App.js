@@ -62,7 +62,7 @@ function App() {
     });
   };
   useEffect(() => {
-    getDataById();
+    // getDataById();
     // getDataByCustomerId();
     // getAdvancedSearch()
     // pageWiseData();
