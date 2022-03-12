@@ -2,7 +2,7 @@ import React from 'react'
 
 const TableHeader = () => {
   return (
-    <div style={{height: "10vh"}}>TableHeader</div>
+    <div style={{height: "8vh"}}>TableHeader</div>
   )
 }
 

@@ -13,7 +13,7 @@ import { TableSortLabel } from "@material-ui/core";
 // import Toolbar from "@material-ui/core/Toolbar";
 // import Typography from "@material-ui/core/Typography";
 import { Paper } from "@material-ui/core";
-import { Checkbox } from "@material-ui/core";
+import { Checkbox, Button, IconButton } from "@material-ui/core";
 // import IconButton from "@material-ui/core/IconButton";
 // import Tooltip from "@material-ui/core/Tooltip";
 // import FormControlLabel from "@material-ui/core/FormControlLabel";
@@ -21,6 +21,7 @@ import { Checkbox } from "@material-ui/core";
 // import DeleteIcon from "@material-ui/icons/Delete";
 // import FilterListIcon from "@material-ui/icons/FilterList";
 import DataService from "../../services/DataService";
+import { GrFormPrevious, GrFormNext } from "react-icons/gr";
 
 // function createData(name, calories, fat, carbs, protein) {
 //   return { name, calories, fat, carbs, protein };
@@ -215,7 +216,7 @@ function EnhancedTableHead(props) {
   };
 
   return (
-    <TableHead>
+    <TableHead style={{ height: "40px", padding: "0" }}>
       <TableRow>
         <TableCell padding="checkbox">
           <Checkbox
@@ -339,13 +340,15 @@ EnhancedTableHead.propTypes = {
 const useStyles = makeStyles((theme) => ({
   root: {
     width: "100%",
+    fontSize: "20pt",
   },
   paper: {
     width: "100%",
-    marginBottom: theme.spacing(2),
+    marginBottom: 50,
   },
   table: {
     minWidth: 750,
+    fontSize: "200000pt",
   },
   visuallyHidden: {
     border: 0,
@@ -366,6 +369,16 @@ const useStyles = makeStyles((theme) => ({
       },
     },
   },
+  TableCell: {
+    fontSize: "13px",
+    padding: "5px",
+    height: "5px",
+  },
+  tableTool: {
+    margin: "0 15px",
+    display: "flex",
+    justifyContent: "end",
+  },
 }));
 
 export default function TableGrid() {
@@ -374,25 +387,21 @@ export default function TableGrid() {
   const [orderBy, setOrderBy] = React.useState("calories");
   const [selected, setSelected] = React.useState([]);
   const [records, setRecords] = useState([]);
+  const [pageNo, setPageNo] = useState(0);
   // const [page, setPage] = React.useState(0);
   // const [dense, setDense] = React.useState(false);
   // const [rowsPerPage, setRowsPerPage] = React.useState(5);
   let api = new DataService();
+  let recordPerPage = 10;
   const getData = () => {
-    api.recordsByPagination(0, 10).then((res) => {
+    api.recordsByPagination(pageNo, recordPerPage).then((res) => {
       console.log("Records Per page : ", res.data);
       setRecords(res.data);
     });
   };
-  const rows = [];
-  // records && records.map((d) => {
-  //   // let row = {d.sl_no, d.business_code, d.business_name, }
-  //   // rows.add(row);
-  // })
-
   useEffect(() => {
     getData();
-  }, []);
+  }, [pageNo]);
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === "asc";
     setOrder(isAsc ? "desc" : "asc");
@@ -428,6 +437,14 @@ export default function TableGrid() {
     setSelected(newSelected);
     console.log(newSelected);
   };
+  const handleNextPage = () => {
+    setPageNo(pageNo + 1);
+    console.log(pageNo);
+  };
+  const handlePreviousPage = () => {
+    pageNo > 0 && setPageNo(pageNo - 1);
+    console.log(pageNo);
+  };
 
   // const handleChangePage = (event, newPage) => {
   //   setPage(newPage);
@@ -450,7 +467,7 @@ export default function TableGrid() {
     <div className={classes.root}>
       <Paper className={classes.paper}>
         {/* <EnhancedTableToolbar numSelected={selected.length} /> */}
-        <TableContainer>
+        <TableContainer style={{ height: "77vh" }}>
           <Table
             className={classes.table}
             aria-labelledby="tableTitle"
@@ -483,9 +500,12 @@ export default function TableGrid() {
                       tabIndex={-1}
                       key={index}
                       selected={isItemSelected}
-                      style={{ height: "50px", background: "white" }}
+                      style={{ height: "48px", background: "white" }}
                     >
-                      <TableCell padding="checkbox">
+                      <TableCell
+                        className={classes.TableCell}
+                        padding="checkbox"
+                      >
                         <Checkbox
                           checked={isItemSelected}
                           inputProps={{ "aria-labelledby": labelId }}
@@ -500,47 +520,76 @@ export default function TableGrid() {
                         scope="row"
                         padding="none"
                         align="left"
+                        className={classes.TableCell}
                       >
                         {row.sl_no}
                       </TableCell>
-                      <TableCell align="center">{row.business_code}</TableCell>
-                      <TableCell align="center">{row.business_name}</TableCell>
-                      <TableCell align="center">{row.cust_number}</TableCell>
-                      <TableCell align="center">{row.name_customer}</TableCell>
-                      <TableCell align="center">
+                      <TableCell className={classes.TableCell} align="center">
+                        {row.business_code}
+                      </TableCell>
+                      <TableCell className={classes.TableCell} align="center">
+                        {row.business_name}
+                      </TableCell>
+                      <TableCell className={classes.TableCell} align="center">
+                        {row.cust_number}
+                      </TableCell>
+                      <TableCell className={classes.TableCell} align="center">
+                        {row.name_customer}
+                      </TableCell>
+                      <TableCell className={classes.TableCell} align="center">
                         <pre>{row.clear_date}</pre>
                       </TableCell>
-                      <TableCell align="center">{row.business_year}</TableCell>
-                      <TableCell align="center">{row.doc_id}</TableCell>
-                      <TableCell align="center">{row.posting_date}</TableCell>
-                      <TableCell align="center">
+                      <TableCell className={classes.TableCell} align="center">
+                        {row.business_year}
+                      </TableCell>
+                      <TableCell className={classes.TableCell} align="center">
+                        {row.doc_id}
+                      </TableCell>
+                      <TableCell className={classes.TableCell} align="center">
+                        {row.posting_date}
+                      </TableCell>
+                      <TableCell className={classes.TableCell} align="center">
                         {row.document_create_date}
                       </TableCell>
-                      <TableCell align="center">
+                      <TableCell className={classes.TableCell} align="center">
                         {row.document_create_date1}
                       </TableCell>
-                      <TableCell align="center">
+                      <TableCell className={classes.TableCell} align="center">
                         <pre>{row.due_in_date}</pre>
                       </TableCell>
-                      <TableCell align="center">
+                      <TableCell className={classes.TableCell} align="center">
                         {row.invoice_currency}
                       </TableCell>
-                      <TableCell align="center">{row.document_type}</TableCell>
-                      <TableCell align="center">{row.posting_id}</TableCell>
-                      <TableCell align="center">{row.area_business}</TableCell>
-                      <TableCell align="center">
+                      <TableCell className={classes.TableCell} align="center">
+                        {row.document_type}
+                      </TableCell>
+                      <TableCell className={classes.TableCell} align="center">
+                        {row.posting_id}
+                      </TableCell>
+                      <TableCell className={classes.TableCell} align="center">
+                        {row.area_business}
+                      </TableCell>
+                      <TableCell className={classes.TableCell} align="center">
                         {row.total_open_amount}
                       </TableCell>
-                      <TableCell align="center">
+                      <TableCell className={classes.TableCell} align="center">
                         {row.baseline_create_date}
                       </TableCell>
-                      <TableCell align="center">
+                      <TableCell className={classes.TableCell} align="center">
                         {row.cust_payment_terms}
                       </TableCell>
-                      <TableCell align="center">{row.invoice_id}</TableCell>
-                      <TableCell align="center">{row.isOpen}</TableCell>
-                      <TableCell align="center">{row.aging_Bucket}</TableCell>
-                      <TableCell align="center">{row.is_deleted}</TableCell>
+                      <TableCell className={classes.TableCell} align="center">
+                        {row.invoice_id}
+                      </TableCell>
+                      <TableCell className={classes.TableCell} align="center">
+                        {row.isOpen}
+                      </TableCell>
+                      <TableCell className={classes.TableCell} align="center">
+                        {row.aging_Bucket}
+                      </TableCell>
+                      <TableCell className={classes.TableCell} align="center">
+                        {row.is_deleted}
+                      </TableCell>
                     </TableRow>
                   );
                 })}
@@ -552,6 +601,7 @@ export default function TableGrid() {
             </TableBody>
           </Table>
         </TableContainer>
+
         {/* <TablePagination
           rowsPerPageOptions={[5, 10, 25]}
           component="div"
@@ -561,7 +611,29 @@ export default function TableGrid() {
           onPageChange={handleChangePage}
           onRowsPerPageChange={handleChangeRowsPerPage}
         /> */}
+        <div className={classes.tableTool}>
+          <IconButton 
+            variant="contained"
+            size="small"
+            color="primary"
+            className={classes.margin}
+            onClick={() => handlePreviousPage()}
+            style={{marginRight: "5px"}}
+          >
+            <GrFormPrevious />
+          </IconButton >
+          <IconButton 
+            variant="contained"
+            size="small"
+            color="primary"
+            className={classes.margin}
+            onClick={() => handleNextPage()}
+          >
+            <GrFormNext />
+          </IconButton >
+        </div>
       </Paper>
+
       {/* <FormControlLabel
         control={<Switch checked={dense} onChange={handleChangeDense} />}
         label="Dense padding"
