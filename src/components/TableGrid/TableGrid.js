@@ -20,11 +20,11 @@ import { Checkbox } from "@material-ui/core";
 // import Switch from "@material-ui/core/Switch";
 // import DeleteIcon from "@material-ui/icons/Delete";
 // import FilterListIcon from "@material-ui/icons/FilterList";
-import axios from "axios";
+import DataService from "../../services/DataService";
 
-function createData(name, calories, fat, carbs, protein) {
-  return { name, calories, fat, carbs, protein };
-}
+// function createData(name, calories, fat, carbs, protein) {
+//   return { name, calories, fat, carbs, protein };
+// }
 
 // const rows = [];
 // const rows = [
@@ -76,28 +76,128 @@ const headCells = [
     disablePadding: true,
     label: "Sl No.",
   },
-  { id: "business_code", numeric: false, disablePadding: false, label: "Business Code" },
-  { id: "business_name", numeric: false, disablePadding: false, label: "Business Name" },
-  { id: "cust_number", numeric: false, disablePadding: false, label: "Customer Number" },
-  { id: "name_customer", numeric: false, disablePadding: false, label: "Customer Name" },
-  { id: "clear_date", numeric: false, disablePadding: false, label: "Clear Date" },
-  { id: "business_year", numeric: false, disablePadding: false, label: "Business year" },
+  {
+    id: "business_code",
+    numeric: false,
+    disablePadding: false,
+    label: "Business Code",
+  },
+  {
+    id: "business_name",
+    numeric: false,
+    disablePadding: false,
+    label: "Business Name",
+  },
+  {
+    id: "cust_number",
+    numeric: false,
+    disablePadding: false,
+    label: "Customer Number",
+  },
+  {
+    id: "name_customer",
+    numeric: false,
+    disablePadding: false,
+    label: "Customer Name",
+  },
+  {
+    id: "clear_date",
+    numeric: false,
+    disablePadding: false,
+    label: "Clear Date",
+  },
+  {
+    id: "business_year",
+    numeric: false,
+    disablePadding: false,
+    label: "Business year",
+  },
   { id: "doc_id", numeric: false, disablePadding: false, label: "Doc Id" },
-  { id: "posting_date", numeric: false, disablePadding: false, label: "Posting Date" },
-  { id: "document_create_date", numeric: false, disablePadding: false, label: "Document Create Date" },
-  { id: "document_create_date1", numeric: false, disablePadding: false, label: "Document Create Date 1" },
-  { id: "due_in_date", numeric: false, disablePadding: false, label: "Due in Date" },
-  { id: "invoice_currency", numeric: false, disablePadding: false, label: "Invoice Currency" },
-  { id: "document_type", numeric: false, disablePadding: false, label: "Document Type" },
-  { id: "posting_id", numeric: false, disablePadding: false, label: "Posting Id" },
-  { id: "area_business", numeric: false, disablePadding: false, label: "Area Business" },
-  { id: "total_open_amount", numeric: false, disablePadding: false, label: "Total Open Amount" },
-  { id: "baseline_create_date", numeric: false, disablePadding: false, label: "Baseline Create Date" },
-  { id: "cust_payment_terms", numeric: false, disablePadding: false, label: "Customer Payment Terms" },
-  { id: "invoice_id", numeric: false, disablePadding: false, label: "Invoice Id" },
+  {
+    id: "posting_date",
+    numeric: false,
+    disablePadding: false,
+    label: "Posting Date",
+  },
+  {
+    id: "document_create_date",
+    numeric: false,
+    disablePadding: false,
+    label: "Document Create Date",
+  },
+  {
+    id: "document_create_date1",
+    numeric: false,
+    disablePadding: false,
+    label: "Document Create Date 1",
+  },
+  {
+    id: "due_in_date",
+    numeric: false,
+    disablePadding: false,
+    label: "Due in Date",
+  },
+  {
+    id: "invoice_currency",
+    numeric: false,
+    disablePadding: false,
+    label: "Invoice Currency",
+  },
+  {
+    id: "document_type",
+    numeric: false,
+    disablePadding: false,
+    label: "Document Type",
+  },
+  {
+    id: "posting_id",
+    numeric: false,
+    disablePadding: false,
+    label: "Posting Id",
+  },
+  {
+    id: "area_business",
+    numeric: false,
+    disablePadding: false,
+    label: "Area Business",
+  },
+  {
+    id: "total_open_amount",
+    numeric: false,
+    disablePadding: false,
+    label: "Total Open Amount",
+  },
+  {
+    id: "baseline_create_date",
+    numeric: false,
+    disablePadding: false,
+    label: "Baseline Create Date",
+  },
+  {
+    id: "cust_payment_terms",
+    numeric: false,
+    disablePadding: false,
+    label: "Customer Payment Terms",
+  },
+  {
+    id: "invoice_id",
+    numeric: false,
+    disablePadding: false,
+    label: "Invoice Id",
+  },
   { id: "isOpen", numeric: false, disablePadding: false, label: "Is Open" },
-  { id: "aging_Bucket", numeric: false, disablePadding: false, label: "Aging Bucket" },
-  { id: "is_deleted", numeric: false, disablePadding: false, label: "Is Deleted" },
+  {
+    id: "aging_Bucket",
+    numeric: false,
+    disablePadding: false,
+    label: "Aging Bucket",
+  },
+  {
+    id: "is_deleted",
+    numeric: false,
+    disablePadding: false,
+    label: "Is Deleted",
+  },
 ];
 
 function EnhancedTableHead(props) {
@@ -123,6 +223,9 @@ function EnhancedTableHead(props) {
             checked={rowCount > 0 && numSelected === rowCount}
             onChange={onSelectAllClick}
             inputProps={{ "aria-label": "select all desserts" }}
+            style={{
+              color: "blue",
+            }}
           />
         </TableCell>
         {headCells.map((headCell) => (
@@ -260,9 +363,9 @@ const useStyles = makeStyles((theme) => ({
       backgroundColor: "purple",
       "& > .MuiTableCell-root": {
         color: "yellow",
-      }
-    }
-  }
+      },
+    },
+  },
 }));
 
 export default function TableGrid() {
@@ -274,29 +377,19 @@ export default function TableGrid() {
   // const [page, setPage] = React.useState(0);
   // const [dense, setDense] = React.useState(false);
   // const [rowsPerPage, setRowsPerPage] = React.useState(5);
+  let api = new DataService();
   const getData = () => {
-    axios
-      .get(
-        `http://localhost:8080/web_project_eclipse/api/records?pageNo=0&recordsPerPage=10`
-      )
-      .then((res) => {
-        const persons = res.data;
-        console.log(persons);
-        console.log(typeof res.data);
-        setRecords(res.data);
-      });
+    api.recordsByPagination(0, 10).then((res) => {
+      console.log("Records Per page : ", res.data);
+      setRecords(res.data);
+    });
   };
-  const rows = []
+  const rows = [];
   // records && records.map((d) => {
   //   // let row = {d.sl_no, d.business_code, d.business_name, }
   //   // rows.add(row);
   // })
-  const ans_obj = [];
-  records && records.forEach((data) => {
-    const { sl_no, business_code, business_name, cust_number, name_customer} = data;
-    ans_obj.push({ sl_no, business_name, business_code, cust_number, name_customer });
-  })
-  records.length > 0 && console.log(ans_obj);
+
   useEffect(() => {
     getData();
   }, []);
@@ -308,7 +401,7 @@ export default function TableGrid() {
 
   const handleSelectAllClick = (event) => {
     if (event.target.checked) {
-      const newSelecteds = rows.map((n) => n.name);
+      const newSelecteds = records.map((n) => n.sl_no);
       setSelected(newSelecteds);
       return;
     }
@@ -333,6 +426,7 @@ export default function TableGrid() {
     }
 
     setSelected(newSelected);
+    console.log(newSelected);
   };
 
   // const handleChangePage = (event, newPage) => {
@@ -370,25 +464,26 @@ export default function TableGrid() {
               orderBy={orderBy}
               onSelectAllClick={handleSelectAllClick}
               onRequestSort={handleRequestSort}
-              rowCount={rows.length}
-              style={{align: "left"}}
+              rowCount={records.length}
+              style={{ align: "left" }}
             />
             <TableBody>
               {stableSort(records, getComparator(order, orderBy))
                 // .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 .map((row, index) => {
-                  const isItemSelected = isSelected(row.name);
+                  const isItemSelected = isSelected(row.sl_no);
                   const labelId = `enhanced-table-checkbox-${index}`;
 
                   return (
                     <TableRow
                       hover
-                      onClick={(event) => handleClick(event, row.name)}
+                      onClick={(event) => handleClick(event, row.sl_no)}
                       role="checkbox"
                       aria-checked={isItemSelected}
                       tabIndex={-1}
-                      key={row.name}
+                      key={index}
                       selected={isItemSelected}
+                      style={{ height: "50px", background: "white" }}
                     >
                       <TableCell padding="checkbox">
                         <Checkbox
@@ -404,7 +499,7 @@ export default function TableGrid() {
                         id={labelId}
                         scope="row"
                         padding="none"
-                        align="center"
+                        align="left"
                       >
                         {row.sl_no}
                       </TableCell>
@@ -412,6 +507,40 @@ export default function TableGrid() {
                       <TableCell align="center">{row.business_name}</TableCell>
                       <TableCell align="center">{row.cust_number}</TableCell>
                       <TableCell align="center">{row.name_customer}</TableCell>
+                      <TableCell align="center">
+                        <pre>{row.clear_date}</pre>
+                      </TableCell>
+                      <TableCell align="center">{row.business_year}</TableCell>
+                      <TableCell align="center">{row.doc_id}</TableCell>
+                      <TableCell align="center">{row.posting_date}</TableCell>
+                      <TableCell align="center">
+                        {row.document_create_date}
+                      </TableCell>
+                      <TableCell align="center">
+                        {row.document_create_date1}
+                      </TableCell>
+                      <TableCell align="center">
+                        <pre>{row.due_in_date}</pre>
+                      </TableCell>
+                      <TableCell align="center">
+                        {row.invoice_currency}
+                      </TableCell>
+                      <TableCell align="center">{row.document_type}</TableCell>
+                      <TableCell align="center">{row.posting_id}</TableCell>
+                      <TableCell align="center">{row.area_business}</TableCell>
+                      <TableCell align="center">
+                        {row.total_open_amount}
+                      </TableCell>
+                      <TableCell align="center">
+                        {row.baseline_create_date}
+                      </TableCell>
+                      <TableCell align="center">
+                        {row.cust_payment_terms}
+                      </TableCell>
+                      <TableCell align="center">{row.invoice_id}</TableCell>
+                      <TableCell align="center">{row.isOpen}</TableCell>
+                      <TableCell align="center">{row.aging_Bucket}</TableCell>
+                      <TableCell align="center">{row.is_deleted}</TableCell>
                     </TableRow>
                   );
                 })}
@@ -440,6 +569,3 @@ export default function TableGrid() {
     </div>
   );
 }
-TableGrid.propTypes = {
-  customClasses: PropTypes.object.isRequired
-};
