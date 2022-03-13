@@ -43,6 +43,9 @@ export default class DataService {
   deleteRecords = (sl_nos) => {
     return this.client.get(apiPath.deleteRecord + "?sl_nos=" + sl_nos);
   };
+  removeFromView = (sl_nos) => {
+    return this.client.get(apiPath.removeFromView + "?sl_nos=" + sl_nos);
+  };
   recordsByPagination = (pageNo, recordsPerPage) => {
     return this.client.get(
       apiPath.recordsByPagination +
@@ -97,4 +100,5 @@ export default class DataService {
   countRecord = () => {
     return this.client.get(apiPath.countRecord);
   };
+  
 }

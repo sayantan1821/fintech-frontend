@@ -13,7 +13,7 @@ import { TableSortLabel } from "@material-ui/core";
 // import Toolbar from "@material-ui/core/Toolbar";
 // import Typography from "@material-ui/core/Typography";
 import { Paper } from "@material-ui/core";
-import { Checkbox, Button, IconButton } from "@material-ui/core";
+import { Checkbox, IconButton, Input } from "@material-ui/core";
 // import IconButton from "@material-ui/core/IconButton";
 // import Tooltip from "@material-ui/core/Tooltip";
 // import FormControlLabel from "@material-ui/core/FormControlLabel";
@@ -22,6 +22,7 @@ import { Checkbox, Button, IconButton } from "@material-ui/core";
 // import FilterListIcon from "@material-ui/icons/FilterList";
 import DataService from "../../services/DataService";
 import { GrFormPrevious, GrFormNext } from "react-icons/gr";
+import TableHeader from "../TableHeader/TableHeader";
 
 // function createData(name, calories, fat, carbs, protein) {
 //   return { name, calories, fat, carbs, protein };
@@ -194,10 +195,10 @@ const headCells = [
     label: "Aging Bucket",
   },
   {
-    id: "is_deleted",
+    id: "predicted",
     numeric: false,
     disablePadding: false,
-    label: "Is Deleted",
+    label: "Predicted",
   },
 ];
 
@@ -378,6 +379,7 @@ const useStyles = makeStyles((theme) => ({
     margin: "0 15px",
     display: "flex",
     justifyContent: "end",
+    fontSize: "13px"
   },
 }));
 
@@ -388,20 +390,28 @@ export default function TableGrid() {
   const [selected, setSelected] = React.useState([]);
   const [records, setRecords] = useState([]);
   const [pageNo, setPageNo] = useState(0);
+  const [state, setState] = useState(0);
+  const [recordPerPage, setRecordPerPage] = useState(10);
   // const [page, setPage] = React.useState(0);
   // const [dense, setDense] = React.useState(false);
   // const [rowsPerPage, setRowsPerPage] = React.useState(5);
   let api = new DataService();
-  let recordPerPage = 10;
   const getData = () => {
     api.recordsByPagination(pageNo, recordPerPage).then((res) => {
       console.log("Records Per page : ", res.data);
       setRecords(res.data);
     });
   };
+  const deleteRows = () => {
+    let removeIds = selected.toString();
+    api.removeFromView(removeIds).then((res) => {
+      console.log(res.data);
+      setState(state + 1);
+    });
+  };
   useEffect(() => {
     getData();
-  }, [pageNo]);
+  }, [pageNo, state, recordPerPage]);
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === "asc";
     setOrder(isAsc ? "desc" : "asc");
@@ -435,7 +445,7 @@ export default function TableGrid() {
     }
 
     setSelected(newSelected);
-    console.log(newSelected);
+    // console.log(newSelected);
   };
   const handleNextPage = () => {
     setPageNo(pageNo + 1);
@@ -445,7 +455,10 @@ export default function TableGrid() {
     pageNo > 0 && setPageNo(pageNo - 1);
     console.log(pageNo);
   };
-
+  const handleRecordsPerPage = (e) => {
+    setRecordPerPage(e.target.value);
+    e.preventDefault();
+  }
   // const handleChangePage = (event, newPage) => {
   //   setPage(newPage);
   // };
@@ -465,6 +478,7 @@ export default function TableGrid() {
 
   return (
     <div className={classes.root}>
+      <TableHeader deleteRows={deleteRows} />
       <Paper className={classes.paper}>
         {/* <EnhancedTableToolbar numSelected={selected.length} /> */}
         <TableContainer style={{ height: "77vh" }}>
@@ -537,7 +551,7 @@ export default function TableGrid() {
                         {row.name_customer}
                       </TableCell>
                       <TableCell className={classes.TableCell} align="center">
-                        <pre>{row.clear_date}</pre>
+                        <pre>{row.clear_date != "0000-00-00" ? row.clear_date : "NA"}</pre>
                       </TableCell>
                       <TableCell className={classes.TableCell} align="center">
                         {row.business_year}
@@ -567,7 +581,7 @@ export default function TableGrid() {
                         {row.posting_id}
                       </TableCell>
                       <TableCell className={classes.TableCell} align="center">
-                        {row.area_business}
+                        {row.area_business.length > 0 ? row.area_business.length : "NA"}
                       </TableCell>
                       <TableCell className={classes.TableCell} align="center">
                         {row.total_open_amount}
@@ -585,10 +599,10 @@ export default function TableGrid() {
                         {row.isOpen}
                       </TableCell>
                       <TableCell className={classes.TableCell} align="center">
-                        {row.aging_Bucket}
+                        {row.aging_Bucket.length > 0 ? row.aging_Bucket.length : "NA"}
                       </TableCell>
                       <TableCell className={classes.TableCell} align="center">
-                        {row.is_deleted}
+                        {row.predicted}
                       </TableCell>
                     </TableRow>
                   );
@@ -612,17 +626,28 @@ export default function TableGrid() {
           onRowsPerPageChange={handleChangeRowsPerPage}
         /> */}
         <div className={classes.tableTool}>
-          <IconButton 
-            variant="contained"
-            size="small"
-            color="primary"
-            className={classes.margin}
-            onClick={() => handlePreviousPage()}
-            style={{marginRight: "5px"}}
-          >
-            <GrFormPrevious />
-          </IconButton >
-          <IconButton 
+          {/* <form noValidate autoComplete="off" style={{display: "flex", fontSize: "13px"}}> */}
+            <p style={{margin: "auto 0"}}>Rows Per Page : </p>
+            <Input
+              defaultValue={recordPerPage}
+              inputProps={{ "aria-label": "description" }}
+              style={{width: "40px", fontSize: "13px", margin: "0 8px"}}
+              onChange={(e) => {handleRecordsPerPage(e)}}
+            />
+          {/* </form> */}
+          {pageNo > 0 && (
+            <IconButton
+              variant="contained"
+              size="small"
+              color="primary"
+              className={classes.margin}
+              onClick={() => handlePreviousPage()}
+              style={{ marginRight: "5px" }}
+            >
+              <GrFormPrevious />
+            </IconButton>
+          )}
+          <IconButton
             variant="contained"
             size="small"
             color="primary"
@@ -630,7 +655,7 @@ export default function TableGrid() {
             onClick={() => handleNextPage()}
           >
             <GrFormNext />
-          </IconButton >
+          </IconButton>
         </div>
       </Paper>
 
