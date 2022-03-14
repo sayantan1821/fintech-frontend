@@ -25,7 +25,13 @@ export default class DataService {
         recordsPerPage
     );
   };
-  advancedSearch = (doc_id, cust_number, buisness_year, pageNo, recordsPerPage) => {
+  advancedSearch = (
+    doc_id,
+    cust_number,
+    buisness_year,
+    pageNo,
+    recordsPerPage
+  ) => {
     return this.client.get(
       apiPath.advanceSearch +
         "?doc_id=" +
@@ -86,19 +92,18 @@ export default class DataService {
         recordData.Aging_Bucket
     );
   };
-  updateRecord = (sl_no, cust_payment_terms, converted_usd) => {
+  updateRecord = (sl_no, cust_payment_terms, invoice_currency) => {
     return this.client.post(
       apiPath.updateRecord +
         "?sl_no=" +
         sl_no +
+        "&invoice_currency=" +
+        invoice_currency +
         "&cust_payment_terms=" +
-        cust_payment_terms +
-        "&converted_usd=" +
-        converted_usd
+        cust_payment_terms
     );
   };
   countRecord = () => {
     return this.client.get(apiPath.countRecord);
   };
-  
 }
