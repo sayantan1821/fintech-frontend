@@ -478,7 +478,7 @@ export default function TableGrid() {
 
   return (
     <div className={classes.root}>
-      <TableHeader deleteRows={deleteRows} selected={selected} />
+      <TableHeader deleteRows={deleteRows} selected={selected} state={state} setRecords={setRecords}/>
       <Paper className={classes.paper}>
         {/* <EnhancedTableToolbar numSelected={selected.length} /> */}
         <TableContainer style={{ height: "77vh" }}>

@@ -27,6 +27,7 @@ export default class DataService {
   };
   advancedSearch = (
     doc_id,
+    invoice_id,
     cust_number,
     buisness_year,
     pageNo,
@@ -36,6 +37,8 @@ export default class DataService {
       apiPath.advanceSearch +
         "?doc_id=" +
         doc_id +
+        "&invoice_id=" +
+        invoice_id +
         "&cust_number=" +
         cust_number +
         "&buisness_year=" +
