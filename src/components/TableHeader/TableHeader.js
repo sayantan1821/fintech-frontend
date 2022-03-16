@@ -1,4 +1,4 @@
-import React, { useState, useReducer } from "react";
+import React, { useState, useReducer, useEffect } from "react";
 import {
   Input,
   Button,
@@ -25,7 +25,17 @@ const customStyles = {
   },
 };
 
-const TableHeader = ({ deleteRows, selected, state, setRecords }) => {
+const TableHeader = ({
+  deleteRows,
+  selected,
+  setState,
+  state,
+  setRecords,
+  setRecordPerPage,
+  recordPerPage,
+  pageNo,
+  setPageNo,
+}) => {
   let api = new DataService();
   const [modalIsOpen, setIsOpen] = useState(false);
   const [advanceModalIsOpen, setAdvanceIsOpen] = useState(false);
@@ -46,6 +56,9 @@ const TableHeader = ({ deleteRows, selected, state, setRecords }) => {
       buisness_year: "",
     }
   );
+  useEffect(() => {
+    
+  })
 
   //Modal styles
   const useStyles = makeStyles((theme) => ({
@@ -104,13 +117,13 @@ const TableHeader = ({ deleteRows, selected, state, setRecords }) => {
         advanceInput.invoice_id,
         advanceInput.cust_number,
         advanceInput.buisness_year,
-        0,
-        10
+        pageNo,
+        recordPerPage
       )
       .then((res) => {
-        console.log(res.data);
+        console.log(...res);
         setRecords(res.data);
-        state = state+1;
+        state = state + 1;
       });
     closeAdvanceModal();
   };
@@ -142,6 +155,7 @@ const TableHeader = ({ deleteRows, selected, state, setRecords }) => {
       )
       .then((res) => {
         console.log("After updating data : ", res.data);
+        setState(state + 1);
       });
     console.log(data);
     closeModal();

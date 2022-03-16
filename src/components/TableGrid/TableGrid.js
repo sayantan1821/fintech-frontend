@@ -1,49 +1,18 @@
 import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
-// import clsx from "clsx";
 import { lighten, makeStyles } from "@material-ui/core";
 import { Table } from "@material-ui/core";
 import { TableBody } from "@material-ui/core";
 import { TableCell } from "@material-ui/core/";
 import { TableContainer } from "@material-ui/core";
 import { TableHead } from "@material-ui/core";
-// import { TablePagination } from "@material-ui/core";
 import { TableRow } from "@material-ui/core";
 import { TableSortLabel } from "@material-ui/core";
-// import Toolbar from "@material-ui/core/Toolbar";
-// import Typography from "@material-ui/core/Typography";
 import { Paper } from "@material-ui/core";
 import { Checkbox, IconButton, Input } from "@material-ui/core";
-// import IconButton from "@material-ui/core/IconButton";
-// import Tooltip from "@material-ui/core/Tooltip";
-// import FormControlLabel from "@material-ui/core/FormControlLabel";
-// import Switch from "@material-ui/core/Switch";
-// import DeleteIcon from "@material-ui/icons/Delete";
-// import FilterListIcon from "@material-ui/icons/FilterList";
 import DataService from "../../services/DataService";
 import { GrFormPrevious, GrFormNext } from "react-icons/gr";
 import TableHeader from "../TableHeader/TableHeader";
-
-// function createData(name, calories, fat, carbs, protein) {
-//   return { name, calories, fat, carbs, protein };
-// }
-
-// const rows = [];
-// const rows = [
-//   createData("Cupcake", 305, 3.7, 67, 4.3),
-//   createData("Donut", 452, 25.0, 51, 4.9),
-//   createData("Eclair", 262, 16.0, 24, 6.0),
-//   createData("Frozen yoghurt", 159, 6.0, 24, 4.0),
-//   createData("Gingerbread", 356, 16.0, 49, 3.9),
-//   createData("Honeycomb", 408, 3.2, 87, 6.5),
-//   createData("Ice cream sandwich", 237, 9.0, 37, 4.3),
-//   createData("Jelly Bean", 375, 0.0, 94, 0.0),
-//   createData("KitKat", 518, 26.0, 65, 7.0),
-//   createData("Lollipop", 392, 0.2, 98, 0.0),
-//   createData("Marshmallow", 318, 0, 81, 2.0),
-//   createData("Nougat", 360, 19.0, 9, 37.0),
-//   createData("Oreo", 437, 18.0, 63, 4.0),
-// ];
 
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -267,77 +236,6 @@ EnhancedTableHead.propTypes = {
   rowCount: PropTypes.number.isRequired,
 };
 
-// const useToolbarStyles = makeStyles((theme) => ({
-//   root: {
-//     paddingLeft: theme.spacing(2),
-//     paddingRight: theme.spacing(1)
-//   },
-//   highlight:
-//     theme.palette.type === "light"
-//       ? {
-//           color: theme.palette.secondary.main,
-//           backgroundColor: lighten(theme.palette.secondary.light, 0.85)
-//         }
-//       : {
-//           color: theme.palette.text.primary,
-//           backgroundColor: theme.palette.secondary.dark
-//         },
-//   title: {
-//     flex: "1 1 100%"
-//   }
-// }));
-
-// const EnhancedTableToolbar = (props) => {
-//   const classes = useToolbarStyles();
-//   const { numSelected } = props;
-
-//   return (
-//     <Toolbar
-//       className={clsx(classes.root, {
-//         [classes.highlight]: numSelected > 0
-//       })}
-//     >
-//       {numSelected > 0 ? (
-//         <Typography
-//           className={classes.title}
-//           color="inherit"
-//           variant="subtitle1"
-//           component="div"
-//         >
-//           {numSelected} selected
-//         </Typography>
-//       ) : (
-//         <Typography
-//           className={classes.title}
-//           variant="h6"
-//           id="tableTitle"
-//           component="div"
-//         >
-//           Nutrition
-//         </Typography>
-//       )}
-
-//       {numSelected > 0 ? (
-//         <Tooltip title="Delete">
-//           <IconButton aria-label="delete">
-//             <DeleteIcon />
-//           </IconButton>
-//         </Tooltip>
-//       ) : (
-//         <Tooltip title="Filter list">
-//           <IconButton aria-label="filter list">
-//             <FilterListIcon />
-//           </IconButton>
-//         </Tooltip>
-//       )}
-//     </Toolbar>
-//   );
-// };
-
-// EnhancedTableToolbar.propTypes = {
-//   numSelected: PropTypes.number.isRequired
-// };
-
 const useStyles = makeStyles((theme) => ({
   root: {
     width: "100%",
@@ -379,7 +277,7 @@ const useStyles = makeStyles((theme) => ({
     margin: "0 15px",
     display: "flex",
     justifyContent: "end",
-    fontSize: "13px"
+    fontSize: "13px",
   },
 }));
 
@@ -392,14 +290,11 @@ export default function TableGrid() {
   const [pageNo, setPageNo] = useState(0);
   const [state, setState] = useState(0);
   const [recordPerPage, setRecordPerPage] = useState(10);
-  // const [page, setPage] = React.useState(0);
-  // const [dense, setDense] = React.useState(false);
-  // const [rowsPerPage, setRowsPerPage] = React.useState(5);
   let api = new DataService();
   const getData = () => {
     api.recordsByPagination(pageNo, recordPerPage).then((res) => {
       console.log("Records Per page : ", res.data);
-      setRecords(res.data);
+      setRecords([...res.data]);
     });
   };
   const deleteRows = () => {
@@ -410,6 +305,7 @@ export default function TableGrid() {
     });
   };
   useEffect(() => {
+    console.log(state);
     getData();
   }, [pageNo, state, recordPerPage]);
   const handleRequestSort = (event, property) => {
@@ -445,7 +341,6 @@ export default function TableGrid() {
     }
 
     setSelected(newSelected);
-    // console.log(newSelected);
   };
   const handleNextPage = () => {
     setPageNo(pageNo + 1);
@@ -458,29 +353,24 @@ export default function TableGrid() {
   const handleRecordsPerPage = (e) => {
     setRecordPerPage(e.target.value);
     e.preventDefault();
-  }
-  // const handleChangePage = (event, newPage) => {
-  //   setPage(newPage);
-  // };
-
-  // const handleChangeRowsPerPage = (event) => {
-  //   setRowsPerPage(parseInt(event.target.value, 10));
-  //   setPage(0);
-  // };
-
-  // const handleChangeDense = (event) => {
-  //   setDense(event.target.checked);
-  // };
+  };
 
   const isSelected = (name) => selected.indexOf(name) !== -1;
 
-  // const emptyRows = rowsPerPage - Math.min(rowsPerPage, rows.length - page * rowsPerPage);
-
   return (
     <div className={classes.root}>
-      <TableHeader deleteRows={deleteRows} selected={selected} state={state} setRecords={setRecords}/>
+      <TableHeader
+        deleteRows={deleteRows}
+        selected={selected}
+        setState={setState}
+        state={state}
+        setRecords={setRecords}
+        pageNo={pageNo}
+        setPageNo={setPageNo}
+        recordPerPage={recordPerPage}
+        setRecordPerPage={setRecordPerPage}
+      />
       <Paper className={classes.paper}>
-        {/* <EnhancedTableToolbar numSelected={selected.length} /> */}
         <TableContainer style={{ height: "77vh" }}>
           <Table
             className={classes.table}
@@ -499,9 +389,8 @@ export default function TableGrid() {
               style={{ align: "left" }}
             />
             <TableBody>
-              {stableSort(records, getComparator(order, orderBy))
-                // .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                .map((row, index) => {
+              {stableSort(records, getComparator(order, orderBy)).map(
+                (row, index) => {
                   const isItemSelected = isSelected(row.sl_no);
                   const labelId = `enhanced-table-checkbox-${index}`;
 
@@ -551,7 +440,11 @@ export default function TableGrid() {
                         {row.name_customer}
                       </TableCell>
                       <TableCell className={classes.TableCell} align="center">
-                        <pre>{row.clear_date != "0000-00-00" ? row.clear_date : "NA"}</pre>
+                        <pre>
+                          {row.clear_date != "0000-00-00"
+                            ? row.clear_date
+                            : "NA"}
+                        </pre>
                       </TableCell>
                       <TableCell className={classes.TableCell} align="center">
                         {row.business_year}
@@ -581,7 +474,9 @@ export default function TableGrid() {
                         {row.posting_id}
                       </TableCell>
                       <TableCell className={classes.TableCell} align="center">
-                        {row.area_business.length > 0 ? row.area_business.length : "NA"}
+                        {row.area_business.length > 0
+                          ? row.area_business.length
+                          : "NA"}
                       </TableCell>
                       <TableCell className={classes.TableCell} align="center">
                         {row.total_open_amount}
@@ -599,42 +494,31 @@ export default function TableGrid() {
                         {row.isOpen}
                       </TableCell>
                       <TableCell className={classes.TableCell} align="center">
-                        {row.aging_Bucket.length > 0 ? row.aging_Bucket.length : "NA"}
+                        {row.aging_Bucket.length > 0
+                          ? row.aging_Bucket.length
+                          : "NA"}
                       </TableCell>
                       <TableCell className={classes.TableCell} align="center">
                         {row.predicted}
                       </TableCell>
                     </TableRow>
                   );
-                })}
-              {/* {emptyRows > 0 && (
-                <TableRow style={{ height: (dense ? 33 : 53) * emptyRows }}>
-                  <TableCell colSpan={6} />
-                </TableRow>
-              )} */}
+                }
+              )}
             </TableBody>
           </Table>
         </TableContainer>
 
-        {/* <TablePagination
-          rowsPerPageOptions={[5, 10, 25]}
-          component="div"
-          count={rows.length}
-          rowsPerPage={rowsPerPage}
-          page={page}
-          onPageChange={handleChangePage}
-          onRowsPerPageChange={handleChangeRowsPerPage}
-        /> */}
         <div className={classes.tableTool}>
-          {/* <form noValidate autoComplete="off" style={{display: "flex", fontSize: "13px"}}> */}
-            <p style={{margin: "auto 0"}}>Rows Per Page : </p>
-            <Input
-              defaultValue={recordPerPage}
-              inputProps={{ "aria-label": "description" }}
-              style={{width: "40px", fontSize: "13px", margin: "0 8px"}}
-              onChange={(e) => {handleRecordsPerPage(e)}}
-            />
-          {/* </form> */}
+          <p style={{ margin: "auto 0" }}>Rows Per Page : </p>
+          <Input
+            defaultValue={recordPerPage}
+            inputProps={{ "aria-label": "description" }}
+            style={{ width: "40px", fontSize: "13px", margin: "0 8px" }}
+            onChange={(e) => {
+              handleRecordsPerPage(e);
+            }}
+          />
           {pageNo > 0 && (
             <IconButton
               variant="contained"
@@ -658,11 +542,6 @@ export default function TableGrid() {
           </IconButton>
         </div>
       </Paper>
-
-      {/* <FormControlLabel
-        control={<Switch checked={dense} onChange={handleChangeDense} />}
-        label="Dense padding"
-      /> */}
     </div>
   );
 }

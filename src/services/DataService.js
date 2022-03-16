@@ -96,7 +96,7 @@ export default class DataService {
     );
   };
   updateRecord = (sl_no, cust_payment_terms, invoice_currency) => {
-    return this.client.post(
+    return this.client.get(
       apiPath.updateRecord +
         "?sl_no=" +
         sl_no +
