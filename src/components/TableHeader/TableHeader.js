@@ -8,6 +8,13 @@ import {
   FormHelperText,
   Icon,
   TextField,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+  Draggable,
+  Paper,
 } from "@material-ui/core";
 import Modal from "react-modal";
 import { makeStyles } from "@material-ui/core/styles";
@@ -39,6 +46,7 @@ const TableHeader = ({
   let api = new DataService();
   const [modalIsOpen, setIsOpen] = useState(false);
   const [advanceModalIsOpen, setAdvanceIsOpen] = useState(false);
+  const [addModalIsOpen, setAddModalIsOpen] = useState(false);
   const [formInput, setFormInput] = useReducer(
     (state, newState) => ({ ...state, ...newState }),
     {
@@ -56,9 +64,28 @@ const TableHeader = ({
       buisness_year: "",
     }
   );
-  useEffect(() => {
-    
-  })
+  const [addInput, setAddInput] = useReducer(
+    (state, newState) => ({ ...state, ...newState }),
+    {
+      doc_id: "",
+      cust_number: "",
+      invoice_id: "",
+      buisness_year: "",
+    }
+  );
+
+  useEffect(() => {});
+
+  // function PaperComponent(props) {
+  //   return (
+  //     <Draggable
+  //       handle="#draggable-dialog-title"
+  //       cancel={'[class*="MuiDialogContent-root"]'}
+  //     >
+  //       <Paper {...props} />
+  //     </Draggable>
+  //   );
+  // }
 
   //Modal styles
   const useStyles = makeStyles((theme) => ({
@@ -127,6 +154,22 @@ const TableHeader = ({
       });
     closeAdvanceModal();
   };
+
+  //add modal controls
+  const openAddModal = () => {
+    setAddModalIsOpen(true);
+  }
+  const closeAddModal = () => {
+    setAddModalIsOpen(false);
+  }
+  const handleAddInput = (evt) => {
+    const name = evt.target.name;
+    const newValue = evt.target.value;
+    setAddInput({ [name]: newValue });
+  }
+  const handleAddSubmit = () => {
+    console.log("submitted");
+  }
 
   //edit modal controls
   function openModal() {
@@ -214,7 +257,7 @@ const TableHeader = ({
           color="primary"
           aria-label="contained primary button group"
         >
-          <Button>ADD</Button>
+          <Button onClick={() => {openAddModal()}}>ADD</Button>
           <Button
             onClick={openModal}
             disabled={selected.length == 1 ? false : true}
@@ -271,6 +314,7 @@ const TableHeader = ({
           </Button>
         </form>
       </Modal>
+
       <Modal
         isOpen={advanceModalIsOpen}
         onAfterOpen={advanceAfterOpenModal}
@@ -344,6 +388,176 @@ const TableHeader = ({
           </Button>
         </form>
       </Modal>
+
+      <Dialog
+        open={addModalIsOpen}
+        onClose={closeAddModal}
+        // PaperComponent={PaperComponent}
+        aria-labelledby="draggable-dialog-title"
+      >
+        <DialogTitle style={{ cursor: "move" }} id="draggable-dialog-title">
+          Subscribe
+        </DialogTitle>
+        <DialogContent>
+        <TextField
+              label="Document Id-(doc_id)"
+              id="margin-normal"
+              name="doc_id"
+              // defaultValue="Invoice Currency"
+              className={classes.textField}
+              helperText="Enter Document Id-(doc_id)"
+              onChange={handleAdvanceInput}
+              required={false}
+            />
+            <TextField
+              label="Document Id-(doc_id)"
+              id="margin-normal"
+              name="doc_id"
+              // defaultValue="Invoice Currency"
+              className={classes.textField}
+              helperText="Enter Document Id-(doc_id)"
+              onChange={handleAdvanceInput}
+              required={false}
+            />
+            <TextField
+              label="Document Id-(doc_id)"
+              id="margin-normal"
+              name="doc_id"
+              // defaultValue="Invoice Currency"
+              className={classes.textField}
+              helperText="Enter Document Id-(doc_id)"
+              onChange={handleAdvanceInput}
+              required={false}
+            />
+            <TextField
+              label="Document Id-(doc_id)"
+              id="margin-normal"
+              name="doc_id"
+              // defaultValue="Invoice Currency"
+              className={classes.textField}
+              helperText="Enter Document Id-(doc_id)"
+              onChange={handleAdvanceInput}
+              required={false}
+            />
+            <TextField
+              label="Document Id-(doc_id)"
+              id="margin-normal"
+              name="doc_id"
+              // defaultValue="Invoice Currency"
+              className={classes.textField}
+              helperText="Enter Document Id-(doc_id)"
+              onChange={handleAdvanceInput}
+              required={false}
+            />
+            <TextField
+              label="Document Id-(doc_id)"
+              id="margin-normal"
+              name="doc_id"
+              // defaultValue="Invoice Currency"
+              className={classes.textField}
+              helperText="Enter Document Id-(doc_id)"
+              onChange={handleAdvanceInput}
+              required={false}
+            />
+            <TextField
+              label="Document Id-(doc_id)"
+              id="margin-normal"
+              name="doc_id"
+              // defaultValue="Invoice Currency"
+              className={classes.textField}
+              helperText="Enter Document Id-(doc_id)"
+              onChange={handleAdvanceInput}
+              required={false}
+            />
+            <TextField
+              label="Document Id-(doc_id)"
+              id="margin-normal"
+              name="doc_id"
+              // defaultValue="Invoice Currency"
+              className={classes.textField}
+              helperText="Enter Document Id-(doc_id)"
+              onChange={handleAdvanceInput}
+              required={false}
+            />
+            <TextField
+              label="Document Id-(doc_id)"
+              id="margin-normal"
+              name="doc_id"
+              // defaultValue="Invoice Currency"
+              className={classes.textField}
+              helperText="Enter Document Id-(doc_id)"
+              onChange={handleAdvanceInput}
+              required={false}
+            />
+            <TextField
+              label="Document Id-(doc_id)"
+              id="margin-normal"
+              name="doc_id"
+              // defaultValue="Invoice Currency"
+              className={classes.textField}
+              helperText="Enter Document Id-(doc_id)"
+              onChange={handleAdvanceInput}
+              required={false}
+            />
+            <TextField
+              label="Document Id-(doc_id)"
+              id="margin-normal"
+              name="doc_id"
+              // defaultValue="Invoice Currency"
+              className={classes.textField}
+              helperText="Enter Document Id-(doc_id)"
+              onChange={handleAdvanceInput}
+              required={false}
+            />
+            <TextField
+              label="Document Id-(doc_id)"
+              id="margin-normal"
+              name="doc_id"
+              // defaultValue="Invoice Currency"
+              className={classes.textField}
+              helperText="Enter Document Id-(doc_id)"
+              onChange={handleAdvanceInput}
+              required={false}
+            />
+            <TextField
+              label="Document Id-(doc_id)"
+              id="margin-normal"
+              name="doc_id"
+              // defaultValue="Invoice Currency"
+              className={classes.textField}
+              helperText="Enter Document Id-(doc_id)"
+              onChange={handleAdvanceInput}
+              required={false}
+            />
+            <TextField
+              label="Document Id-(doc_id)"
+              id="margin-normal"
+              name="doc_id"
+              // defaultValue="Invoice Currency"
+              className={classes.textField}
+              helperText="Enter Document Id-(doc_id)"
+              onChange={handleAdvanceInput}
+              required={false}
+            />
+            <TextField
+              label="Document Id-(doc_id)"
+              id="margin-normal"
+              name="doc_id"
+              // defaultValue="Invoice Currency"
+              className={classes.textField}
+              helperText="Enter Document Id-(doc_id)"
+              onChange={handleAdvanceInput}
+              required={false}
+            />
+            
+        </DialogContent>
+        <DialogActions>
+          <Button autoFocus onClick={closeAddModal}>
+            Cancel
+          </Button>
+          <Button onClick={closeAddModal}>Subscribe</Button>
+        </DialogActions>
+      </Dialog>
     </div>
   );
 };
