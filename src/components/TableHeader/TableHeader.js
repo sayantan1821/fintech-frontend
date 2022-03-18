@@ -20,6 +20,8 @@ import {
 import Modal from "react-modal";
 import { makeStyles } from "@material-ui/core/styles";
 import DataService from "../../services/DataService";
+import { DesktopDatePicker, LocalizationProvider } from "@mui/lab";
+import AdapterDateFns from "@mui/lab/AdapterDateFns";
 
 const customStyles = {
   content: {
@@ -63,88 +65,115 @@ const TableHeader = ({
   );
   const [addFormDetails] = useState([
     {
-      name: "",
-      label: "",
+      type: "text",
+      name: "business_code",
+      label: "Business Code",
       helperText: "",
     },
     {
-      name: "",
-      label: "",
+      type: "text",
+      name: "cust_number",
+      label: "Customer Number",
       helperText: "",
     },
     {
-      name: "",
-      label: "",
+      type: "date",
+      name: "clear_date",
+      label: "Clear Date",
       helperText: "",
     },
     {
-      name: "",
-      label: "",
+      type: "text",
+      name: "buisness_year",
+      label: "Business Year",
       helperText: "",
     },
     {
-      name: "",
-      label: "",
+      type: "text",
+      name: "doc_id",
+      label: "Document ID",
       helperText: "",
     },
     {
-      name: "",
-      label: "",
+      type: "date",
+      name: "posting_date",
+      label: "Posting Date",
       helperText: "",
     },
     {
-      name: "",
-      label: "",
+      type: "date",
+      name: "document_create_date",
+      label: "Document Create Date",
       helperText: "",
     },
     {
-      name: "",
-      label: "",
+      type: "date",
+      name: "due_in_date",
+      label: "Due In Date",
       helperText: "",
     },
     {
-      name: "",
-      label: "",
+      type: "text",
+      name: "invoice_currency",
+      label: "Invoice Currency",
       helperText: "",
     },
     {
-      name: "",
-      label: "",
+      type: "text",
+      name: "document_type",
+      label: "Document Type",
       helperText: "",
     },
     {
-      name: "",
-      label: "",
+      type: "text",
+      name: "posting_id",
+      label: "Posting ID",
       helperText: "",
     },
     {
-      name: "",
-      label: "",
+      type: "text",
+      name: "total_open_amount",
+      label: "Total Open Amount",
       helperText: "",
     },
     {
-      name: "",
-      label: "",
+      type: "date",
+      name: "baseline_create_date",
+      label: "Baseline Create DAte",
       helperText: "",
     },
     {
-      name: "",
-      label: "",
+      type: "text",
+      name: "cust_payment_terms",
+      label: "Customer Payment Terms",
       helperText: "",
     },
     {
-      name: "",
-      label: "",
+      type: "text",
+      name: "invoice_id",
+      label: "Invoice ID",
       helperText: "",
     },
   ]);
   const [addInput, setAddInput] = useReducer(
     (state, newState) => ({ ...state, ...newState }),
     {
-      doc_id: "",
+      sl_no: "",
+      business_code: "",
       cust_number: "",
-      invoice_id: "",
+      clear_date: new Date('2014-08-18T21:11:54'),
       buisness_year: "",
+      doc_id: "",
+      posting_date: "",
+      document_create_date: "",
+      due_in_date: "",
+      invoice_currency: "",
+      document_type: "",
+      posting_id: "",
+      total_open_amount: "",
+      baseline_create_date: "",
+      cust_payment_terms: "",
+      invoice_id: "",
     }
   );
 
@@ -431,19 +460,42 @@ const TableHeader = ({
               flexWrap: "wrap",
             }}
           >
-            {addFormDetails.map((data, idx) => (
-              <TextField
-                key={idx}
-                label={data.label}
-                id="margin-normal"
-                name={data.name}
-                // defaultValue="Invoice Currency"
-                className={classes.textField}
-                helperText={data.helperText}
-                onChange={handleAddInput}
-                required={true}
-              />
-            ))}
+            {addFormDetails.map((data, idx) =>
+              data.type === "text" ? (
+                <TextField
+                  key={idx}
+                  label={data.label}
+                  id="margin-normal"
+                  name={data.name}
+                  // defaultValue="Invoice Currency"
+                  className={classes.textField}
+                  helperText={data.helperText}
+                  onChange={handleAddInput}
+                  required={true}
+                />
+              ) : (
+                <LocalizationProvider key={idx} dateAdapter={AdapterDateFns}>
+                  <DesktopDatePicker
+                    label={data.label}
+                    inputFormat="MM/dd/yyyy"
+                    value={addInput[data.name]}
+                    onChange={(v) => console.log(v)}
+                    required={true}
+                    renderInput={(params) => (
+                      <TextField
+                        // required={true}
+                        // name={data.name}
+                        // value={addInput[data.name]}
+                        className={classes.textField}
+                        // label={data.label}
+                        // onChange={handleAddInput}
+                        {...params}
+                      />
+                    )}
+                  />
+                </LocalizationProvider>
+              )
+            )}
           </DialogContent>
           <DialogActions>
             <Button autoFocus onClick={closeAddModal}>
