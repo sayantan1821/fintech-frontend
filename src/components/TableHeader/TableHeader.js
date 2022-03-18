@@ -467,7 +467,6 @@ const TableHeader = ({
                   label={data.label}
                   id="margin-normal"
                   name={data.name}
-                  // defaultValue="Invoice Currency"
                   className={classes.textField}
                   helperText={data.helperText}
                   onChange={handleAddInput}
