@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useReducer } from "react";
 import PropTypes from "prop-types";
 import { lighten, makeStyles } from "@material-ui/core";
 import { Table } from "@material-ui/core";
@@ -290,6 +290,15 @@ export default function TableGrid() {
   const [pageNo, setPageNo] = useState(0);
   const [state, setState] = useState(0);
   const [recordPerPage, setRecordPerPage] = useState(10);
+  const [advanceState, setAdvanceState] = useReducer(
+    (state, newState) => ({ ...state, ...newState }),
+    {
+      active: false,
+      pageNo: 0,
+      recordPerPage: 10,
+      stateCount: 0,
+    }
+  )
   let api = new DataService();
   const getData = () => {
     api.recordsByPagination(pageNo, recordPerPage).then((res) => {
@@ -306,8 +315,8 @@ export default function TableGrid() {
   };
   useEffect(() => {
     console.log(state);
-    getData();
-  }, [pageNo, state, recordPerPage]);
+    !advanceState.active && getData();
+  }, [pageNo, state, recordPerPage, advanceState]);
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === "asc";
     setOrder(isAsc ? "desc" : "asc");
@@ -343,15 +352,27 @@ export default function TableGrid() {
     setSelected(newSelected);
   };
   const handleNextPage = () => {
-    setPageNo(pageNo + 1);
+    if(!advanceState.active) setPageNo(pageNo + 1);
+    else setAdvanceState({
+      ...advanceState,
+      pageNo: advanceState.pageNo + 1,
+    })
     console.log(pageNo);
   };
   const handlePreviousPage = () => {
-    pageNo > 0 && setPageNo(pageNo - 1);
+    if(pageNo > 0 || advanceState.pageNo > 0) {if(!advanceState.active) setPageNo(pageNo - 1);
+    else setAdvanceState({
+      ...advanceState,
+      pageNo: advanceState.pageNo - 1,
+    })}
     console.log(pageNo);
   };
   const handleRecordsPerPage = (e) => {
-    setRecordPerPage(e.target.value);
+    if(!advanceState.active) setRecordPerPage(e.target.value);
+    else setAdvanceState({
+      ...advanceState,
+      recordPerPage: e.target.value,
+    })
     e.preventDefault();
   };
 
@@ -362,13 +383,9 @@ export default function TableGrid() {
       <TableHeader
         deleteRows={deleteRows}
         selected={selected}
-        setState={setState}
-        state={state}
         setRecords={setRecords}
-        pageNo={pageNo}
-        setPageNo={setPageNo}
-        recordPerPage={recordPerPage}
-        setRecordPerPage={setRecordPerPage}
+        setAdvanceState={setAdvanceState}
+        advanceState={advanceState}
       />
       <Paper className={classes.paper}>
         <TableContainer style={{ height: "77vh" }}>
@@ -519,7 +536,7 @@ export default function TableGrid() {
               handleRecordsPerPage(e);
             }}
           />
-          {pageNo > 0 && (
+          {(pageNo > 0 || advanceState.pageNo > 0) && (
             <IconButton
               variant="contained"
               size="small"

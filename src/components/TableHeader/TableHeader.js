@@ -15,6 +15,7 @@ import {
   DialogTitle,
   Draggable,
   Paper,
+  Box,
 } from "@material-ui/core";
 import Modal from "react-modal";
 import { makeStyles } from "@material-ui/core/styles";
@@ -35,13 +36,9 @@ const customStyles = {
 const TableHeader = ({
   deleteRows,
   selected,
-  setState,
-  state,
   setRecords,
-  setRecordPerPage,
-  recordPerPage,
-  pageNo,
-  setPageNo,
+  setAdvanceState,
+  advanceState,
 }) => {
   let api = new DataService();
   const [modalIsOpen, setIsOpen] = useState(false);
@@ -74,18 +71,9 @@ const TableHeader = ({
     }
   );
 
-  useEffect(() => {});
-
-  // function PaperComponent(props) {
-  //   return (
-  //     <Draggable
-  //       handle="#draggable-dialog-title"
-  //       cancel={'[class*="MuiDialogContent-root"]'}
-  //     >
-  //       <Paper {...props} />
-  //     </Draggable>
-  //   );
-  // }
+  useEffect(() => {
+    handleAdvanceSubmit();
+  }, [advanceState.pageNo, advanceState.recordPerPage]);
 
   //Modal styles
   const useStyles = makeStyles((theme) => ({
@@ -122,11 +110,15 @@ const TableHeader = ({
 
   //advance search modal controls
   const openAdvanceModal = () => {
+    setAdvanceInput({
+      doc_id: "",
+      cust_number: "",
+      invoice_id: "",
+      buisness_year: "",
+    });
     setAdvanceIsOpen(true);
   };
-  const advanceAfterOpenModal = () => {
-    console.log("ok");
-  };
+  const advanceAfterOpenModal = () => {};
   const closeAdvanceModal = () => {
     setAdvanceIsOpen(false);
   };
@@ -136,40 +128,47 @@ const TableHeader = ({
     setAdvanceInput({ [name]: newValue });
   };
   const handleAdvanceSubmit = (evt) => {
-    evt.preventDefault();
+    evt && evt.preventDefault();
     console.log(advanceInput);
-    api
-      .advancedSearch(
-        advanceInput.doc_id,
-        advanceInput.invoice_id,
-        advanceInput.cust_number,
-        advanceInput.buisness_year,
-        pageNo,
-        recordPerPage
-      )
-      .then((res) => {
-        console.log(...res);
-        setRecords(res.data);
-        state = state + 1;
-      });
+    advanceState &&
+      api
+        .advancedSearch(
+          advanceInput.doc_id,
+          advanceInput.invoice_id,
+          advanceInput.cust_number,
+          advanceInput.buisness_year,
+          advanceState.pageNo,
+          advanceState.recordPerPage
+        )
+        .then((res) => {
+          console.log(res.data);
+          setRecords(res.data);
+          setAdvanceState({
+            ...advanceState,
+            active: true,
+            stateCount: advanceState.stateCount + 1,
+          });
+        });
     closeAdvanceModal();
   };
 
   //add modal controls
   const openAddModal = () => {
     setAddModalIsOpen(true);
-  }
+  };
   const closeAddModal = () => {
     setAddModalIsOpen(false);
-  }
+  };
   const handleAddInput = (evt) => {
     const name = evt.target.name;
     const newValue = evt.target.value;
+    console.log(newValue);
     setAddInput({ [name]: newValue });
-  }
-  const handleAddSubmit = () => {
+  };
+  const handleAddSubmit = (evt) => {
+    evt.preventDefault();
     console.log("submitted");
-  }
+  };
 
   //edit modal controls
   function openModal() {
@@ -198,9 +197,13 @@ const TableHeader = ({
       )
       .then((res) => {
         console.log("After updating data : ", res.data);
-        setState(state + 1);
       });
     console.log(data);
+    setAdvanceState({
+      ...advanceState,
+      active: true,
+      stateCount: advanceState.stateCount + 1,
+    });
     closeModal();
     // fetch("https://pointy-gauge.glitch.me/api/form", {
     //   method: "POST",
@@ -257,7 +260,13 @@ const TableHeader = ({
           color="primary"
           aria-label="contained primary button group"
         >
-          <Button onClick={() => {openAddModal()}}>ADD</Button>
+          <Button
+            onClick={() => {
+              openAddModal();
+            }}
+          >
+            ADD
+          </Button>
           <Button
             onClick={openModal}
             disabled={selected.length == 1 ? false : true}
@@ -315,16 +324,21 @@ const TableHeader = ({
         </form>
       </Modal>
 
-      <Modal
-        isOpen={advanceModalIsOpen}
-        onAfterOpen={advanceAfterOpenModal}
-        onRequestClose={closeAdvanceModal}
-        style={customStyles}
-        contentLabel="Example Modal"
+      <Dialog
+        fullWidth={true}
+        maxWidth="md"
+        open={advanceModalIsOpen}
+        onClose={closeAdvanceModal}
       >
-        <p className={classes.advanceTitle}>ADVANCE SEARCH</p>
+        <DialogTitle>ADVANCED SEARCVH</DialogTitle>
         <form onSubmit={handleAdvanceSubmit}>
-          <div>
+          <DialogContent
+            style={{
+              display: "flex",
+              justifyContent: "space-around",
+              flexWrap: "wrap",
+            }}
+          >
             <TextField
               label="Document Id-(doc_id)"
               id="margin-normal"
@@ -365,48 +379,41 @@ const TableHeader = ({
               onChange={handleAdvanceInput}
               required={false}
             />
-          </div>
-
-          <Button
-            type="submit"
-            variant="contained"
-            color="primary"
-            className={classes.button}
-          >
-            SEARCH
-          </Button>
-          <Button
-            type=""
-            variant="contained"
-            color="primary"
-            className={classes.button}
-            onClick={() => {
-              closeAdvanceModal();
-            }}
-          >
-            CANCEL
-          </Button>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={closeAdvanceModal} type="submit">SEARCH</Button>
+            <Button onClick={closeAdvanceModal}>Cancel</Button>
+          </DialogActions>
         </form>
-      </Modal>
+      </Dialog>
 
       <Dialog
         open={addModalIsOpen}
         onClose={closeAddModal}
         // PaperComponent={PaperComponent}
         aria-labelledby="draggable-dialog-title"
+        fullWidth={true}
+        maxWidth="lg"
       >
         <DialogTitle style={{ cursor: "move" }} id="draggable-dialog-title">
           Subscribe
         </DialogTitle>
-        <DialogContent>
-        <TextField
+        <form onSubmit={handleAddSubmit}>
+          <DialogContent
+            style={{
+              display: "flex",
+              justifyContent: "space-around",
+              flexWrap: "wrap",
+            }}
+          >
+            <TextField
               label="Document Id-(doc_id)"
               id="margin-normal"
               name="doc_id"
               // defaultValue="Invoice Currency"
               className={classes.textField}
               helperText="Enter Document Id-(doc_id)"
-              onChange={handleAdvanceInput}
+              onChange={handleAddInput}
               required={false}
             />
             <TextField
@@ -416,7 +423,7 @@ const TableHeader = ({
               // defaultValue="Invoice Currency"
               className={classes.textField}
               helperText="Enter Document Id-(doc_id)"
-              onChange={handleAdvanceInput}
+              onChange={handleAddInput}
               required={false}
             />
             <TextField
@@ -426,7 +433,7 @@ const TableHeader = ({
               // defaultValue="Invoice Currency"
               className={classes.textField}
               helperText="Enter Document Id-(doc_id)"
-              onChange={handleAdvanceInput}
+              onChange={handleAddInput}
               required={false}
             />
             <TextField
@@ -436,7 +443,7 @@ const TableHeader = ({
               // defaultValue="Invoice Currency"
               className={classes.textField}
               helperText="Enter Document Id-(doc_id)"
-              onChange={handleAdvanceInput}
+              onChange={handleAddInput}
               required={false}
             />
             <TextField
@@ -446,7 +453,7 @@ const TableHeader = ({
               // defaultValue="Invoice Currency"
               className={classes.textField}
               helperText="Enter Document Id-(doc_id)"
-              onChange={handleAdvanceInput}
+              onChange={handleAddInput}
               required={false}
             />
             <TextField
@@ -456,7 +463,7 @@ const TableHeader = ({
               // defaultValue="Invoice Currency"
               className={classes.textField}
               helperText="Enter Document Id-(doc_id)"
-              onChange={handleAdvanceInput}
+              onChange={handleAddInput}
               required={false}
             />
             <TextField
@@ -466,7 +473,7 @@ const TableHeader = ({
               // defaultValue="Invoice Currency"
               className={classes.textField}
               helperText="Enter Document Id-(doc_id)"
-              onChange={handleAdvanceInput}
+              onChange={handleAddInput}
               required={false}
             />
             <TextField
@@ -476,7 +483,7 @@ const TableHeader = ({
               // defaultValue="Invoice Currency"
               className={classes.textField}
               helperText="Enter Document Id-(doc_id)"
-              onChange={handleAdvanceInput}
+              onChange={handleAddInput}
               required={false}
             />
             <TextField
@@ -486,7 +493,7 @@ const TableHeader = ({
               // defaultValue="Invoice Currency"
               className={classes.textField}
               helperText="Enter Document Id-(doc_id)"
-              onChange={handleAdvanceInput}
+              onChange={handleAddInput}
               required={false}
             />
             <TextField
@@ -496,7 +503,7 @@ const TableHeader = ({
               // defaultValue="Invoice Currency"
               className={classes.textField}
               helperText="Enter Document Id-(doc_id)"
-              onChange={handleAdvanceInput}
+              onChange={handleAddInput}
               required={false}
             />
             <TextField
@@ -506,7 +513,7 @@ const TableHeader = ({
               // defaultValue="Invoice Currency"
               className={classes.textField}
               helperText="Enter Document Id-(doc_id)"
-              onChange={handleAdvanceInput}
+              onChange={handleAddInput}
               required={false}
             />
             <TextField
@@ -516,7 +523,7 @@ const TableHeader = ({
               // defaultValue="Invoice Currency"
               className={classes.textField}
               helperText="Enter Document Id-(doc_id)"
-              onChange={handleAdvanceInput}
+              onChange={handleAddInput}
               required={false}
             />
             <TextField
@@ -526,7 +533,7 @@ const TableHeader = ({
               // defaultValue="Invoice Currency"
               className={classes.textField}
               helperText="Enter Document Id-(doc_id)"
-              onChange={handleAdvanceInput}
+              onChange={handleAddInput}
               required={false}
             />
             <TextField
@@ -536,7 +543,7 @@ const TableHeader = ({
               // defaultValue="Invoice Currency"
               className={classes.textField}
               helperText="Enter Document Id-(doc_id)"
-              onChange={handleAdvanceInput}
+              onChange={handleAddInput}
               required={false}
             />
             <TextField
@@ -546,17 +553,19 @@ const TableHeader = ({
               // defaultValue="Invoice Currency"
               className={classes.textField}
               helperText="Enter Document Id-(doc_id)"
-              onChange={handleAdvanceInput}
+              onChange={handleAddInput}
               required={false}
             />
-            
-        </DialogContent>
-        <DialogActions>
-          <Button autoFocus onClick={closeAddModal}>
-            Cancel
-          </Button>
-          <Button onClick={closeAddModal}>Subscribe</Button>
-        </DialogActions>
+          </DialogContent>
+          <DialogActions>
+            <Button autoFocus onClick={closeAddModal}>
+              Cancel
+            </Button>
+            <Button onClick={() => closeAddModal()} type="submit">
+              ADD
+            </Button>
+          </DialogActions>
+        </form>
       </Dialog>
     </div>
   );
