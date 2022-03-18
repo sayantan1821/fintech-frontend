@@ -1,21 +1,12 @@
 import React, { useState, useReducer, useEffect } from "react";
 import {
-  Input,
   Button,
   ButtonGroup,
-  FormControl,
-  InputLabel,
-  FormHelperText,
-  Icon,
   TextField,
   Dialog,
   DialogActions,
   DialogContent,
-  DialogContentText,
   DialogTitle,
-  Draggable,
-  Paper,
-  Box,
 } from "@material-ui/core";
 import Modal from "react-modal";
 import { makeStyles } from "@material-ui/core/styles";
@@ -444,7 +435,6 @@ const TableHeader = ({
       <Dialog
         open={addModalIsOpen}
         onClose={closeAddModal}
-        // PaperComponent={PaperComponent}
         aria-labelledby="draggable-dialog-title"
         fullWidth={true}
         maxWidth="lg"
