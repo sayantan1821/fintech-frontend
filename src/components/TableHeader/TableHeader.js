@@ -152,22 +152,22 @@ const TableHeader = ({
       sl_no: "",
       business_code: "",
       cust_number: "",
-      clear_date: new Date('2014-08-18T21:11:54'),
+      clear_date: new Date(),
       buisness_year: "",
       doc_id: "",
-      posting_date: "",
-      document_create_date: "",
-      due_in_date: "",
+      posting_date: new Date(),
+      document_create_date: new Date(),
+      due_in_date: new Date(),
       invoice_currency: "",
       document_type: "",
       posting_id: "",
       total_open_amount: "",
-      baseline_create_date: "",
+      baseline_create_date: new Date(),
       cust_payment_terms: "",
       invoice_id: "",
     }
   );
-
+  const [count, setCount] = useState(null);
   useEffect(() => {
     advanceState.active && handleAdvanceSubmit();
   }, [advanceState.pageNo, advanceState.recordPerPage]);
@@ -254,15 +254,41 @@ const TableHeader = ({
   const closeAddModal = () => {
     setAddModalIsOpen(false);
   };
+  const getCount = () => {
+    api.countRecord().then((res) => {
+      setCount(res.data);
+      console.log(res.data);
+      return res.data;
+    });
+  };
   const handleAddInput = (evt) => {
     const name = evt.target.name;
     const newValue = evt.target.value;
     console.log(newValue);
     setAddInput({ [name]: newValue });
   };
+  const handleAddDate = (date, name) => {
+    let month = String(date.getMonth() + 1);
+    let day = String(date.getDate());
+    const year = String(date.getFullYear());
+
+    if (month.length < 2) month = "0" + month;
+    if (day.length < 2) day = "0" + day;
+
+    let convertedDate = `${year}-${month}-${day}`;
+    setAddInput({ [name]: convertedDate });
+    console.log(convertedDate);
+  };
   const handleAddSubmit = (evt) => {
     evt.preventDefault();
-    console.log("submitted");
+    console.log(getCount)
+    console.log(count);
+    // newSlNo && setAddInput({
+    //   ...addInput,
+    //   sl_no: newSlNo,
+    // })
+    console.log(addInput);
+    closeAddModal();
   };
 
   //edit modal controls
@@ -460,7 +486,7 @@ const TableHeader = ({
                   className={classes.textField}
                   helperText={data.helperText}
                   onChange={handleAddInput}
-                  required={true}
+                  // required={true}
                 />
               ) : (
                 <LocalizationProvider key={idx} dateAdapter={AdapterDateFns}>
@@ -468,7 +494,8 @@ const TableHeader = ({
                     label={data.label}
                     inputFormat="MM/dd/yyyy"
                     value={addInput[data.name]}
-                    onChange={(v) => console.log(v)}
+                    name={data.name}
+                    onChange={(date) => handleAddDate(date, data.name)}
                     required={true}
                     renderInput={(params) => (
                       <TextField
@@ -490,9 +517,7 @@ const TableHeader = ({
             <Button autoFocus onClick={closeAddModal}>
               Cancel
             </Button>
-            <Button onClick={() => closeAddModal()} type="submit">
-              ADD
-            </Button>
+            <Button type="submit">ADD</Button>
           </DialogActions>
         </form>
       </Dialog>
