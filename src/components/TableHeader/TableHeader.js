@@ -41,10 +41,10 @@ const TableHeader = ({
   advanceState,
 }) => {
   let api = new DataService();
-  const [modalIsOpen, setIsOpen] = useState(false);
+  const [editModalIsOpen, setEditModalIsOpen] = useState(false);
   const [advanceModalIsOpen, setAdvanceIsOpen] = useState(false);
   const [addModalIsOpen, setAddModalIsOpen] = useState(false);
-  const [formInput, setFormInput] = useReducer(
+  const [editInput, setEditInput] = useReducer(
     (state, newState) => ({ ...state, ...newState }),
     {
       sl_no: "",
@@ -61,6 +61,83 @@ const TableHeader = ({
       buisness_year: "",
     }
   );
+  const [addFormDetails] = useState([
+    {
+      name: "",
+      label: "",
+      helperText: "",
+    },
+    {
+      name: "",
+      label: "",
+      helperText: "",
+    },
+    {
+      name: "",
+      label: "",
+      helperText: "",
+    },
+    {
+      name: "",
+      label: "",
+      helperText: "",
+    },
+    {
+      name: "",
+      label: "",
+      helperText: "",
+    },
+    {
+      name: "",
+      label: "",
+      helperText: "",
+    },
+    {
+      name: "",
+      label: "",
+      helperText: "",
+    },
+    {
+      name: "",
+      label: "",
+      helperText: "",
+    },
+    {
+      name: "",
+      label: "",
+      helperText: "",
+    },
+    {
+      name: "",
+      label: "",
+      helperText: "",
+    },
+    {
+      name: "",
+      label: "",
+      helperText: "",
+    },
+    {
+      name: "",
+      label: "",
+      helperText: "",
+    },
+    {
+      name: "",
+      label: "",
+      helperText: "",
+    },
+    {
+      name: "",
+      label: "",
+      helperText: "",
+    },
+    {
+      name: "",
+      label: "",
+      helperText: "",
+    },
+  ]);
   const [addInput, setAddInput] = useReducer(
     (state, newState) => ({ ...state, ...newState }),
     {
@@ -72,7 +149,7 @@ const TableHeader = ({
   );
 
   useEffect(() => {
-    handleAdvanceSubmit();
+    advanceState.active && handleAdvanceSubmit();
   }, [advanceState.pageNo, advanceState.recordPerPage]);
 
   //Modal styles
@@ -118,7 +195,6 @@ const TableHeader = ({
     });
     setAdvanceIsOpen(true);
   };
-  const advanceAfterOpenModal = () => {};
   const closeAdvanceModal = () => {
     setAdvanceIsOpen(false);
   };
@@ -129,7 +205,6 @@ const TableHeader = ({
   };
   const handleAdvanceSubmit = (evt) => {
     evt && evt.preventDefault();
-    console.log(advanceInput);
     advanceState &&
       api
         .advancedSearch(
@@ -171,58 +246,44 @@ const TableHeader = ({
   };
 
   //edit modal controls
-  function openModal() {
-    setIsOpen(true);
-  }
-  function afterOpenModal() {
-    // references are now sync'd and can be accessed.
-    // subtitle.style.color = "#f00";
-  }
-  function closeModal() {
-    setIsOpen(false);
-  }
-  const deletec = (e) => {
-    e.preventDefault();
-    deleteRows();
+  const openEditModal = () => {
+    setEditModalIsOpen(true);
   };
-  const handleSubmit = (evt) => {
+  const closeEditModal = () => {
+    setEditModalIsOpen(false);
+  };
+  const handleEditSubmit = (evt) => {
     evt.preventDefault();
 
-    let data = { formInput };
     api
       .updateRecord(
-        formInput.sl_no,
-        formInput.cust_payment_terms,
-        formInput.invoice_currency
+        editInput.sl_no,
+        editInput.cust_payment_terms,
+        editInput.invoice_currency
       )
       .then((res) => {
         console.log("After updating data : ", res.data);
       });
-    console.log(data);
     setAdvanceState({
       ...advanceState,
       active: true,
       stateCount: advanceState.stateCount + 1,
     });
-    closeModal();
-    // fetch("https://pointy-gauge.glitch.me/api/form", {
-    //   method: "POST",
-    //   body: JSON.stringify(data),
-    //   headers: {
-    //     "Content-Type": "application/json"
-    //   }
-    // })
-    //   .then(response => response.json())
-    //   .then(response => console.log("Success:", JSON.stringify(response)))
-    //   .catch(error => console.error("Error:", error));
+    closeEditModal();
   };
-  const handleInput = (evt) => {
+  const handleEditInput = (evt) => {
     const name = evt.target.name;
     const newValue = evt.target.value;
-    setFormInput({ [name]: newValue });
-    setFormInput({
+    setEditInput({ [name]: newValue });
+    setEditInput({
       sl_no: selected[0],
     });
+  };
+
+  //delete modal controls
+  const deletec = (e) => {
+    e.preventDefault();
+    deleteRows();
   };
 
   const classes = useStyles();
@@ -244,19 +305,21 @@ const TableHeader = ({
           aria-label="contained primary button group"
         >
           <Button>PREDICT</Button>
-          <Button>ANALYTICS VIEW</Button>
+          <Button>
+            <pre>ANALYTICS VIEW</pre>
+          </Button>
           <Button
             onClick={(e) => {
               openAdvanceModal();
             }}
           >
-            ADVANCE SEARCH
+            <pre>ADVANCE SEARCH</pre>
           </Button>
         </ButtonGroup>
       </div>
       <div>
         <ButtonGroup
-          variant="contained"
+          variant="outlined"
           color="primary"
           aria-label="contained primary button group"
         >
@@ -268,7 +331,7 @@ const TableHeader = ({
             ADD
           </Button>
           <Button
-            onClick={openModal}
+            onClick={openEditModal}
             disabled={selected.length == 1 ? false : true}
           >
             EDIT
@@ -283,46 +346,6 @@ const TableHeader = ({
           </Button>
         </ButtonGroup>
       </div>
-      <Modal
-        isOpen={modalIsOpen}
-        onAfterOpen={afterOpenModal}
-        onRequestClose={closeModal}
-        style={customStyles}
-        contentLabel="Example Modal"
-        ariaHideApp={false}
-      >
-        <form onSubmit={handleSubmit}>
-          <div>
-            <TextField
-              label="Invoice Currency"
-              id="margin-normal"
-              name="invoice_currency"
-              // defaultValue="Invoice Currency"
-              className={classes.textField}
-              helperText="Enter Invoice Currency"
-              onChange={handleInput}
-            />
-            <TextField
-              label="Cust Payment Terms"
-              id="margin-normal"
-              name="cust_payment_terms"
-              // defaultValue="Total Open Amount"
-              className={classes.textField}
-              helperText="Enter Cust Payment Terms"
-              onChange={handleInput}
-            />
-          </div>
-
-          <Button
-            type="submit"
-            variant="contained"
-            color="primary"
-            className={classes.button}
-          >
-            UPDATE
-          </Button>
-        </form>
-      </Modal>
 
       <Dialog
         fullWidth={true}
@@ -381,7 +404,9 @@ const TableHeader = ({
             />
           </DialogContent>
           <DialogActions>
-            <Button onClick={closeAdvanceModal} type="submit">SEARCH</Button>
+            <Button onClick={closeAdvanceModal} type="submit">
+              SEARCH
+            </Button>
             <Button onClick={closeAdvanceModal}>Cancel</Button>
           </DialogActions>
         </form>
@@ -406,156 +431,19 @@ const TableHeader = ({
               flexWrap: "wrap",
             }}
           >
-            <TextField
-              label="Document Id-(doc_id)"
-              id="margin-normal"
-              name="doc_id"
-              // defaultValue="Invoice Currency"
-              className={classes.textField}
-              helperText="Enter Document Id-(doc_id)"
-              onChange={handleAddInput}
-              required={false}
-            />
-            <TextField
-              label="Document Id-(doc_id)"
-              id="margin-normal"
-              name="doc_id"
-              // defaultValue="Invoice Currency"
-              className={classes.textField}
-              helperText="Enter Document Id-(doc_id)"
-              onChange={handleAddInput}
-              required={false}
-            />
-            <TextField
-              label="Document Id-(doc_id)"
-              id="margin-normal"
-              name="doc_id"
-              // defaultValue="Invoice Currency"
-              className={classes.textField}
-              helperText="Enter Document Id-(doc_id)"
-              onChange={handleAddInput}
-              required={false}
-            />
-            <TextField
-              label="Document Id-(doc_id)"
-              id="margin-normal"
-              name="doc_id"
-              // defaultValue="Invoice Currency"
-              className={classes.textField}
-              helperText="Enter Document Id-(doc_id)"
-              onChange={handleAddInput}
-              required={false}
-            />
-            <TextField
-              label="Document Id-(doc_id)"
-              id="margin-normal"
-              name="doc_id"
-              // defaultValue="Invoice Currency"
-              className={classes.textField}
-              helperText="Enter Document Id-(doc_id)"
-              onChange={handleAddInput}
-              required={false}
-            />
-            <TextField
-              label="Document Id-(doc_id)"
-              id="margin-normal"
-              name="doc_id"
-              // defaultValue="Invoice Currency"
-              className={classes.textField}
-              helperText="Enter Document Id-(doc_id)"
-              onChange={handleAddInput}
-              required={false}
-            />
-            <TextField
-              label="Document Id-(doc_id)"
-              id="margin-normal"
-              name="doc_id"
-              // defaultValue="Invoice Currency"
-              className={classes.textField}
-              helperText="Enter Document Id-(doc_id)"
-              onChange={handleAddInput}
-              required={false}
-            />
-            <TextField
-              label="Document Id-(doc_id)"
-              id="margin-normal"
-              name="doc_id"
-              // defaultValue="Invoice Currency"
-              className={classes.textField}
-              helperText="Enter Document Id-(doc_id)"
-              onChange={handleAddInput}
-              required={false}
-            />
-            <TextField
-              label="Document Id-(doc_id)"
-              id="margin-normal"
-              name="doc_id"
-              // defaultValue="Invoice Currency"
-              className={classes.textField}
-              helperText="Enter Document Id-(doc_id)"
-              onChange={handleAddInput}
-              required={false}
-            />
-            <TextField
-              label="Document Id-(doc_id)"
-              id="margin-normal"
-              name="doc_id"
-              // defaultValue="Invoice Currency"
-              className={classes.textField}
-              helperText="Enter Document Id-(doc_id)"
-              onChange={handleAddInput}
-              required={false}
-            />
-            <TextField
-              label="Document Id-(doc_id)"
-              id="margin-normal"
-              name="doc_id"
-              // defaultValue="Invoice Currency"
-              className={classes.textField}
-              helperText="Enter Document Id-(doc_id)"
-              onChange={handleAddInput}
-              required={false}
-            />
-            <TextField
-              label="Document Id-(doc_id)"
-              id="margin-normal"
-              name="doc_id"
-              // defaultValue="Invoice Currency"
-              className={classes.textField}
-              helperText="Enter Document Id-(doc_id)"
-              onChange={handleAddInput}
-              required={false}
-            />
-            <TextField
-              label="Document Id-(doc_id)"
-              id="margin-normal"
-              name="doc_id"
-              // defaultValue="Invoice Currency"
-              className={classes.textField}
-              helperText="Enter Document Id-(doc_id)"
-              onChange={handleAddInput}
-              required={false}
-            />
-            <TextField
-              label="Document Id-(doc_id)"
-              id="margin-normal"
-              name="doc_id"
-              // defaultValue="Invoice Currency"
-              className={classes.textField}
-              helperText="Enter Document Id-(doc_id)"
-              onChange={handleAddInput}
-              required={false}
-            />
-            <TextField
-              label="Document Id-(doc_id)"
-              id="margin-normal"
-              name="doc_id"
-              // defaultValue="Invoice Currency"
-              className={classes.textField}
-              helperText="Enter Document Id-(doc_id)"
-              onChange={handleAddInput}
-              required={false}
-            />
+            {addFormDetails.map((data, idx) => (
+              <TextField
+                key={idx}
+                label={data.label}
+                id="margin-normal"
+                name={data.name}
+                // defaultValue="Invoice Currency"
+                className={classes.textField}
+                helperText={data.helperText}
+                onChange={handleAddInput}
+                required={true}
+              />
+            ))}
           </DialogContent>
           <DialogActions>
             <Button autoFocus onClick={closeAddModal}>
@@ -564,6 +452,48 @@ const TableHeader = ({
             <Button onClick={() => closeAddModal()} type="submit">
               ADD
             </Button>
+          </DialogActions>
+        </form>
+      </Dialog>
+
+      <Dialog
+        fullWidth={true}
+        maxWidth="md"
+        open={editModalIsOpen}
+        onClose={closeEditModal}
+      >
+        <DialogTitle>Optional sizes</DialogTitle>
+        <form onSubmit={handleEditSubmit}>
+          <DialogContent>
+            <TextField
+              label="Invoice Currency"
+              id="margin-normal"
+              name="invoice_currency"
+              // defaultValue="Invoice Currency"
+              className={classes.textField}
+              helperText="Enter Invoice Currency"
+              onChange={handleEditInput}
+            />
+            <TextField
+              label="Cust Payment Terms"
+              id="margin-normal"
+              name="cust_payment_terms"
+              // defaultValue="Total Open Amount"
+              className={classes.textField}
+              helperText="Enter Cust Payment Terms"
+              onChange={handleEditInput}
+            />
+          </DialogContent>
+          <DialogActions>
+            <Button
+              type="submit"
+              variant="contained"
+              color="primary"
+              className={classes.button}
+            >
+              UPDATE
+            </Button>
+            <Button onClick={closeEditModal}>Close</Button>
           </DialogActions>
         </form>
       </Dialog>
