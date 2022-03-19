@@ -301,6 +301,7 @@ export default function TableGrid() {
   )
   let api = new DataService();
   const getData = () => {
+    recordPerPage.length === 0 && setRecordPerPage(0);
     api.recordsByPagination(pageNo, recordPerPage).then((res) => {
       console.log("Records Per page : ", res.data);
       setRecords([...res.data]);

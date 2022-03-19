@@ -167,7 +167,9 @@ const TableHeader = ({
       invoice_id: "",
     }
   );
-  const [count, setCount] = useState(null);
+  const [count, setCount] = useState({
+    c: "",
+  });
   useEffect(() => {
     advanceState.active && handleAdvanceSubmit();
   }, [advanceState.pageNo, advanceState.recordPerPage]);
@@ -225,7 +227,12 @@ const TableHeader = ({
   };
   const handleAdvanceSubmit = (evt) => {
     evt && evt.preventDefault();
-    advanceState &&
+    evt && setAdvanceState({
+      ...advanceState,
+      active: true,
+      pageNo: 0,
+      recordPerPage: 10,
+    })
       api
         .advancedSearch(
           advanceInput.doc_id,
@@ -254,12 +261,22 @@ const TableHeader = ({
   const closeAddModal = () => {
     setAddModalIsOpen(false);
   };
-  const getCount = () => {
-    api.countRecord().then((res) => {
-      setCount(res.data);
-      console.log(res.data);
-      return res.data;
+  const getCount = async () => {
+    let x;
+    const res = await api.countRecord();
+    setCount({
+      c: res.data.count,
     });
+    return res;
+    // api.countRecord().then((res) => {
+    //   setCount({
+    //     c: res.data.count,
+    //   });
+    //   x = res.data.count;
+    //   console.log(res.data); //ok
+    //   return res.data;
+    // });
+    // console.log(x);
   };
   const handleAddInput = (evt) => {
     const name = evt.target.name;
@@ -279,9 +296,10 @@ const TableHeader = ({
     setAddInput({ [name]: convertedDate });
     console.log(convertedDate);
   };
-  const handleAddSubmit = (evt) => {
+  const handleAddSubmit = async (evt) => {
     evt.preventDefault();
-    console.log(getCount)
+    let x = await getCount();
+    console.log(x.data.count);
     console.log(count);
     // newSlNo && setAddInput({
     //   ...addInput,
