@@ -64,35 +64,40 @@ export default class DataService {
         recordsPerPage
     );
   };
-  addRecord = (recordData) => {
-    return this.client.post(
+  addRecord = (addData) => {
+    return this.client.get(
       apiPath.addRecord +
-        "?sl_no=" +
-        recordData.sl_no +
-        "&business_code=" +
-        recordData.business_code +
+        "?business_code=" +
+        addData.business_code +
         "&cust_number=" +
-        recordData.cust_number +
-        "&name_customer=" +
-        recordData.name_customer +
+        addData.cust_number +
         "&clear_date=" +
-        recordData.clear_date +
+        addData.clear_date +
         "&buisness_year=" +
-        recordData.buisness_year +
+        addData.buisness_year +
         "&doc_id=" +
-        recordData.doc_id +
+        addData.doc_id +
         "&posting_date=" +
-        recordData.posting_date +
+        addData.posting_date +
+        "&document_create_date=" +
+        addData.document_create_date +
         "&due_in_date=" +
-        recordData.due_in_date +
+        addData.due_in_date +
+        "&invoice_currency=" +
+        addData.invoice_currency +
+        "&document_type=" +
+        addData.document_type +
+        "&posting_id=" +
+        addData.posting_id +
+        "&total_open_amount=" +
+        addData.total_open_amount +
         "&baseline_create_date=" +
-        recordData.baseline_create_date +
+        addData.baseline_create_date +
         "&cust_payment_terms=" +
-        recordData.cust_payment_terms +
-        "&converted_usd=" +
-        recordData.converted_usd +
-        "&Aging_Bucket=" +
-        recordData.Aging_Bucket
+        addData.cust_payment_terms +
+        "&invoice_id=" +
+        addData.invoice_id +
+        ""
     );
   };
   updateRecord = (sl_no, cust_payment_terms, invoice_currency) => {

@@ -281,7 +281,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function TableGrid() {
+export default function TableGrid({advanceNotify, addNotify, updateNotify}) {
   const classes = useStyles();
   const [order, setOrder] = React.useState("asc");
   const [orderBy, setOrderBy] = React.useState("calories");
@@ -387,6 +387,9 @@ export default function TableGrid() {
         setRecords={setRecords}
         setAdvanceState={setAdvanceState}
         advanceState={advanceState}
+        advanceNotify={advanceNotify}
+        addNotify={addNotify}
+        updateNotify={updateNotify}
       />
       <Paper className={classes.paper}>
         <TableContainer style={{ height: "77vh" }}>
@@ -492,7 +495,7 @@ export default function TableGrid() {
                         {row.posting_id}
                       </TableCell>
                       <TableCell className={classes.TableCell} align="center">
-                        {row.area_business.length > 0
+                        {row.area_business && row.area_business.length > 0
                           ? row.area_business.length
                           : "NA"}
                       </TableCell>

@@ -14,6 +14,7 @@ import DataService from "../../services/DataService";
 import { DesktopDatePicker, LocalizationProvider } from "@mui/lab";
 import AdapterDateFns from "@mui/lab/AdapterDateFns";
 
+
 const customStyles = {
   content: {
     top: "50%",
@@ -32,6 +33,9 @@ const TableHeader = ({
   setRecords,
   setAdvanceState,
   advanceState,
+  advanceNotify,
+  addNotify,
+  updateNotify,
 }) => {
   let api = new DataService();
   const [editModalIsOpen, setEditModalIsOpen] = useState(false);
@@ -167,12 +171,10 @@ const TableHeader = ({
       invoice_id: "",
     }
   );
-  const [count, setCount] = useState({
-    c: "",
-  });
   useEffect(() => {
     advanceState.active && handleAdvanceSubmit();
   }, [advanceState.pageNo, advanceState.recordPerPage]);
+
 
   //Modal styles
   const useStyles = makeStyles((theme) => ({
@@ -227,31 +229,32 @@ const TableHeader = ({
   };
   const handleAdvanceSubmit = (evt) => {
     evt && evt.preventDefault();
-    evt && setAdvanceState({
-      ...advanceState,
-      active: true,
-      pageNo: 0,
-      recordPerPage: 10,
-    })
-      api
-        .advancedSearch(
-          advanceInput.doc_id,
-          advanceInput.invoice_id,
-          advanceInput.cust_number,
-          advanceInput.buisness_year,
-          advanceState.pageNo,
-          advanceState.recordPerPage
-        )
-        .then((res) => {
-          console.log(res.data);
-          setRecords(res.data);
-          setAdvanceState({
-            ...advanceState,
-            active: true,
-            stateCount: advanceState.stateCount + 1,
-          });
+    // evt && setAdvanceState({
+    //   ...advanceState,
+    //   active: true,
+    //   pageNo: 0,
+    //   recordPerPage: 10,
+    // })
+    api
+      .advancedSearch(
+        advanceInput.doc_id,
+        advanceInput.invoice_id,
+        advanceInput.cust_number,
+        advanceInput.buisness_year,
+        advanceState.pageNo,
+        advanceState.recordPerPage
+      )
+      .then((res) => {
+        console.log(res.data);
+        setRecords(res.data);
+        setAdvanceState({
+          ...advanceState,
+          active: true,
+          stateCount: advanceState.stateCount + 1,
         });
+      });
     closeAdvanceModal();
+    advanceNotify();
   };
 
   //add modal controls
@@ -262,12 +265,9 @@ const TableHeader = ({
     setAddModalIsOpen(false);
   };
   const getCount = async () => {
-    let x;
-    const res = await api.countRecord();
-    setCount({
-      c: res.data.count,
-    });
-    return res;
+    // let x;
+    // const res = await api.countRecord();
+    // return res;
     // api.countRecord().then((res) => {
     //   setCount({
     //     c: res.data.count,
@@ -299,14 +299,13 @@ const TableHeader = ({
   const handleAddSubmit = async (evt) => {
     evt.preventDefault();
     let x = await getCount();
-    console.log(x.data.count);
-    console.log(count);
-    // newSlNo && setAddInput({
-    //   ...addInput,
-    //   sl_no: newSlNo,
-    // })
-    console.log(addInput);
+    api
+      .addRecord(addInput)
+      .then((res) => {
+        addNotify(res.data.code, res.data.mssg);
+      })
     closeAddModal();
+    addNotify(1);
   };
 
   //edit modal controls
@@ -327,6 +326,7 @@ const TableHeader = ({
       )
       .then((res) => {
         console.log("After updating data : ", res.data);
+        updateNotify(editInput.sl_no);
       });
     setAdvanceState({
       ...advanceState,
@@ -581,6 +581,7 @@ const TableHeader = ({
           </DialogActions>
         </form>
       </Dialog>
+      
     </div>
   );
 };
