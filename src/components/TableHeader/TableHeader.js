@@ -31,6 +31,8 @@ const TableHeader = ({
   deleteRows,
   selected,
   setRecords,
+  setTableState,
+  tableState,
   setAdvanceState,
   advanceState,
   advanceNotify,
@@ -247,14 +249,19 @@ const TableHeader = ({
       .then((res) => {
         console.log(res.data);
         setRecords(res.data);
+        setTableState({
+          ...tableState,
+          active: false,
+        })
         setAdvanceState({
           ...advanceState,
           active: true,
           stateCount: advanceState.stateCount + 1,
         });
+        evt && advanceNotify();
       });
     closeAdvanceModal();
-    advanceNotify();
+    
   };
 
   //add modal controls

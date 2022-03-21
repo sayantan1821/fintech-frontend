@@ -290,6 +290,15 @@ export default function TableGrid({advanceNotify, addNotify, updateNotify}) {
   const [pageNo, setPageNo] = useState(0);
   const [state, setState] = useState(0);
   const [recordPerPage, setRecordPerPage] = useState(10);
+  const [tableState, setTableState] = useReducer(
+    (state, newState) => ({ ...state, ...newState }),
+    {
+      active: true,
+      pageNo: 0,
+      recordPerPage: 10,
+      stateCount: 0,
+    }
+  )
   const [advanceState, setAdvanceState] = useReducer(
     (state, newState) => ({ ...state, ...newState }),
     {
@@ -316,7 +325,7 @@ export default function TableGrid({advanceNotify, addNotify, updateNotify}) {
   };
   useEffect(() => {
     console.log(state);
-    !advanceState.active && getData();
+    tableState.active && getData();
   }, [pageNo, state, recordPerPage, advanceState]);
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === "asc";
@@ -385,6 +394,8 @@ export default function TableGrid({advanceNotify, addNotify, updateNotify}) {
         deleteRows={deleteRows}
         selected={selected}
         setRecords={setRecords}
+        setTableState={setTableState}
+        tableState={tableState}
         setAdvanceState={setAdvanceState}
         advanceState={advanceState}
         advanceNotify={advanceNotify}
