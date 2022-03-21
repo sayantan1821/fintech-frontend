@@ -14,7 +14,6 @@ import DataService from "../../services/DataService";
 import { DesktopDatePicker, LocalizationProvider } from "@mui/lab";
 import AdapterDateFns from "@mui/lab/AdapterDateFns";
 
-
 const customStyles = {
   content: {
     top: "50%",
@@ -152,31 +151,27 @@ const TableHeader = ({
       helperText: "",
     },
   ]);
-  const [addInput, setAddInput] = useReducer(
-    (state, newState) => ({ ...state, ...newState }),
-    {
-      sl_no: "",
-      business_code: "",
-      cust_number: "",
-      clear_date: new Date(),
-      buisness_year: "",
-      doc_id: "",
-      posting_date: new Date(),
-      document_create_date: new Date(),
-      due_in_date: new Date(),
-      invoice_currency: "",
-      document_type: "",
-      posting_id: "",
-      total_open_amount: "",
-      baseline_create_date: new Date(),
-      cust_payment_terms: "",
-      invoice_id: "",
-    }
-  );
+  const [addInput, setAddInput] = useState({
+    sl_no: "",
+    business_code: "",
+    cust_number: "",
+    clear_date: new Date(),
+    buisness_year: "",
+    doc_id: "",
+    posting_date: new Date(),
+    document_create_date: new Date(),
+    due_in_date: new Date(),
+    invoice_currency: "",
+    document_type: "",
+    posting_id: "",
+    total_open_amount: "",
+    baseline_create_date: new Date(),
+    cust_payment_terms: "",
+    invoice_id: "",
+  });
   useEffect(() => {
     advanceState.active && handleAdvanceSubmit();
   }, [advanceState.pageNo, advanceState.recordPerPage]);
-
 
   //Modal styles
   const useStyles = makeStyles((theme) => ({
@@ -252,7 +247,7 @@ const TableHeader = ({
         setTableState({
           ...tableState,
           active: false,
-        })
+        });
         setAdvanceState({
           ...advanceState,
           active: true,
@@ -261,7 +256,6 @@ const TableHeader = ({
         evt && advanceNotify();
       });
     closeAdvanceModal();
-    
   };
 
   //add modal controls
@@ -270,21 +264,76 @@ const TableHeader = ({
   };
   const closeAddModal = () => {
     setAddModalIsOpen(false);
+    if (typeof addInput.posting_date === "object"){
+      let month = String(addInput.posting_date.getMonth() + 1);
+      let day = String(addInput.posting_date.getDate());
+      const year = String(addInput.posting_date.getFullYear());
+  
+      if (month.length < 2) month = "0" + month;
+      if (day.length < 2) day = "0" + day;
+  
+      let convertedDate = `${year}-${month}-${day}`;
+      setAddInput({ ...addInput, posting_date: convertedDate });
+    }
+    if (typeof addInput.baseline_create_date === "object"){
+      let month = String(addInput.baseline_create_date.getMonth() + 1);
+      let day = String(addInput.baseline_create_date.getDate());
+      const year = String(addInput.baseline_create_date.getFullYear());
+  
+      if (month.length < 2) month = "0" + month;
+      if (day.length < 2) day = "0" + day;
+  
+      let convertedDate = `${year}-${month}-${day}`;
+      setAddInput({ ...addInput, baseline_create_date: convertedDate });
+    }
+    if (typeof addInput.clear_date === "object"){
+      let month = String(addInput.clear_date.getMonth() + 1);
+      let day = String(addInput.clear_date.getDate());
+      const year = String(addInput.clear_date.getFullYear());
+  
+      if (month.length < 2) month = "0" + month;
+      if (day.length < 2) day = "0" + day;
+  
+      let convertedDate = `${year}-${month}-${day}`;
+      setAddInput({ ...addInput, clear_date: convertedDate });
+    }
+    if (typeof addInput.document_create_date === "object"){
+      let month = String(addInput.document_create_date.getMonth() + 1);
+      let day = String(addInput.document_create_date.getDate());
+      const year = String(addInput.document_create_date.getFullYear());
+  
+      if (month.length < 2) month = "0" + month;
+      if (day.length < 2) day = "0" + day;
+  
+      let convertedDate = `${year}-${month}-${day}`;
+      setAddInput({ ...addInput, document_create_date: convertedDate });
+    }
+    if (typeof addInput.due_in_date === "object"){
+      let month = String(addInput.due_in_date.getMonth() + 1);
+      let day = String(addInput.due_in_date.getDate());
+      const year = String(addInput.due_in_date.getFullYear());
+  
+      if (month.length < 2) month = "0" + month;
+      if (day.length < 2) day = "0" + day;
+  
+      let convertedDate = `${year}-${month}-${day}`;
+      setAddInput({ ...addInput, due_in_date: convertedDate });
+    }
   };
-  const getCount = async () => {
-    // let x;
-    // const res = await api.countRecord();
-    // return res;
-    // api.countRecord().then((res) => {
-    //   setCount({
-    //     c: res.data.count,
-    //   });
-    //   x = res.data.count;
-    //   console.log(res.data); //ok
-    //   return res.data;
-    // });
-    // console.log(x);
-  };
+  // const getCount = async () => {
+  //   // let x;
+  //   // const res = await api.countRecord();
+  //   // return res;
+  //   // api.countRecord().then((res) => {
+  //   //   setCount({
+  //   //     c: res.data.count,
+  //   //   });
+  //   //   x = res.data.count;
+  //   //   console.log(res.data); //ok
+  //   //   return res.data;
+  //   // });
+  //   // console.log(x);
+  // };
   const handleAddInput = (evt) => {
     const name = evt.target.name;
     const newValue = evt.target.value;
@@ -292,6 +341,7 @@ const TableHeader = ({
     setAddInput({ [name]: newValue });
   };
   const handleAddDate = (date, name) => {
+    console.log(date + "\t" + name);
     let month = String(date.getMonth() + 1);
     let day = String(date.getDate());
     const year = String(date.getFullYear());
@@ -300,19 +350,21 @@ const TableHeader = ({
     if (day.length < 2) day = "0" + day;
 
     let convertedDate = `${year}-${month}-${day}`;
-    setAddInput({ [name]: convertedDate });
-    console.log(convertedDate);
+    setAddInput({ ...addInput, [name]: convertedDate });
+    console.log(addInput);
   };
-  const handleAddSubmit = async (evt) => {
+  const handleAddSubmit = (evt) => {
+    if (typeof addInput.posting_date === "object")
+      handleAddDate(addInput.posting_date, "posting_date");
     evt.preventDefault();
-    let x = await getCount();
-    api
-      .addRecord(addInput)
-      .then((res) => {
-        addNotify(res.data.code, res.data.mssg);
-      })
-    closeAddModal();
-    addNotify(1);
+
+    console.log(addInput);
+    // api
+    //   .addRecord(addInput)
+    //   .then((res) => {
+    //     addNotify(res.data.code, res.data.mssg);
+    //   })
+    // closeAddModal();
   };
 
   //edit modal controls
@@ -542,7 +594,7 @@ const TableHeader = ({
             <Button autoFocus onClick={closeAddModal}>
               Cancel
             </Button>
-            <Button type="submit">ADD</Button>
+            <Button type="submit" onClick={closeAddModal}>ADD</Button>
           </DialogActions>
         </form>
       </Dialog>
@@ -588,7 +640,6 @@ const TableHeader = ({
           </DialogActions>
         </form>
       </Dialog>
-      
     </div>
   );
 };
