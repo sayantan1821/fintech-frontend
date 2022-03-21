@@ -264,6 +264,10 @@ const TableHeader = ({
   };
   const closeAddModal = () => {
     setAddModalIsOpen(false);
+    const ipDates = ["clear_date", "posting_date", "document_create_date", "due_in_date", "baseline_create_date"];
+    ipDates.map((date) => {
+
+    })
     if (typeof addInput.posting_date === "object"){
       let month = String(addInput.posting_date.getMonth() + 1);
       let day = String(addInput.posting_date.getDate());
