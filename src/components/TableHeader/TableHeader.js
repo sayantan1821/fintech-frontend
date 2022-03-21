@@ -151,24 +151,27 @@ const TableHeader = ({
       helperText: "",
     },
   ]);
-  const [addInput, setAddInput] = useState({
-    sl_no: "",
-    business_code: "",
-    cust_number: "",
-    clear_date: new Date(),
-    buisness_year: "",
-    doc_id: "",
-    posting_date: new Date(),
-    document_create_date: new Date(),
-    due_in_date: new Date(),
-    invoice_currency: "",
-    document_type: "",
-    posting_id: "",
-    total_open_amount: "",
-    baseline_create_date: new Date(),
-    cust_payment_terms: "",
-    invoice_id: "",
-  });
+  const [addInput, setAddInput] = useReducer(
+    (state, newState) => ({ ...state, ...newState }),
+    {
+      sl_no: "",
+      business_code: "",
+      cust_number: "",
+      clear_date: new Date(),
+      buisness_year: "",
+      doc_id: "",
+      posting_date: new Date(),
+      document_create_date: new Date(),
+      due_in_date: new Date(),
+      invoice_currency: "",
+      document_type: "",
+      posting_id: "",
+      total_open_amount: "",
+      baseline_create_date: new Date(),
+      cust_payment_terms: "",
+      invoice_id: "",
+    }
+  );
   useEffect(() => {
     advanceState.active && handleAdvanceSubmit();
   }, [advanceState.pageNo, advanceState.recordPerPage]);
@@ -264,66 +267,8 @@ const TableHeader = ({
   };
   const closeAddModal = () => {
     setAddModalIsOpen(false);
-    const ipDates = ["clear_date", "posting_date", "document_create_date", "due_in_date", "baseline_create_date"];
-    ipDates.map((date) => {
-
-    })
-    if (typeof addInput.posting_date === "object"){
-      let month = String(addInput.posting_date.getMonth() + 1);
-      let day = String(addInput.posting_date.getDate());
-      const year = String(addInput.posting_date.getFullYear());
-  
-      if (month.length < 2) month = "0" + month;
-      if (day.length < 2) day = "0" + day;
-  
-      let convertedDate = `${year}-${month}-${day}`;
-      setAddInput({ ...addInput, posting_date: convertedDate });
-    }
-    if (typeof addInput.baseline_create_date === "object"){
-      let month = String(addInput.baseline_create_date.getMonth() + 1);
-      let day = String(addInput.baseline_create_date.getDate());
-      const year = String(addInput.baseline_create_date.getFullYear());
-  
-      if (month.length < 2) month = "0" + month;
-      if (day.length < 2) day = "0" + day;
-  
-      let convertedDate = `${year}-${month}-${day}`;
-      setAddInput({ ...addInput, baseline_create_date: convertedDate });
-    }
-    if (typeof addInput.clear_date === "object"){
-      let month = String(addInput.clear_date.getMonth() + 1);
-      let day = String(addInput.clear_date.getDate());
-      const year = String(addInput.clear_date.getFullYear());
-  
-      if (month.length < 2) month = "0" + month;
-      if (day.length < 2) day = "0" + day;
-  
-      let convertedDate = `${year}-${month}-${day}`;
-      setAddInput({ ...addInput, clear_date: convertedDate });
-    }
-    if (typeof addInput.document_create_date === "object"){
-      let month = String(addInput.document_create_date.getMonth() + 1);
-      let day = String(addInput.document_create_date.getDate());
-      const year = String(addInput.document_create_date.getFullYear());
-  
-      if (month.length < 2) month = "0" + month;
-      if (day.length < 2) day = "0" + day;
-  
-      let convertedDate = `${year}-${month}-${day}`;
-      setAddInput({ ...addInput, document_create_date: convertedDate });
-    }
-    if (typeof addInput.due_in_date === "object"){
-      let month = String(addInput.due_in_date.getMonth() + 1);
-      let day = String(addInput.due_in_date.getDate());
-      const year = String(addInput.due_in_date.getFullYear());
-  
-      if (month.length < 2) month = "0" + month;
-      if (day.length < 2) day = "0" + day;
-  
-      let convertedDate = `${year}-${month}-${day}`;
-      setAddInput({ ...addInput, due_in_date: convertedDate });
-    }
   };
+
   // const getCount = async () => {
   //   // let x;
   //   // const res = await api.countRecord();
@@ -345,7 +290,7 @@ const TableHeader = ({
     setAddInput({ [name]: newValue });
   };
   const handleAddDate = (date, name) => {
-    console.log(date + "\t" + name);
+    // console.log(date + "\t" + name);
     let month = String(date.getMonth() + 1);
     let day = String(date.getDate());
     const year = String(date.getFullYear());
@@ -355,20 +300,85 @@ const TableHeader = ({
 
     let convertedDate = `${year}-${month}-${day}`;
     setAddInput({ ...addInput, [name]: convertedDate });
-    console.log(addInput);
+    // console.log(addInput);
   };
   const handleAddSubmit = (evt) => {
-    if (typeof addInput.posting_date === "object")
-      handleAddDate(addInput.posting_date, "posting_date");
-    evt.preventDefault();
+    // if (typeof addInput.posting_date === "object")
+    //   handleAddDate(addInput.posting_date, "posting_date");
 
+    // var converted_posting_date,
+    //   converted_baseline_create_date,
+    //   converted_clear_date,
+    //   converted_document_create_date,
+    //   converted_due_in_date;
+    // if (typeof addInput.posting_date === "object") {
+    //   let month = String(addInput.posting_date.getMonth() + 1);
+    //   let day = String(addInput.posting_date.getDate());
+    //   const year = String(addInput.posting_date.getFullYear());
+
+    //   if (month.length < 2) month = "0" + month;
+    //   if (day.length < 2) day = "0" + day;
+
+    //   converted_posting_date = `${year}-${month}-${day}`;
+    // } else converted_posting_date = addInput.posting_date;
+    // if (typeof addInput.baseline_create_date === "object") {
+    //   let month = String(addInput.baseline_create_date.getMonth() + 1);
+    //   let day = String(addInput.baseline_create_date.getDate());
+    //   const year = String(addInput.baseline_create_date.getFullYear());
+
+    //   if (month.length < 2) month = "0" + month;
+    //   if (day.length < 2) day = "0" + day;
+
+    //   converted_baseline_create_date = `${year}-${month}-${day}`;
+    // } else converted_baseline_create_date = addInput.baseline_create_date;
+    // if (typeof addInput.clear_date === "object") {
+    //   let month = String(addInput.clear_date.getMonth() + 1);
+    //   let day = String(addInput.clear_date.getDate());
+    //   const year = String(addInput.clear_date.getFullYear());
+
+    //   if (month.length < 2) month = "0" + month;
+    //   if (day.length < 2) day = "0" + day;
+
+    //   converted_clear_date = `${year}-${month}-${day}`;
+    // } else converted_clear_date = addInput.clear_date;
+    // if (typeof addInput.document_create_date === "object") {
+    //   let month = String(addInput.document_create_date.getMonth() + 1);
+    //   let day = String(addInput.document_create_date.getDate());
+    //   const year = String(addInput.document_create_date.getFullYear());
+
+    //   if (month.length < 2) month = "0" + month;
+    //   if (day.length < 2) day = "0" + day;
+
+    //   converted_document_create_date = `${year}-${month}-${day}`;
+    // } else converted_document_create_date = addInput.document_create_date;
+    // if (typeof addInput.due_in_date === "object") {
+    //   let month = String(addInput.due_in_date.getMonth() + 1);
+    //   let day = String(addInput.due_in_date.getDate());
+    //   const year = String(addInput.due_in_date.getFullYear());
+
+    //   if (month.length < 2) month = "0" + month;
+    //   if (day.length < 2) day = "0" + day;
+
+    //   converted_due_in_date = `${year}-${month}-${day}`;
+    // } else converted_due_in_date = addInput.due_in_date;
+
+    // setAddInput({
+    //   ...addInput,
+    //   posting_date: converted_posting_date,
+    //   baseline_create_date: converted_baseline_create_date,
+    //   clear_date: converted_clear_date,
+    //   document_create_date: converted_document_create_date,
+    //   due_in_date: converted_due_in_date,
+    // });
+
+    evt.preventDefault();
     console.log(addInput);
-    // api
-    //   .addRecord(addInput)
-    //   .then((res) => {
-    //     addNotify(res.data.code, res.data.mssg);
-    //   })
-    // closeAddModal();
+    api
+      .addRecord(addInput)
+      .then((res) => {
+        addNotify(res.data.code, res.data.mssg);
+      })
+    closeAddModal();
   };
 
   //edit modal controls
@@ -598,7 +608,7 @@ const TableHeader = ({
             <Button autoFocus onClick={closeAddModal}>
               Cancel
             </Button>
-            <Button type="submit" onClick={closeAddModal}>ADD</Button>
+            <Button type="submit">ADD</Button>
           </DialogActions>
         </form>
       </Dialog>
