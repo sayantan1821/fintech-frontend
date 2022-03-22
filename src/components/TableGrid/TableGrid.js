@@ -13,6 +13,18 @@ import { Checkbox, IconButton, Input } from "@material-ui/core";
 import DataService from "../../services/DataService";
 import { GrFormPrevious, GrFormNext } from "react-icons/gr";
 import TableHeader from "../TableHeader/TableHeader";
+import { DesktopDatePicker, LocalizationProvider } from "@mui/lab";
+import AdapterDateFns from "@mui/lab/AdapterDateFns";
+import {
+  Button,
+  ButtonGroup,
+  TextField,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+} from "@material-ui/core";
+import AddButton from "../Button/AddButton";
 
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -281,7 +293,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function TableGrid({advanceNotify, addNotify, updateNotify}) {
+export default function TableGrid({ advanceNotify, addNotify, updateNotify }) {
   const classes = useStyles();
   const [order, setOrder] = React.useState("asc");
   const [orderBy, setOrderBy] = React.useState("calories");
@@ -298,7 +310,7 @@ export default function TableGrid({advanceNotify, addNotify, updateNotify}) {
       recordPerPage: 10,
       stateCount: 0,
     }
-  )
+  );
   const [advanceState, setAdvanceState] = useReducer(
     (state, newState) => ({ ...state, ...newState }),
     {
@@ -307,26 +319,37 @@ export default function TableGrid({advanceNotify, addNotify, updateNotify}) {
       recordPerPage: 10,
       stateCount: 0,
     }
-  )
+  );
   let api = new DataService();
   const getData = () => {
     recordPerPage.length === 0 && setRecordPerPage(0);
-    api.recordsByPagination(pageNo, recordPerPage).then((res) => {
-      console.log("Records Per page : ", res.data);
-      setRecords([...res.data]);
-    });
+    api
+      .recordsByPagination(tableState.pageNo, tableState.recordPerPage)
+      .then((res) => {
+        console.log("Records Per page : ", res.data);
+        setRecords([...res.data]);
+      });
   };
   const deleteRows = () => {
     let removeIds = selected.toString();
     api.removeFromView(removeIds).then((res) => {
       console.log(res.data);
-      setState(state + 1);
+      tableState.active &&
+        setTableState({
+          ...tableState,
+          stateCount: tableState.stateCount + 1,
+        });
+      advanceState.active &&
+        setAdvanceState({
+          ...advanceState,
+          stateCount: advanceState.stateCount,
+        });
     });
   };
   useEffect(() => {
     console.log(state);
     tableState.active && getData();
-  }, [pageNo, state, recordPerPage, advanceState]);
+  }, [pageNo, state, recordPerPage, advanceState, tableState]);
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === "asc";
     setOrder(isAsc ? "desc" : "asc");
@@ -362,27 +385,44 @@ export default function TableGrid({advanceNotify, addNotify, updateNotify}) {
     setSelected(newSelected);
   };
   const handleNextPage = () => {
-    if(!advanceState.active) setPageNo(pageNo + 1);
-    else setAdvanceState({
-      ...advanceState,
-      pageNo: advanceState.pageNo + 1,
-    })
+    if (!advanceState.active)
+      setTableState({
+        ...tableState,
+        pageNo: tableState.pageNo + 1,
+      });
+    else
+      setAdvanceState({
+        ...advanceState,
+        pageNo: advanceState.pageNo + 1,
+      });
     console.log(pageNo);
   };
   const handlePreviousPage = () => {
-    if(pageNo > 0 || advanceState.pageNo > 0) {if(!advanceState.active) setPageNo(pageNo - 1);
-    else setAdvanceState({
-      ...advanceState,
-      pageNo: advanceState.pageNo - 1,
-    })}
+    if (tableState.pageNo > 0 || advanceState.pageNo > 0) {
+      if (!advanceState.active)
+        setTableState({
+          ...tableState,
+          pageNo: tableState.pageNo - 1,
+        });
+      else
+        setAdvanceState({
+          ...advanceState,
+          pageNo: advanceState.pageNo - 1,
+        });
+    }
     console.log(pageNo);
   };
   const handleRecordsPerPage = (e) => {
-    if(!advanceState.active) setRecordPerPage(e.target.value);
-    else setAdvanceState({
-      ...advanceState,
-      recordPerPage: e.target.value,
-    })
+    if (!advanceState.active)
+      setTableState({
+        ...tableState,
+        recordPerPage: e.target.value,
+      });
+    else
+      setAdvanceState({
+        ...advanceState,
+        recordPerPage: e.target.value,
+      });
     e.preventDefault();
   };
 
@@ -390,7 +430,7 @@ export default function TableGrid({advanceNotify, addNotify, updateNotify}) {
 
   return (
     <div className={classes.root}>
-      <TableHeader
+      {/* <TableHeader
         deleteRows={deleteRows}
         selected={selected}
         setRecords={setRecords}
@@ -401,7 +441,59 @@ export default function TableGrid({advanceNotify, addNotify, updateNotify}) {
         advanceNotify={advanceNotify}
         addNotify={addNotify}
         updateNotify={updateNotify}
-      />
+      /> */}
+      <div
+        style={{
+          height: "8vh",
+          display: "flex",
+          justifyContent: "space-between",
+          margin: "0 30px",
+          alignItems: "center",
+        }}
+      >
+        <div>
+          <ButtonGroup
+            variant="contained"
+            color="primary"
+            aria-label="contained primary button group"
+          >
+            <Button>PREDICT</Button>
+            <Button>
+              <pre>ANALYTICS VIEW</pre>
+            </Button>
+            <Button
+              // onClick={(e) => {
+              //   openAdvanceModal();
+              // }}
+            >
+              <pre>ADVANCE SEARCH</pre>
+            </Button>
+          </ButtonGroup>
+        </div>
+        <div>
+          <ButtonGroup
+            variant="outlined"
+            color="primary"
+            aria-label="contained primary button group"
+          >
+            <AddButton />
+            <Button
+              // onClick={openEditModal}
+              // disabled={selected.length == 1 ? false : true}
+            >
+              EDIT
+            </Button>
+            <Button
+              // disabled={selected.length > 0 ? false : true}
+              // onClick={(e) => {
+              //   deletec(e);
+              // }}
+            >
+              DELETE
+            </Button>
+          </ButtonGroup>
+        </div>
+      </div>
       <Paper className={classes.paper}>
         <TableContainer style={{ height: "77vh" }}>
           <Table
@@ -551,7 +643,7 @@ export default function TableGrid({advanceNotify, addNotify, updateNotify}) {
               handleRecordsPerPage(e);
             }}
           />
-          {(pageNo > 0 || advanceState.pageNo > 0) && (
+          {(tableState.pageNo > 0 || advanceState.pageNo > 0) && (
             <IconButton
               variant="contained"
               size="small"

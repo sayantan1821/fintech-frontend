@@ -14,6 +14,7 @@ import DataService from "../../services/DataService";
 import { DesktopDatePicker, LocalizationProvider } from "@mui/lab";
 import AdapterDateFns from "@mui/lab/AdapterDateFns";
 
+
 const customStyles = {
   content: {
     top: "50%",
@@ -373,11 +374,9 @@ const TableHeader = ({
 
     evt.preventDefault();
     console.log(addInput);
-    api
-      .addRecord(addInput)
-      .then((res) => {
-        addNotify(res.data.code, res.data.mssg);
-      })
+    api.addRecord(addInput).then((res) => {
+      addNotify(res.data.code, res.data.mssg);
+    });
     closeAddModal();
   };
 
@@ -421,6 +420,16 @@ const TableHeader = ({
   const deletec = (e) => {
     e.preventDefault();
     deleteRows();
+    tableState.active &&
+      setTableState({
+        ...tableState,
+        stateCount: tableState.stateCount + 1,
+      });
+    advanceState.active &&
+      setAdvanceState({
+        ...advanceState,
+        stateCount: advanceState.stateCount,
+      });
   };
 
   const classes = useStyles();
