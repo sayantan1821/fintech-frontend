@@ -27,6 +27,9 @@ import {
 import AddButton from "../Button/AddButton";
 import EditButton from "../Button/EditButton";
 import DeleteButton from "../Button/DeleteButton";
+import PredictButton from "../Button/PredictButton";
+import AnalyticsButton from "../Button/AnalyticsButton";
+import AdvanceSearchButton from "../Button/AdvanceSearchButton";
 
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -459,17 +462,9 @@ export default function TableGrid({ advanceNotify, addNotify, updateNotify }) {
             color="primary"
             aria-label="contained primary button group"
           >
-            <Button>PREDICT</Button>
-            <Button>
-              <pre>ANALYTICS VIEW</pre>
-            </Button>
-            <Button
-              // onClick={(e) => {
-              //   openAdvanceModal();
-              // }}
-            >
-              <pre>ADVANCE SEARCH</pre>
-            </Button>
+            <PredictButton />
+            <AnalyticsButton />
+            <AdvanceSearchButton />
           </ButtonGroup>
         </div>
         <div>
