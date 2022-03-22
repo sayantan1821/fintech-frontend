@@ -1,20 +1,19 @@
 import React from "react";
 import { Button } from "@material-ui/core";
 
-const AddButton = (props) => {
+const EditButton = (props) => {
   return (
     <>
       <Button
         {...props}
         //   variant="outlined"
-        // onClick={() => {
-        //   openAddModal();
-        // }}
+        // onClick={openEditModal}
+        // disabled={selected.length == 1 ? false : true}
       >
-        ADD
+        EDIT
       </Button>
     </>
   );
 };
 
-export default AddButton;
+export default EditButton;

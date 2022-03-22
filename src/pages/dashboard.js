@@ -7,7 +7,6 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 export const Dashboard = () => {
-  const deleteRows = () => {};
   const advanceNotify = () => {
     toast.success("Advance Search result loaded", {
       theme: "dark",
@@ -29,6 +28,7 @@ export const Dashboard = () => {
       containerId: "advance_search",
     });
   };
+  
   return (
     <div>
       <Header />

@@ -1,20 +1,21 @@
 import React from "react";
 import { Button } from "@material-ui/core";
 
-const AddButton = (props) => {
+const DeleteButton = (props) => {
   return (
     <>
       <Button
         {...props}
         //   variant="outlined"
-        // onClick={() => {
-        //   openAddModal();
+        // disabled={selected.length > 0 ? false : true}
+        // onClick={(e) => {
+        //   deletec(e);
         // }}
       >
-        ADD
+        DELETE
       </Button>
     </>
   );
 };
 
-export default AddButton;
+export default DeleteButton;

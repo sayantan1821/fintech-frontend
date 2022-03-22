@@ -25,6 +25,8 @@ import {
   DialogTitle,
 } from "@material-ui/core";
 import AddButton from "../Button/AddButton";
+import EditButton from "../Button/EditButton";
+import DeleteButton from "../Button/DeleteButton";
 
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -477,20 +479,8 @@ export default function TableGrid({ advanceNotify, addNotify, updateNotify }) {
             aria-label="contained primary button group"
           >
             <AddButton />
-            <Button
-              // onClick={openEditModal}
-              // disabled={selected.length == 1 ? false : true}
-            >
-              EDIT
-            </Button>
-            <Button
-              // disabled={selected.length > 0 ? false : true}
-              // onClick={(e) => {
-              //   deletec(e);
-              // }}
-            >
-              DELETE
-            </Button>
+            <EditButton />
+            <DeleteButton />
           </ButtonGroup>
         </div>
       </div>
