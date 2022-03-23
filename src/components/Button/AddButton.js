@@ -177,7 +177,7 @@ const AddButton = ({ addRow, ...props }) => {
         maxWidth="lg"
       >
         <DialogTitle style={{ cursor: "move" }} id="draggable-dialog-title">
-          Subscribe
+          Add
         </DialogTitle>
         <form onSubmit={handleAddSubmit}>
           <DialogContent

@@ -28,15 +28,6 @@ export const Dashboard = () => {
       containerId: "advance_search",
     });
   };
-  const deleteNotify = (code, msg) => {
-    code === "200"
-      ? toast.success(msg, {
-          theme: "dark",
-        })
-      : toast.error(msg, {
-          theme: "dark",
-        });
-  };
 
   return (
     <div>
@@ -48,7 +39,6 @@ export const Dashboard = () => {
           advanceNotify={advanceNotify}
           addNotify={addNotify}
           updateNotify={updateNotify}
-          deleteNotify={deleteNotify}
         />
       </div>
       <Footer />

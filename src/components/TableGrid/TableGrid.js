@@ -298,7 +298,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function TableGrid({ advanceNotify, addNotify, updateNotify, deleteNotify}) {
+export default function TableGrid({ advanceNotify, addNotify, updateNotify}) {
   const classes = useStyles();
   const [order, setOrder] = React.useState("asc");
   const [orderBy, setOrderBy] = React.useState("calories");
@@ -307,24 +307,7 @@ export default function TableGrid({ advanceNotify, addNotify, updateNotify, dele
   const [pageNo, setPageNo] = useState(0);
   const [state, setState] = useState(0);
   const [recordPerPage, setRecordPerPage] = useState(10);
-  const [tableState, setTableState] = useReducer(
-    (state, newState) => ({ ...state, ...newState }),
-    {
-      active: true,
-      pageNo: 0,
-      recordPerPage: 10,
-      stateCount: 0,
-    }
-  );
-  const [advanceState, setAdvanceState] = useReducer(
-    (state, newState) => ({ ...state, ...newState }),
-    {
-      active: false,
-      pageNo: 0,
-      recordPerPage: 10,
-      stateCount: 0,
-    }
-  );
+  const [total, setTotal] = useState(0)
   let api = new DataService();
 
   //get main table data
@@ -333,9 +316,15 @@ export default function TableGrid({ advanceNotify, addNotify, updateNotify, dele
     api
       .recordsByPagination(pageNo, recordPerPage)
       .then((res) => {
-        console.log("Records Per page : ", res.data);
         setRecords([...res.data]);
       });
+  };
+
+  //get total no. of records
+  const getCount = async () => {
+    api.countRecord().then((res) => {
+      setTotal(res.data.count)
+    });
   };
 
   //delete rows
@@ -345,7 +334,7 @@ export default function TableGrid({ advanceNotify, addNotify, updateNotify, dele
       setSelected([]);
       setState(state + 1)
       res.data.map((r, i) => {
-        setTimeout(() => { deleteNotify(r.code, r.mssg) }, i * 800);
+        setTimeout(() => { addNotify(r.code, r.mssg) }, i * 800);
       })
     });
   };
@@ -365,6 +354,7 @@ export default function TableGrid({ advanceNotify, addNotify, updateNotify, dele
       });
   };
 
+  //add new row
   const addRow = (addInput) => {
     console.log(addInput);
     api.addRecord(addInput).then((res) => {
@@ -375,9 +365,10 @@ export default function TableGrid({ advanceNotify, addNotify, updateNotify, dele
   };
 
   useEffect(() => {
-    console.log(state);
-    tableState.active && getData();
-  }, [pageNo, state, recordPerPage, advanceState, tableState]);
+    getData();
+    getCount();
+  }, [pageNo, state, recordPerPage]);
+
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === "asc";
     setOrder(isAsc ? "desc" : "asc");
@@ -413,32 +404,10 @@ export default function TableGrid({ advanceNotify, addNotify, updateNotify, dele
     setSelected(newSelected);
   };
   const handleNextPage = () => {
-    // if (!advanceState.active)
-    //   setTableState({
-    //     ...tableState,
-    //     pageNo: tableState.pageNo + 1,
-    //   });
-    // else
-    //   setAdvanceState({
-    //     ...advanceState,
-    //     pageNo: advanceState.pageNo + 1,
-    //   });
     setPageNo(pageNo + 1);
     console.log(pageNo);
   };
   const handlePreviousPage = () => {
-    // if (tableState.pageNo > 0 || advanceState.pageNo > 0) {
-    //   if (!advanceState.active)
-    //     setTableState({
-    //       ...tableState,
-    //       pageNo: tableState.pageNo - 1,
-    //     });
-    //   else
-    //     setAdvanceState({
-    //       ...advanceState,
-    //       pageNo: advanceState.pageNo - 1,
-    //     });
-    // }
     if(pageNo > 0) {
       setPageNo(pageNo - 1);
     }
@@ -446,16 +415,6 @@ export default function TableGrid({ advanceNotify, addNotify, updateNotify, dele
   };
   const handleRecordsPerPage = (e) => {
     setRecordPerPage(e.target.value)
-    // if (!advanceState.active)
-    //   setTableState({
-    //     ...tableState,
-    //     recordPerPage: e.target.value,
-    //   });
-    // else
-    //   setAdvanceState({
-    //     ...advanceState,
-    //     recordPerPage: e.target.value,
-    //   });
     e.preventDefault();
   };
 
@@ -503,7 +462,7 @@ export default function TableGrid({ advanceNotify, addNotify, updateNotify, dele
           >
             <AddButton addRow={addRow} />
             <EditButton editRow={editRow} selected={selected}/>
-            <DeleteButton deleteRows={deleteRows}  selected={selected}/>
+            <DeleteButton deleteRows={deleteRows} selected={selected}/>
           </ButtonGroup>
         </div>
       </div>
@@ -668,6 +627,7 @@ export default function TableGrid({ advanceNotify, addNotify, updateNotify, dele
               <GrFormPrevious />
             </IconButton>
           )}
+          {records.length > 0 && <p style={{ margin: "auto 25px" }}>{records[0].sl_no} - {records[records.length - 1].sl_no} of {total / recordPerPage}</p>}
           <IconButton
             variant="contained"
             size="small"

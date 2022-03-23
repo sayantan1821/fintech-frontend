@@ -271,18 +271,18 @@ const TableHeader = ({
   };
 
   // const getCount = async () => {
-  //   // let x;
-  //   // const res = await api.countRecord();
-  //   // return res;
-  //   // api.countRecord().then((res) => {
-  //   //   setCount({
-  //   //     c: res.data.count,
-  //   //   });
-  //   //   x = res.data.count;
-  //   //   console.log(res.data); //ok
-  //   //   return res.data;
-  //   // });
-  //   // console.log(x);
+  //   let x;
+  //   const res = await api.countRecord();
+  //   return res;
+  //   api.countRecord().then((res) => {
+  //     setCount({
+  //       c: res.data.count,
+  //     });
+  //     x = res.data.count;
+  //     console.log(res.data); //ok
+  //     return res.data;
+  //   });
+  //   console.log(x);
   // };
   const handleAddInput = (evt) => {
     const name = evt.target.name;
