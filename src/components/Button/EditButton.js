@@ -9,7 +9,7 @@ import {
   Slide,
   TextField,
 } from "@material-ui/core";
-import { styles } from "./buttonStyles";
+import { useStyles } from "./buttonStyles";
 const EditButton = ({ editRow, selected, ...props }) => {
   const [open, setOpen] = React.useState(false);
   const [editInput, setEditInput] = useReducer(
@@ -20,7 +20,7 @@ const EditButton = ({ editRow, selected, ...props }) => {
       cust_payment_terms: "",
     }
   );
-
+  const styles = useStyles();
   const handleEditSubmit = (e) => {
     e.preventDefault();
     editRow(
@@ -67,8 +67,8 @@ const EditButton = ({ editRow, selected, ...props }) => {
               id="margin-normal"
               name="invoice_currency"
               // defaultValue="Invoice Currency"
-              // className={styles.textField}
-              style={{ width: "250px" }}
+              className={styles.textField}
+              // style={{ width: "250px" }}
               helperText="Enter Invoice Currency"
               onChange={handleEditInput}
             />
@@ -77,8 +77,8 @@ const EditButton = ({ editRow, selected, ...props }) => {
               id="margin-normal"
               name="cust_payment_terms"
               // defaultValue="Total Open Amount"
-              // className={styles.textField}
-              style={{ width: "250px" }}
+              className={styles.textField}
+              // style={{ width: "250px" }}
               helperText="Enter Cust Payment Terms"
               onChange={handleEditInput}
             />

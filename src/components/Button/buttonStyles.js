@@ -1,6 +1,6 @@
 import { makeStyles } from "@material-ui/core/styles";
 
-export const styles = makeStyles((theme) => ({
+export const useStyles = makeStyles((theme) => ({
     button: {
       margin: theme.spacing(1),
     },
@@ -23,7 +23,7 @@ export const styles = makeStyles((theme) => ({
     textField: {
       marginLeft: theme.spacing(1),
       marginRight: theme.spacing(1),
-      width: 400,
+      width: 300,
       marginTop: 30,
     },
     advanceTitle: {

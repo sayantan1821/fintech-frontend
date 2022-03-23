@@ -373,6 +373,14 @@ export default function TableGrid({ advanceNotify, addNotify, updateNotify }) {
       });
   };
 
+  const addRow = (addInput) => {
+    console.log(addInput);
+    api.addRecord(addInput).then((res) => {
+      console.log(res.data);
+      // addNotify(res.data.code, res.data.mssg);
+    });
+  };
+
   useEffect(() => {
     console.log(state);
     tableState.active && getData();
@@ -500,7 +508,7 @@ export default function TableGrid({ advanceNotify, addNotify, updateNotify }) {
             color="primary"
             aria-label="contained primary button group"
           >
-            <AddButton />
+            <AddButton addRow={addRow} />
             <EditButton editRow={editRow} selected={selected}/>
             <DeleteButton deleteRows={deleteRows}  selected={selected}/>
           </ButtonGroup>
