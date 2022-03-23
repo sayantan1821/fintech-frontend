@@ -326,31 +326,53 @@ export default function TableGrid({ advanceNotify, addNotify, updateNotify }) {
     }
   );
   let api = new DataService();
+
+  //get main table data
   const getData = () => {
     recordPerPage.length === 0 && setRecordPerPage(0);
     api
-      .recordsByPagination(tableState.pageNo, tableState.recordPerPage)
+      .recordsByPagination(pageNo, recordPerPage)
       .then((res) => {
         console.log("Records Per page : ", res.data);
         setRecords([...res.data]);
       });
   };
+
+  //delete rows
   const deleteRows = () => {
     let removeIds = selected.toString();
     api.removeFromView(removeIds).then((res) => {
       console.log(res.data);
-      tableState.active &&
-        setTableState({
-          ...tableState,
-          stateCount: tableState.stateCount + 1,
-        });
-      advanceState.active &&
-        setAdvanceState({
-          ...advanceState,
-          stateCount: advanceState.stateCount,
-        });
+      setSelected([]);
+      setState(state + 1)
+      // tableState.active &&
+      //   setTableState({
+      //     ...tableState,
+      //     stateCount: tableState.stateCount + 1,
+      //   });
+      // advanceState.active &&
+      //   setAdvanceState({
+      //     ...advanceState,
+      //     stateCount: advanceState.stateCount,
+      //   });
     });
   };
+
+  //update row
+  const editRow = (sl_no, cust_payment_terms, invoice_currency) => {
+    api
+      .updateRecord(
+        sl_no,
+        cust_payment_terms,
+        invoice_currency
+      )
+      .then((res) => {
+        console.log("After updating data : ", res.data);
+        setState(state + 1)
+        // updateNotify(editInput.sl_no);
+      });
+  };
+
   useEffect(() => {
     console.log(state);
     tableState.active && getData();
@@ -390,44 +412,49 @@ export default function TableGrid({ advanceNotify, addNotify, updateNotify }) {
     setSelected(newSelected);
   };
   const handleNextPage = () => {
-    if (!advanceState.active)
-      setTableState({
-        ...tableState,
-        pageNo: tableState.pageNo + 1,
-      });
-    else
-      setAdvanceState({
-        ...advanceState,
-        pageNo: advanceState.pageNo + 1,
-      });
+    // if (!advanceState.active)
+    //   setTableState({
+    //     ...tableState,
+    //     pageNo: tableState.pageNo + 1,
+    //   });
+    // else
+    //   setAdvanceState({
+    //     ...advanceState,
+    //     pageNo: advanceState.pageNo + 1,
+    //   });
+    setPageNo(pageNo + 1);
     console.log(pageNo);
   };
   const handlePreviousPage = () => {
-    if (tableState.pageNo > 0 || advanceState.pageNo > 0) {
-      if (!advanceState.active)
-        setTableState({
-          ...tableState,
-          pageNo: tableState.pageNo - 1,
-        });
-      else
-        setAdvanceState({
-          ...advanceState,
-          pageNo: advanceState.pageNo - 1,
-        });
+    // if (tableState.pageNo > 0 || advanceState.pageNo > 0) {
+    //   if (!advanceState.active)
+    //     setTableState({
+    //       ...tableState,
+    //       pageNo: tableState.pageNo - 1,
+    //     });
+    //   else
+    //     setAdvanceState({
+    //       ...advanceState,
+    //       pageNo: advanceState.pageNo - 1,
+    //     });
+    // }
+    if(pageNo > 0) {
+      setPageNo(pageNo - 1);
     }
     console.log(pageNo);
   };
   const handleRecordsPerPage = (e) => {
-    if (!advanceState.active)
-      setTableState({
-        ...tableState,
-        recordPerPage: e.target.value,
-      });
-    else
-      setAdvanceState({
-        ...advanceState,
-        recordPerPage: e.target.value,
-      });
+    setRecordPerPage(e.target.value)
+    // if (!advanceState.active)
+    //   setTableState({
+    //     ...tableState,
+    //     recordPerPage: e.target.value,
+    //   });
+    // else
+    //   setAdvanceState({
+    //     ...advanceState,
+    //     recordPerPage: e.target.value,
+    //   });
     e.preventDefault();
   };
 
@@ -474,8 +501,8 @@ export default function TableGrid({ advanceNotify, addNotify, updateNotify }) {
             aria-label="contained primary button group"
           >
             <AddButton />
-            <EditButton />
-            <DeleteButton />
+            <EditButton editRow={editRow} selected={selected}/>
+            <DeleteButton deleteRows={deleteRows}  selected={selected}/>
           </ButtonGroup>
         </div>
       </div>
@@ -628,7 +655,7 @@ export default function TableGrid({ advanceNotify, addNotify, updateNotify }) {
               handleRecordsPerPage(e);
             }}
           />
-          {(tableState.pageNo > 0 || advanceState.pageNo > 0) && (
+          {(pageNo > 0) && (
             <IconButton
               variant="contained"
               size="small"
