@@ -298,7 +298,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function TableGrid({ advanceNotify, addNotify, updateNotify }) {
+export default function TableGrid({ advanceNotify, addNotify, updateNotify, deleteNotify}) {
   const classes = useStyles();
   const [order, setOrder] = React.useState("asc");
   const [orderBy, setOrderBy] = React.useState("calories");
@@ -342,19 +342,11 @@ export default function TableGrid({ advanceNotify, addNotify, updateNotify }) {
   const deleteRows = () => {
     let removeIds = selected.toString();
     api.removeFromView(removeIds).then((res) => {
-      console.log(res.data);
       setSelected([]);
       setState(state + 1)
-      // tableState.active &&
-      //   setTableState({
-      //     ...tableState,
-      //     stateCount: tableState.stateCount + 1,
-      //   });
-      // advanceState.active &&
-      //   setAdvanceState({
-      //     ...advanceState,
-      //     stateCount: advanceState.stateCount,
-      //   });
+      res.data.map((r, i) => {
+        setTimeout(() => { deleteNotify(r.code, r.mssg) }, i * 800);
+      })
     });
   };
 
@@ -369,7 +361,7 @@ export default function TableGrid({ advanceNotify, addNotify, updateNotify }) {
       .then((res) => {
         console.log("After updating data : ", res.data);
         setState(state + 1)
-        // updateNotify(editInput.sl_no);
+        updateNotify(sl_no);
       });
   };
 
@@ -377,7 +369,8 @@ export default function TableGrid({ advanceNotify, addNotify, updateNotify }) {
     console.log(addInput);
     api.addRecord(addInput).then((res) => {
       console.log(res.data);
-      // addNotify(res.data.code, res.data.mssg);
+      addNotify(res.data.code, res.data.mssg);
+      setState(state + 1)
     });
   };
 
