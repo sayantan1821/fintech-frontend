@@ -10,6 +10,11 @@ import {
   TextField,
 } from "@material-ui/core";
 import { useStyles } from "./buttonStyles";
+
+const Transition = React.forwardRef(function Transition(props, ref) {
+  return <Slide direction="up" ref={ref} {...props} />;
+});
+
 const AdvanceSearchButton = ({
   setTableContent,
   advanceInput,
@@ -76,7 +81,7 @@ const AdvanceSearchButton = ({
       <Button {...props} onClick={handleOpen}>
         <pre>ADVANCE SEARCH</pre>
       </Button>
-      <Dialog fullWidth={true} maxWidth="md" open={open} onClose={handleClose}>
+      <Dialog TransitionComponent={Transition} fullWidth={true} maxWidth="md" open={open} onClose={handleClose}>
         <DialogTitle>ADVANCED SEARCVH</DialogTitle>
         <form onSubmit={handleAdvanceSubmit}>
           <DialogContent

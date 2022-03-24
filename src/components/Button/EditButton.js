@@ -10,6 +10,11 @@ import {
   TextField,
 } from "@material-ui/core";
 import { useStyles } from "./buttonStyles";
+
+const Transition = React.forwardRef(function Transition(props, ref) {
+  return <Slide direction="up" ref={ref} {...props} />;
+});
+
 const EditButton = ({ editRow, selected, ...props }) => {
   const [open, setOpen] = React.useState(false);
   const [editInput, setEditInput] = useReducer(
@@ -56,7 +61,7 @@ const EditButton = ({ editRow, selected, ...props }) => {
       >
         EDIT
       </Button>
-      <Dialog fullWidth={true} maxWidth="sm" open={open} onClose={handleClose}>
+      <Dialog TransitionComponent={Transition} fullWidth={true} maxWidth="sm" open={open} onClose={handleClose}>
         <DialogTitle>Edit</DialogTitle>
         <form onSubmit={handleEditSubmit}>
           <DialogContent

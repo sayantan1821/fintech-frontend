@@ -1,4 +1,4 @@
-import React, {useState, useReducer} from "react";
+import React, { useState, useReducer } from "react";
 import {
   Button,
   Dialog,
@@ -8,10 +8,16 @@ import {
   DialogTitle,
   Slide,
   TextField,
+  IconButton,
 } from "@material-ui/core";
 import { DesktopDatePicker, LocalizationProvider } from "@mui/lab";
 import AdapterDateFns from "@mui/lab/AdapterDateFns";
 import { useStyles } from "./buttonStyles";
+import { GrAdd } from "react-icons/gr";
+
+const Transition = React.forwardRef(function Transition(props, ref) {
+  return <Slide direction="up" ref={ref} {...props} />;
+});
 
 const AddButton = ({ addRow, ...props }) => {
   const [open, setOpen] = useState(false);
@@ -162,11 +168,10 @@ const AddButton = ({ addRow, ...props }) => {
   };
   return (
     <>
-      <Button
-        {...props}
-          variant="outlined"
-        onClick={openModal}
-      >
+      <Button {...props} variant="outlined" onClick={openModal}>
+        {/* <span style={{fontSize: "16px", textAlign: "center", display: "flex", justifyContent: "center"}}>
+          <GrAdd size="16px" /> ADD
+        </span> */}
         ADD
       </Button>
       <Dialog
@@ -175,6 +180,7 @@ const AddButton = ({ addRow, ...props }) => {
         aria-labelledby="draggable-dialog-title"
         fullWidth={true}
         maxWidth="lg"
+        TransitionComponent={Transition}
       >
         <DialogTitle style={{ cursor: "move" }} id="draggable-dialog-title">
           Add
