@@ -24,6 +24,7 @@ import DeleteButton from "../Button/DeleteButton";
 import PredictButton from "../Button/PredictButton";
 import AnalyticsButton from "../Button/AnalyticsButton";
 import AdvanceSearchButton from "../Button/AdvanceSearchButton";
+import SearchBar from "../Button/SearchBar";
 
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -486,6 +487,7 @@ export default function TableGrid({ advanceNotify, addNotify, updateNotify }) {
             />
           </ButtonGroup>
         </div>
+        <SearchBar />
         <div>
           <ButtonGroup
             variant="outlined"
