@@ -25,6 +25,7 @@ import PredictButton from "../Button/PredictButton";
 import AnalyticsButton from "../Button/AnalyticsButton";
 import AdvanceSearchButton from "../Button/AdvanceSearchButton";
 import SearchBar from "../Button/SearchBar";
+import RefreshButton from "../Button/RefreshButton";
 
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -487,7 +488,24 @@ export default function TableGrid({ advanceNotify, addNotify, updateNotify }) {
             />
           </ButtonGroup>
         </div>
-        <SearchBar />
+        <RefreshButton
+          setTableContent={setTableContent}
+          state={state}
+          setState={setState}
+          setPageNo={setPageNo}
+          setRecordPerPage={setRecordPerPage}
+          setAdvanceInput={setAdvanceInput}
+        />
+        <SearchBar
+          setAdvanceInput={setAdvanceInput}
+          advanceInput={advanceInput}
+          setTableContent={setTableContent}
+          state={state}
+          setState={setState}
+          setPageNo={setPageNo}
+          setRecordPerPage={setRecordPerPage}
+        />
+
         <div>
           <ButtonGroup
             variant="outlined"
@@ -640,15 +658,19 @@ export default function TableGrid({ advanceNotify, addNotify, updateNotify }) {
         </TableContainer>
 
         <div className={classes.tableTool}>
-          {records.length > 0 && <p style={{ margin: "auto 0" }}>Rows Per Page : </p>}
-          {records.length > 0 && <Input
-            defaultValue={recordPerPage}
-            inputProps={{ "aria-label": "description" }}
-            style={{ width: "40px", fontSize: "13px", margin: "0 8px" }}
-            onChange={(e) => {
-              handleRecordsPerPage(e);
-            }}
-          />}
+          {records.length > 0 && (
+            <p style={{ margin: "auto 0" }}>Rows Per Page : </p>
+          )}
+          {records.length > 0 && (
+            <Input
+              defaultValue={recordPerPage}
+              inputProps={{ "aria-label": "description" }}
+              style={{ width: "40px", fontSize: "13px", margin: "0 8px" }}
+              onChange={(e) => {
+                handleRecordsPerPage(e);
+              }}
+            />
+          )}
           {pageNo > 0 && (
             <IconButton
               variant="contained"
@@ -667,15 +689,17 @@ export default function TableGrid({ advanceNotify, addNotify, updateNotify }) {
               {total / recordPerPage}
             </p>
           )}
-          {records.length > 0 && <IconButton
-            variant="contained"
-            size="small"
-            color="primary"
-            className={classes.margin}
-            onClick={() => handleNextPage()}
-          >
-            <GrFormNext />
-          </IconButton>}
+          {records.length > 0 && (
+            <IconButton
+              variant="contained"
+              size="small"
+              color="primary"
+              className={classes.margin}
+              onClick={() => handleNextPage()}
+            >
+              <GrFormNext />
+            </IconButton>
+          )}
         </div>
       </Paper>
     </div>
