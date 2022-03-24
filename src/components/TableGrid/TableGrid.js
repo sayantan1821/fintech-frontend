@@ -1,29 +1,23 @@
 import React, { useState, useEffect, useReducer } from "react";
 import PropTypes from "prop-types";
-import { lighten, makeStyles } from "@material-ui/core";
-import { Table } from "@material-ui/core";
-import { TableBody } from "@material-ui/core";
-import { TableCell } from "@material-ui/core/";
-import { TableContainer } from "@material-ui/core";
-import { TableHead } from "@material-ui/core";
-import { TableRow } from "@material-ui/core";
-import { TableSortLabel } from "@material-ui/core";
-import { Paper } from "@material-ui/core";
-import { Checkbox, IconButton, Input } from "@material-ui/core";
+import {
+  makeStyles,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  TableSortLabel,
+  Paper,
+  Checkbox,
+  IconButton,
+  Input,
+  ButtonGroup,
+} from "@material-ui/core";
 import DataService from "../../services/DataService";
 import { GrFormPrevious, GrFormNext } from "react-icons/gr";
-import TableHeader from "../TableHeader/TableHeader";
-import { DesktopDatePicker, LocalizationProvider } from "@mui/lab";
-import AdapterDateFns from "@mui/lab/AdapterDateFns";
-import {
-  Button,
-  ButtonGroup,
-  TextField,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogTitle,
-} from "@material-ui/core";
+
 import AddButton from "../Button/AddButton";
 import EditButton from "../Button/EditButton";
 import DeleteButton from "../Button/DeleteButton";
@@ -298,7 +292,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function TableGrid({ advanceNotify, addNotify, updateNotify}) {
+export default function TableGrid({ advanceNotify, addNotify, updateNotify }) {
   const classes = useStyles();
   const [order, setOrder] = React.useState("asc");
   const [orderBy, setOrderBy] = React.useState("calories");
@@ -307,23 +301,47 @@ export default function TableGrid({ advanceNotify, addNotify, updateNotify}) {
   const [pageNo, setPageNo] = useState(0);
   const [state, setState] = useState(0);
   const [recordPerPage, setRecordPerPage] = useState(10);
-  const [total, setTotal] = useState(0)
+  const [total, setTotal] = useState(0);
+  const [tableContent, setTableContent] = useState("mainTable"); //mainTable or advanceTable
+  const [advanceInput, setAdvanceInput] = useReducer(
+    (state, newState) => ({ ...state, ...newState }),
+    {
+      doc_id: "",
+      cust_number: "",
+      invoice_id: "",
+      buisness_year: "",
+    }
+  );
   let api = new DataService();
 
   //get main table data
   const getData = () => {
     recordPerPage.length === 0 && setRecordPerPage(0);
-    api
-      .recordsByPagination(pageNo, recordPerPage)
-      .then((res) => {
-        setRecords([...res.data]);
-      });
+    api.recordsByPagination(pageNo, recordPerPage).then((res) => {
+      setRecords([...res.data]);
+    });
   };
 
+  const getAdvanceSearchData = () => {
+    api
+      .advancedSearch(
+        advanceInput.doc_id,
+        advanceInput.invoice_id,
+        advanceInput.cust_number,
+        advanceInput.buisness_year,
+        pageNo,
+        recordPerPage
+      )
+      .then((res) => {
+        console.log(res.data);
+        setRecords(res.data);
+        // evt && advanceNotify();
+      });
+  };
   //get total no. of records
   const getCount = async () => {
     api.countRecord().then((res) => {
-      setTotal(res.data.count)
+      setTotal(res.data.count);
     });
   };
 
@@ -332,24 +350,22 @@ export default function TableGrid({ advanceNotify, addNotify, updateNotify}) {
     let removeIds = selected.toString();
     api.removeFromView(removeIds).then((res) => {
       setSelected([]);
-      setState(state + 1)
+      setState(state + 1);
       res.data.map((r, i) => {
-        setTimeout(() => { addNotify(r.code, r.mssg) }, i * 800);
-      })
+        setTimeout(() => {
+          addNotify(r.code, r.mssg);
+        }, i * 800);
+      });
     });
   };
 
   //update row
   const editRow = (sl_no, cust_payment_terms, invoice_currency) => {
     api
-      .updateRecord(
-        sl_no,
-        cust_payment_terms,
-        invoice_currency
-      )
+      .updateRecord(sl_no, cust_payment_terms, invoice_currency)
       .then((res) => {
         console.log("After updating data : ", res.data);
-        setState(state + 1)
+        setState(state + 1);
         updateNotify(sl_no);
       });
   };
@@ -360,12 +376,13 @@ export default function TableGrid({ advanceNotify, addNotify, updateNotify}) {
     api.addRecord(addInput).then((res) => {
       console.log(res.data);
       addNotify(res.data.code, res.data.mssg);
-      setState(state + 1)
+      setState(state + 1);
     });
   };
 
   useEffect(() => {
-    getData();
+    tableContent === "mainTable" && getData();
+    tableContent === "advanceTable" && getAdvanceSearchData();
     getCount();
   }, [pageNo, state, recordPerPage]);
 
@@ -403,18 +420,24 @@ export default function TableGrid({ advanceNotify, addNotify, updateNotify}) {
 
     setSelected(newSelected);
   };
+
+  //handle next page
   const handleNextPage = () => {
     setPageNo(pageNo + 1);
     console.log(pageNo);
   };
+
+  //handle previous page
   const handlePreviousPage = () => {
-    if(pageNo > 0) {
+    if (pageNo > 0) {
       setPageNo(pageNo - 1);
     }
     console.log(pageNo);
   };
+
+  //handle record per page
   const handleRecordsPerPage = (e) => {
-    setRecordPerPage(e.target.value)
+    setRecordPerPage(e.target.value);
     e.preventDefault();
   };
 
@@ -451,7 +474,16 @@ export default function TableGrid({ advanceNotify, addNotify, updateNotify}) {
           >
             <PredictButton />
             <AnalyticsButton />
-            <AdvanceSearchButton />
+            <AdvanceSearchButton
+              setAdvanceInput={setAdvanceInput}
+              advanceInput={advanceInput}
+              setTableContent={setTableContent}
+              state={state}
+              setState={setState}
+              setPageNo={setPageNo}
+              setRecordPerPage={setRecordPerPage}
+              advanceNotify={advanceNotify}
+            />
           </ButtonGroup>
         </div>
         <div>
@@ -461,8 +493,8 @@ export default function TableGrid({ advanceNotify, addNotify, updateNotify}) {
             aria-label="contained primary button group"
           >
             <AddButton addRow={addRow} />
-            <EditButton editRow={editRow} selected={selected}/>
-            <DeleteButton deleteRows={deleteRows} selected={selected}/>
+            <EditButton editRow={editRow} selected={selected} />
+            <DeleteButton deleteRows={deleteRows} selected={selected} />
           </ButtonGroup>
         </div>
       </div>
@@ -606,16 +638,16 @@ export default function TableGrid({ advanceNotify, addNotify, updateNotify}) {
         </TableContainer>
 
         <div className={classes.tableTool}>
-          <p style={{ margin: "auto 0" }}>Rows Per Page : </p>
-          <Input
+          {records.length > 0 && <p style={{ margin: "auto 0" }}>Rows Per Page : </p>}
+          {records.length > 0 && <Input
             defaultValue={recordPerPage}
             inputProps={{ "aria-label": "description" }}
             style={{ width: "40px", fontSize: "13px", margin: "0 8px" }}
             onChange={(e) => {
               handleRecordsPerPage(e);
             }}
-          />
-          {(pageNo > 0) && (
+          />}
+          {pageNo > 0 && (
             <IconButton
               variant="contained"
               size="small"
@@ -627,8 +659,13 @@ export default function TableGrid({ advanceNotify, addNotify, updateNotify}) {
               <GrFormPrevious />
             </IconButton>
           )}
-          {records.length > 0 && <p style={{ margin: "auto 25px" }}>{records[0].sl_no} - {records[records.length - 1].sl_no} of {total / recordPerPage}</p>}
-          <IconButton
+          {records.length > 0 && (
+            <p style={{ margin: "auto 25px" }}>
+              {records[0].sl_no} - {records[records.length - 1].sl_no} of{" "}
+              {total / recordPerPage}
+            </p>
+          )}
+          {records.length > 0 && <IconButton
             variant="contained"
             size="small"
             color="primary"
@@ -636,7 +673,7 @@ export default function TableGrid({ advanceNotify, addNotify, updateNotify}) {
             onClick={() => handleNextPage()}
           >
             <GrFormNext />
-          </IconButton>
+          </IconButton>}
         </div>
       </Paper>
     </div>
