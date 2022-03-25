@@ -55,25 +55,6 @@ const AdvanceSearchButton = ({
     setRecordPerPage(10);
     setState(state + 1);
     advanceNotify();
-    // evt && setAdvanceState({
-    //   ...advanceState,
-    //   active: true,
-    //   pageNo: 0,
-    //   recordPerPage: 10,
-    // })
-    // api
-    //   .advancedSearch(
-    //     advanceInput.doc_id,
-    //     advanceInput.invoice_id,
-    //     advanceInput.cust_number,
-    //     advanceInput.buisness_year,
-    //     advanceState.pageNo,
-    //     advanceState.recordPerPage
-    //   )
-    //   .then((res) => {
-    //     console.log(res.data);
-    //     setRecords(res.data);
-
     handleClose();
   };
   return (

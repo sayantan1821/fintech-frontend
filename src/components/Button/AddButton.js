@@ -1,4 +1,4 @@
-import React, { useState, useReducer } from "react";
+import React, { useState, useReducer, useEffect } from "react";
 import {
   Button,
   Dialog,
@@ -14,12 +14,13 @@ import { DesktopDatePicker, LocalizationProvider } from "@mui/lab";
 import AdapterDateFns from "@mui/lab/AdapterDateFns";
 import { useStyles } from "./buttonStyles";
 import { GrAdd } from "react-icons/gr";
+import { add } from "date-fns";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
-const AddButton = ({ addRow, ...props }) => {
+const AddButton = ({ addRow, addNotify, ...props }) => {
   const [open, setOpen] = useState(false);
   const [addFormDetails] = useState([
     {
@@ -135,6 +136,10 @@ const AddButton = ({ addRow, ...props }) => {
     }
   );
   const styles = useStyles();
+
+  useEffect(() => {
+    addInput.due_in_date.setDate(addInput.posting_date.getDate() + 1);
+  }, []);
   const openModal = () => {
     setOpen(true);
   };
@@ -148,17 +153,17 @@ const AddButton = ({ addRow, ...props }) => {
     setAddInput({ [name]: newValue });
   };
   const handleAddDate = (date, name) => {
-    // console.log(date + "\t" + name);
-    let month = String(date.getMonth() + 1);
-    let day = String(date.getDate());
-    const year = String(date.getFullYear());
-
-    if (month.length < 2) month = "0" + month;
-    if (day.length < 2) day = "0" + day;
-
-    let convertedDate = `${year}-${month}-${day}`;
-    setAddInput({ ...addInput, [name]: convertedDate });
-    // console.log(addInput);
+    if (name === "posting_date") {
+      
+      setAddInput({ ...addInput, posting_date: date, due_in_date: date});
+      
+    } else if (name === "due_in_date" && date <= addInput.posting_date) {
+      console.log("not possible");
+      addInput.due_in_date.setDate(addInput.posting_date.getDate() + 1);
+      addNotify("404", "Due In Date invalid");
+    } else {
+      setAddInput({ ...addInput, [name]: date });
+    }
   };
 
   const handleAddSubmit = (evt) => {

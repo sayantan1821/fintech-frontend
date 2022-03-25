@@ -1,5 +1,5 @@
 .notFound {
-    display: inline-block;
+    /* display: inline-block; */
     position: fixed;
     top: 0;
     bottom: 0;
@@ -7,6 +7,12 @@
     right: 0;
     width: auto;
     height: 100px;
-    margin: auto 15em;
+    margin: auto 5em;
     text-align: center;
+    font-size: 18px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color: #00000091;
 }

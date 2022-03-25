@@ -28,6 +28,7 @@ import SearchBar from "../Button/SearchBar";
 import RefreshButton from "../Button/RefreshButton";
 import style from "./TableGrid.module.css";
 import PuffLoader from "react-spinners/PuffLoader";
+import { TransitionGroup } from 'react-transition-group';
 
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -336,7 +337,9 @@ export default function TableGrid({ advanceNotify, addNotify, updateNotify }) {
     });
   };
 
+  //get advance search and normal search data
   const getAdvanceSearchData = () => {
+    setLoading(true);
     api
       .advancedSearch(
         advanceInput.doc_id,
@@ -349,9 +352,11 @@ export default function TableGrid({ advanceNotify, addNotify, updateNotify }) {
       .then((res) => {
         console.log(res.data);
         setRecords(res.data);
+        setLoading(false);
         // evt && advanceNotify();
       });
   };
+
   //get total no. of records
   const getCount = async () => {
     api.countRecord().then((res) => {
@@ -524,7 +529,7 @@ export default function TableGrid({ advanceNotify, addNotify, updateNotify }) {
             color="primary"
             aria-label="contained primary button group"
           >
-            <AddButton addRow={addRow} />
+            <AddButton addRow={addRow} addNotify={addNotify} />
             <EditButton editRow={editRow} selected={selected} />
             <DeleteButton deleteRows={deleteRows} selected={selected} />
           </ButtonGroup>
@@ -550,7 +555,8 @@ export default function TableGrid({ advanceNotify, addNotify, updateNotify }) {
             />
             {!loading ? (
               <TableBody>
-                {stableSort(records, getComparator(order, orderBy)).map(
+              
+                {records.length > 0 ? stableSort(records, getComparator(order, orderBy)).map(
                   (row, index) => {
                     const isItemSelected = isSelected(row.sl_no);
                     const labelId = `enhanced-table-checkbox-${index}`;
@@ -665,17 +671,23 @@ export default function TableGrid({ advanceNotify, addNotify, updateNotify }) {
                       </TableRow>
                     );
                   }
-                )}
+                ) :
+                <div className={style.notFound}>
+                <p>Records not found. Kindly go to the previous page.</p>
+              </div>
+                }
               </TableBody>
             ) : (
               <div className={style.notFound}>
-              Loading...
-                {/* <PuffLoader
+                <PuffLoader
                   color={color}
                   loading={true}
                   // css={override}
                   size={45}
-                /> */}
+                  // style={{position: "relative"}}
+                />
+                <br></br>
+                <p>Data Loading... Please Wait...</p>
               </div>
             )}
           </Table>
@@ -710,7 +722,7 @@ export default function TableGrid({ advanceNotify, addNotify, updateNotify }) {
           {records.length > 0 && (
             <p style={{ margin: "auto 25px" }}>
               {records[0].sl_no} - {records[records.length - 1].sl_no} of{" "}
-              {total / recordPerPage}
+              {Math.ceil(total / recordPerPage)}
             </p>
           )}
           {records.length > 0 && (
