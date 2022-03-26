@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Button,
   Dialog,
@@ -8,10 +8,16 @@ import {
   DialogTitle,
   Slide,
   TextField,
+  IconButton,
+  AppBar,
+  Toolbar,
+  Typography,
 } from "@material-ui/core";
+import ArrowBackIcon from "@material-ui/icons/ArrowBack";
 import { useStyles } from "./buttonStyles";
 import { DesktopDatePicker, LocalizationProvider } from "@mui/lab";
 import AdapterDateFns from "@mui/lab/AdapterDateFns";
+import { makeStyles } from "@material-ui/core/styles";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -21,6 +27,68 @@ const AnalyticsButton = (props) => {
   const [open, setOpen] = React.useState(false);
   const styles = useStyles();
   const [openView, setOpenView] = React.useState(false);
+  const analyticsFormDetails = [
+    {
+      type: "date",
+      start: {
+        name: "clear_date_start",
+        label: "Clear Date Start",
+      },
+      end: {
+        name: "clear_date_end",
+        label: "Clear Date End",
+      },
+    },
+    {
+      type: "date",
+      start: {
+        name: "due_in_date_start",
+        label: "Due In Date Start",
+      },
+      end: {
+        name: "due_in_date_end",
+        label: "Due In Date End",
+      },
+    },
+    {
+      type: "date",
+      start: {
+        name: "baseline_create_date_start",
+        label: "Baseline Create Date Start",
+      },
+      end: {
+        name: "baseline_create_date_end",
+        label: "Baseline Create Date End",
+      },
+    },
+    {
+      type: "text",
+      name: "invoice_currency",
+      label: "Invoice Currency",
+      helperText: "",
+    },
+  ];
+  const [analyticsInput, setAnalyticsInput] = useState({
+    clear_date_start: new Date(),
+    clear_date_end: new Date(),
+    due_in_date_start: new Date(),
+    due_in_date_end: new Date(),
+    baseline_create_date_start: new Date(),
+    baseline_create_date_end: new Date(),
+    invoice_currency: "",
+  });
+
+  const newUseStyles = makeStyles((theme) => ({
+    appBar: {
+      position: "relative",
+    },
+    title: {
+      marginLeft: theme.spacing(2),
+      flex: 1,
+    },
+  }));
+
+  const classes = newUseStyles();
 
   const handleOpen = () => {
     setOpen(true);
@@ -39,27 +107,19 @@ const AnalyticsButton = (props) => {
   };
 
   const handleAddDate = (date, name) => {
-    // console.log(date + "\t" + name);
-    let month = String(date.getMonth() + 1);
-    let day = String(date.getDate());
-    const year = String(date.getFullYear());
-
-    if (month.length < 2) month = "0" + month;
-    if (day.length < 2) day = "0" + day;
-
-    let convertedDate = `${year}-${month}-${day}`;
-    // setAddInput({ ...addInput, [name]: convertedDate });
-    // console.log(addInput);
+    console.log(date);
+    setAnalyticsInput({ ...analyticsInput, [name]: date });
   };
 
   const handleAnalyticsInput = (evt) => {
     const name = evt.target.name;
     const newValue = evt.target.value;
     console.log(newValue);
-    // setAdvanceInput({ [name]: newValue });
+    setAnalyticsInput({ ...analyticsInput, [name]: newValue });
   };
   const handleAnalyticsSubmit = (evt) => {
     evt.preventDefault();
+    console.log(analyticsInput);
     handleClose();
     handleOpenView();
   };
@@ -84,46 +144,65 @@ const AnalyticsButton = (props) => {
               flexWrap: "wrap",
             }}
           >
-            <TextField
-              label="Document Id-(doc_id)"
-              id="margin-normal"
-              name="doc_id"
-              // defaultValue="Invoice Currency"
-              className={styles.textField}
-              helperText="Enter Document Id-(doc_id)"
-              onChange={handleAnalyticsInput}
-              required={false}
-            />
-            <TextField
-              label="Customer No-(cust_number)"
-              id="margin-normal"
-              name="cust_number"
-              // defaultValue="Total Open Amount"
-              className={styles.textField}
-              helperText="Enter Customer No-(cust_number)"
-              onChange={handleAnalyticsInput}
-              required={false}
-            />
-            <TextField
-              label="Invoice No-(invoice_id)"
-              id="margin-normal"
-              name="invoice_id"
-              // defaultValue="Invoice Currency"
-              className={styles.textField}
-              helperText="Enter Invoice No-(invoice_id)"
-              onChange={handleAnalyticsInput}
-              required={false}
-            />
-            <TextField
-              label="Business Year- (buisness_year)"
-              id="margin-normal"
-              name="buisness_year"
-              // defaultValue="Total Open Amount"
-              className={styles.textField}
-              helperText="Enter Business Year- (buisness_year)"
-              onChange={handleAnalyticsInput}
-              required={false}
-            />
+            {analyticsFormDetails.map((form, idx) =>
+              form.type === "date" ? (
+                <div style={{ display: "flex", flexDirection: "column" }}>
+                  <LocalizationProvider dateAdapter={AdapterDateFns}>
+                    <DesktopDatePicker
+                      label={form.start.label}
+                      inputFormat="MM/dd/yyyy"
+                      value={analyticsInput[form.start.name]}
+                      name="due_in_date_start"
+                      onChange={(date) => handleAddDate(date, form.start.name)}
+                      required={true}
+                      renderInput={(params) => (
+                        <TextField
+                          // required={true}
+                          // name={data.name}
+                          // value={addInput[data.name]}
+                          className={styles.textField}
+                          // label={data.label}
+                          // onChange={handleAddInput}
+                          {...params}
+                        />
+                      )}
+                    />
+                  </LocalizationProvider>
+                  <LocalizationProvider dateAdapter={AdapterDateFns}>
+                    <DesktopDatePicker
+                      label={form.end.label}
+                      inputFormat="MM/dd/yyyy"
+                      value={analyticsInput[form.end.name]}
+                      name="due_in_date_end"
+                      onChange={(date) => handleAddDate(date, form.end.name)}
+                      required={true}
+                      renderInput={(params) => (
+                        <TextField
+                          // required={true}
+                          // name={data.name}
+                          // value={addInput[data.name]}
+                          className={styles.textField}
+                          // label={data.label}
+                          // onChange={handleAddInput}
+                          {...params}
+                        />
+                      )}
+                    />
+                  </LocalizationProvider>
+                </div>
+              ) : (
+                <TextField
+                  key={idx}
+                  label={form.label}
+                  id="margin-normal"
+                  name={form.name}
+                  className={styles.textField}
+                  helperText={form.helperText}
+                  onChange={handleAnalyticsInput}
+                  // required={true}
+                />
+              )
+            )}
           </DialogContent>
           <DialogActions>
             <Button type="submit">SUBMIT</Button>
@@ -139,19 +218,33 @@ const AnalyticsButton = (props) => {
         open={openView}
         onClose={handleCloseView}
       >
-        <DialogTitle>Analytics VIEW</DialogTitle>
-          <DialogContent
-            style={{
-              display: "flex",
-              justifyContent: "space-around",
-              flexWrap: "wrap",
-            }}
-          >
-            Page Ban raha hai bro... 
-          </DialogContent>
-          <DialogActions>
-            <Button onClick={handleCloseView}>CLOSE</Button>
-          </DialogActions>
+        <AppBar className={classes.appBar}>
+          <Toolbar>
+            <IconButton
+              edge="start"
+              color="inherit"
+              onClick={handleCloseView}
+              aria-label="close"
+            >
+              <ArrowBackIcon />
+            </IconButton>
+            <Typography variant="h6" className={classes.title}>
+              Analytics VIEW
+            </Typography>
+            <Button autoFocus color="inherit" onClick={handleCloseView}>
+              CLOSE
+            </Button>
+          </Toolbar>
+        </AppBar>
+        <DialogContent
+          style={{
+            display: "flex",
+            justifyContent: "space-around",
+            flexWrap: "wrap",
+          }}
+        >
+          Page Ban raha hai bro...
+        </DialogContent>
       </Dialog>
     </>
   );
