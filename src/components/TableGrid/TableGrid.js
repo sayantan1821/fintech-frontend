@@ -29,7 +29,7 @@ import RefreshButton from "../Button/RefreshButton";
 import style from "./TableGrid.module.css";
 import PuffLoader from "react-spinners/PuffLoader";
 import { TransitionGroup } from "react-transition-group";
-import { tableStyles } from "./tableGridStyle";
+import { useStyles } from "./tableGridStyle";
 
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -243,60 +243,60 @@ function EnhancedTableHead(props) {
   );
 }
 
-EnhancedTableHead.propTypes = {
-  classes: PropTypes.object.isRequired,
-  numSelected: PropTypes.number.isRequired,
-  onRequestSort: PropTypes.func.isRequired,
-  onSelectAllClick: PropTypes.func.isRequired,
-  order: PropTypes.oneOf(["asc", "desc"]).isRequired,
-  orderBy: PropTypes.string.isRequired,
-  rowCount: PropTypes.number.isRequired,
-};
+// EnhancedTableHead.propTypes = {
+//   classes: PropTypes.object.isRequired,
+//   numSelected: PropTypes.number.isRequired,
+//   onRequestSort: PropTypes.func.isRequired,
+//   onSelectAllClick: PropTypes.func.isRequired,
+//   order: PropTypes.oneOf(["asc", "desc"]).isRequired,
+//   orderBy: PropTypes.string.isRequired,
+//   rowCount: PropTypes.number.isRequired,
+// };
 
-const useStyles = makeStyles((theme) => ({
-  root: {
-    width: "100%",
-    fontSize: "20pt",
-  },
-  paper: {
-    width: "100%",
-    marginBottom: 50,
-  },
-  table: {
-    minWidth: 750,
-    fontSize: "200000pt",
-  },
-  visuallyHidden: {
-    border: 0,
-    clip: "rect(0 0 0 0)",
-    height: 1,
-    margin: -1,
-    overflow: "hidden",
-    padding: 0,
-    position: "absolute",
-    top: 20,
-    width: 1,
-  },
-  tableRow: {
-    "&.Mui-selected, &.Mui-selected:hover": {
-      backgroundColor: "purple",
-      "& > .MuiTableCell-root": {
-        color: "yellow",
-      },
-    },
-  },
-  TableCell: {
-    fontSize: "13px",
-    padding: "5px",
-    height: "5px",
-  },
-  tableTool: {
-    margin: "0 15px",
-    display: "flex",
-    justifyContent: "end",
-    fontSize: "13px",
-  },
-}));
+// const useStyles = makeStyles((theme) => ({
+//   root: {
+//     width: "100%",
+//     fontSize: "20pt",
+//   },
+//   paper: {
+//     width: "100%",
+//     marginBottom: 50,
+//   },
+//   table: {
+//     minWidth: 750,
+//     fontSize: "200000pt",
+//   },
+//   visuallyHidden: {
+//     border: 0,
+//     clip: "rect(0 0 0 0)",
+//     height: 1,
+//     margin: -1,
+//     overflow: "hidden",
+//     padding: 0,
+//     position: "absolute",
+//     top: 20,
+//     width: 1,
+//   },
+//   tableRow: {
+//     "&.Mui-selected, &.Mui-selected:hover": {
+//       backgroundColor: "purple",
+//       "& > .MuiTableCell-root": {
+//         color: "yellow",
+//       },
+//     },
+//   },
+//   TableCell: {
+//     fontSize: "13px",
+//     padding: "5px",
+//     height: "5px",
+//   },
+//   tableTool: {
+//     margin: "0 15px",
+//     display: "flex",
+//     justifyContent: "end",
+//     fontSize: "13px",
+//   },
+// }));
 
 export default function TableGrid({ advanceNotify, addNotify, updateNotify }) {
   const classes = useStyles();
@@ -321,7 +321,7 @@ export default function TableGrid({ advanceNotify, addNotify, updateNotify }) {
   let [loading, setLoading] = useState(false);
   let [color, setColor] = useState("#000000");
   let api = new DataService();
-  const styles = TableGrid();
+  const styles = useStyles();
 
   // const override = css`
   //   display: block;
@@ -540,10 +540,11 @@ export default function TableGrid({ advanceNotify, addNotify, updateNotify }) {
       <Paper className={classes.paper}>
         <TableContainer className={styles.Table_Container}>
           <Table
-            className={classes.table}
+            className={styles.table}
             aria-labelledby="tableTitle"
             size={true ? "small" : "medium"} //dense = true
             aria-label="enhanced table"
+            
           >
             <EnhancedTableHead
               classes={classes}
@@ -556,7 +557,7 @@ export default function TableGrid({ advanceNotify, addNotify, updateNotify }) {
               style={{ align: "left" }}
             />
             {!loading ? (
-              <TableBody>
+              <TableBody className={styles.TableBody}>
                 {records.length > 0 ? (
                   stableSort(records, getComparator(order, orderBy)).map(
                     (row, index) => {
@@ -572,10 +573,11 @@ export default function TableGrid({ advanceNotify, addNotify, updateNotify }) {
                           tabIndex={-1}
                           key={index}
                           selected={isItemSelected}
-                          style={{ height: "48px", background: "white" }}
+                          // style={{ height: "48px", background: "white" }}
+                          className={styles.MuiTableRow}
                         >
                           <TableCell
-                            className={classes.TableCell}
+                            className={styles.TableCell}
                             padding="checkbox"
                           >
                             <Checkbox
@@ -592,36 +594,36 @@ export default function TableGrid({ advanceNotify, addNotify, updateNotify }) {
                             scope="row"
                             padding="none"
                             align="left"
-                            className={classes.TableCell}
+                            className={styles.TableCell}
                           >
                             {row.sl_no}
                           </TableCell>
                           <TableCell
-                            className={classes.TableCell}
+                            className={styles.TableCell}
                             align="center"
                           >
                             {row.business_code}
                           </TableCell>
                           <TableCell
-                            className={classes.TableCell}
+                            className={styles.TableCell}
                             align="center"
                           >
                             {row.business_name}
                           </TableCell>
                           <TableCell
-                            className={classes.TableCell}
+                            className={styles.TableCell}
                             align="center"
                           >
                             {row.cust_number}
                           </TableCell>
                           <TableCell
-                            className={classes.TableCell}
+                            className={styles.TableCell}
                             align="center"
                           >
                             {row.name_customer}
                           </TableCell>
                           <TableCell
-                            className={classes.TableCell}
+                            className={styles.TableCell}
                             align="center"
                           >
                             <pre>
@@ -631,61 +633,61 @@ export default function TableGrid({ advanceNotify, addNotify, updateNotify }) {
                             </pre>
                           </TableCell>
                           <TableCell
-                            className={classes.TableCell}
+                            className={styles.TableCell}
                             align="center"
                           >
                             {row.business_year}
                           </TableCell>
                           <TableCell
-                            className={classes.TableCell}
+                            className={styles.TableCell}
                             align="center"
                           >
                             {row.doc_id}
                           </TableCell>
                           <TableCell
-                            className={classes.TableCell}
+                            className={styles.TableCell}
                             align="center"
                           >
                             {row.posting_date}
                           </TableCell>
                           <TableCell
-                            className={classes.TableCell}
+                            className={styles.TableCell}
                             align="center"
                           >
                             {row.document_create_date}
                           </TableCell>
                           <TableCell
-                            className={classes.TableCell}
+                            className={styles.TableCell}
                             align="center"
                           >
                             {row.document_create_date1}
                           </TableCell>
                           <TableCell
-                            className={classes.TableCell}
+                            className={styles.TableCell}
                             align="center"
                           >
                             <pre>{row.due_in_date}</pre>
                           </TableCell>
                           <TableCell
-                            className={classes.TableCell}
+                            className={styles.TableCell}
                             align="center"
                           >
                             {row.invoice_currency}
                           </TableCell>
                           <TableCell
-                            className={classes.TableCell}
+                            className={styles.TableCell}
                             align="center"
                           >
                             {row.document_type}
                           </TableCell>
                           <TableCell
-                            className={classes.TableCell}
+                            className={styles.TableCell}
                             align="center"
                           >
                             {row.posting_id}
                           </TableCell>
                           <TableCell
-                            className={classes.TableCell}
+                            className={styles.TableCell}
                             align="center"
                           >
                             {row.area_business && row.area_business.length > 0
@@ -693,37 +695,37 @@ export default function TableGrid({ advanceNotify, addNotify, updateNotify }) {
                               : "NA"}
                           </TableCell>
                           <TableCell
-                            className={classes.TableCell}
+                            className={styles.TableCell}
                             align="center"
                           >
                             {row.total_open_amount}
                           </TableCell>
                           <TableCell
-                            className={classes.TableCell}
+                            className={styles.TableCell}
                             align="center"
                           >
                             {row.baseline_create_date}
                           </TableCell>
                           <TableCell
-                            className={classes.TableCell}
+                            className={styles.TableCell}
                             align="center"
                           >
                             {row.cust_payment_terms}
                           </TableCell>
                           <TableCell
-                            className={classes.TableCell}
+                            className={styles.TableCell}
                             align="center"
                           >
                             {row.invoice_id}
                           </TableCell>
                           <TableCell
-                            className={classes.TableCell}
+                            className={styles.TableCell}
                             align="center"
                           >
                             {row.isOpen}
                           </TableCell>
                           <TableCell
-                            className={classes.TableCell}
+                            className={styles.TableCell}
                             align="center"
                           >
                             {row.aging_Bucket.length > 0
@@ -731,7 +733,7 @@ export default function TableGrid({ advanceNotify, addNotify, updateNotify }) {
                               : "NA"}
                           </TableCell>
                           <TableCell
-                            className={classes.TableCell}
+                            className={styles.TableCell}
                             align="center"
                           >
                             {row.predicted}
@@ -762,7 +764,7 @@ export default function TableGrid({ advanceNotify, addNotify, updateNotify }) {
           </Table>
         </TableContainer>
 
-        <div className={classes.tableTool}>
+        <div className={styles.tableTool}>
           {records.length > 0 && (
             <p style={{ margin: "auto 0" }}>Rows Per Page : </p>
           )}
@@ -781,7 +783,7 @@ export default function TableGrid({ advanceNotify, addNotify, updateNotify }) {
               variant="contained"
               size="small"
               color="primary"
-              className={classes.margin}
+              className={styles.margin}
               onClick={() => handlePreviousPage()}
               style={{ marginRight: "5px" }}
             >
@@ -799,7 +801,7 @@ export default function TableGrid({ advanceNotify, addNotify, updateNotify }) {
               variant="contained"
               size="small"
               color="primary"
-              className={classes.margin}
+              className={styles.margin}
               onClick={() => handleNextPage()}
             >
               <GrFormNext />
