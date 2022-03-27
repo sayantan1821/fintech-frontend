@@ -11,6 +11,20 @@ export default class DataService {
       baseURL: baseUrl,
     });
   };
+  convertDate = (date) => {
+    let convertedDate;
+    if (typeof date === "object") {
+      let month = String(date.getMonth() + 1);
+      let day = String(date.getDate());
+      const year = String(date.getFullYear());
+
+      if (month.length < 2) month = "0" + month;
+      if (day.length < 2) day = "0" + day;
+
+      convertedDate = `${year}-${month}-${day}`;
+    } else convertedDate = date;
+    return convertedDate;
+  };
   getRecordById = (sl_no) => {
     return this.client.get(apiPath.getRecordById + "?sl_no=" + sl_no);
   };
@@ -65,61 +79,65 @@ export default class DataService {
     );
   };
   addRecord = (addData) => {
-    var converted_posting_date,
-      converted_baseline_create_date,
-      converted_clear_date,
-      converted_document_create_date,
-      converted_due_in_date;
-    if (typeof addData.posting_date === "object") {
-      let month = String(addData.posting_date.getMonth() + 1);
-      let day = String(addData.posting_date.getDate());
-      const year = String(addData.posting_date.getFullYear());
+    var converted_posting_date = this.convertDate(addData.posting_date),
+      converted_baseline_create_date = this.convertDate(
+        addData.baseline_create_date
+      ),
+      converted_clear_date = this.convertDate(addData.clear_date),
+      converted_document_create_date = this.convertDate(
+        addData.document_create_date
+      ),
+      converted_due_in_date = this.convertDate(addData.due_in_date);
+    // if (typeof addData.posting_date === "object") {
+    //   let month = String(addData.posting_date.getMonth() + 1);
+    //   let day = String(addData.posting_date.getDate());
+    //   const year = String(addData.posting_date.getFullYear());
 
-      if (month.length < 2) month = "0" + month;
-      if (day.length < 2) day = "0" + day;
+    //   if (month.length < 2) month = "0" + month;
+    //   if (day.length < 2) day = "0" + day;
 
-      converted_posting_date = `${year}-${month}-${day}`;
-    } else converted_posting_date = addData.posting_date;
-    if (typeof addData.baseline_create_date === "object") {
-      let month = String(addData.baseline_create_date.getMonth() + 1);
-      let day = String(addData.baseline_create_date.getDate());
-      const year = String(addData.baseline_create_date.getFullYear());
+    //   converted_posting_date = `${year}-${month}-${day}`;
+    // } else converted_posting_date = addData.posting_date;
+    // if (typeof addData.baseline_create_date === "object") {
+    //   let month = String(addData.baseline_create_date.getMonth() + 1);
+    //   let day = String(addData.baseline_create_date.getDate());
+    //   const year = String(addData.baseline_create_date.getFullYear());
 
-      if (month.length < 2) month = "0" + month;
-      if (day.length < 2) day = "0" + day;
+    //   if (month.length < 2) month = "0" + month;
+    //   if (day.length < 2) day = "0" + day;
 
-      converted_baseline_create_date = `${year}-${month}-${day}`;
-    } else converted_baseline_create_date = addData.baseline_create_date;
-    if (typeof addData.clear_date === "object") {
-      let month = String(addData.clear_date.getMonth() + 1);
-      let day = String(addData.clear_date.getDate());
-      const year = String(addData.clear_date.getFullYear());
+    //   converted_baseline_create_date = `${year}-${month}-${day}`;
+    // } else converted_baseline_create_date = addData.baseline_create_date;
+    // if (typeof addData.clear_date === "object") {
+    //   let month = String(addData.clear_date.getMonth() + 1);
+    //   let day = String(addData.clear_date.getDate());
+    //   const year = String(addData.clear_date.getFullYear());
 
-      if (month.length < 2) month = "0" + month;
-      if (day.length < 2) day = "0" + day;
+    //   if (month.length < 2) month = "0" + month;
+    //   if (day.length < 2) day = "0" + day;
 
-      converted_clear_date = `${year}-${month}-${day}`;
-    } else converted_clear_date = addData.clear_date;
-    if (typeof addData.document_create_date === "object") {
-      let month = String(addData.document_create_date.getMonth() + 1);
-      let day = String(addData.document_create_date.getDate());
-      const year = String(addData.document_create_date.getFullYear());
+    //   converted_clear_date = `${year}-${month}-${day}`;
+    // } else converted_clear_date = addData.clear_date;
+    // if (typeof addData.document_create_date === "object") {
+    //   let month = String(addData.document_create_date.getMonth() + 1);
+    //   let day = String(addData.document_create_date.getDate());
+    //   const year = String(addData.document_create_date.getFullYear());
 
-      if (month.length < 2) month = "0" + month;
-      if (day.length < 2) day = "0" + day;
+    //   if (month.length < 2) month = "0" + month;
+    //   if (day.length < 2) day = "0" + day;
 
-      converted_document_create_date = `${year}-${month}-${day}`;
-    } else converted_document_create_date = addData.document_create_date;
-    if (typeof addData.due_in_date === "object") {
-      let month = String(addData.due_in_date.getMonth() + 1);
-      let day = String(addData.due_in_date.getDate());
-      const year = String(addData.due_in_date.getFullYear());
+    //   converted_document_create_date = `${year}-${month}-${day}`;
+    // } else converted_document_create_date = addData.document_create_date;
+    // if (typeof addData.due_in_date === "object") {
+    //   let month = String(addData.due_in_date.getMonth() + 1);
+    //   let day = String(addData.due_in_date.getDate());
+    //   const year = String(addData.due_in_date.getFullYear());
 
-      if (month.length < 2) month = "0" + month;
-      if (day.length < 2) day = "0" + day;
+    //   if (month.length < 2) month = "0" + month;
+    //   if (day.length < 2) day = "0" + day;
 
-      converted_due_in_date = `${year}-${month}-${day}`;
-    } else converted_due_in_date = addData.due_in_date;
+    //   converted_due_in_date = `${year}-${month}-${day}`;
+    // } else converted_due_in_date = addData.due_in_date;
 
     return this.client.get(
       apiPath.addRecord +
@@ -169,5 +187,35 @@ export default class DataService {
   };
   countRecord = () => {
     return this.client.get(apiPath.countRecord);
+  };
+  getAnalytics = (analyticsData) => {
+    let con_clear_date_start = this.convertDate(analyticsData.clear_date_start),
+      con_clear_date_end = this.convertDate(analyticsData.clear_date_end),
+      con_due_in_date_start = this.convertDate(analyticsData.due_in_date_start),
+      con_due_in_date_end = this.convertDate(analyticsData.due_in_date_end),
+      con_baseline_create_date_start = this.convertDate(
+        analyticsData.baseline_create_date_start
+      ),
+      con_baseline_create_date_end = this.convertDate(
+        analyticsData.baseline_create_date_end
+      );
+
+    return this.client.get(
+      apiPath.analytics +
+        "?clear_date_start=" +
+        con_clear_date_start +
+        "&clear_date_end=" +
+        con_clear_date_end +
+        "&due_in_date_start=" +
+        con_due_in_date_start +
+        "&due_in_date_end=" +
+        con_due_in_date_end +
+        "&baseline_create_date_start=" +
+        con_baseline_create_date_start +
+        "&baseline_create_date_end=" +
+        con_baseline_create_date_end +
+        "&invoice_currency=" +
+        analyticsData.invoice_currency
+    );
   };
 }

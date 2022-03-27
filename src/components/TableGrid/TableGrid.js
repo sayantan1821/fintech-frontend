@@ -29,6 +29,7 @@ import RefreshButton from "../Button/RefreshButton";
 import style from "./TableGrid.module.css";
 import PuffLoader from "react-spinners/PuffLoader";
 import { TransitionGroup } from "react-transition-group";
+import { tableStyles } from "./tableGridStyle";
 
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -320,6 +321,7 @@ export default function TableGrid({ advanceNotify, addNotify, updateNotify }) {
   let [loading, setLoading] = useState(false);
   let [color, setColor] = useState("#000000");
   let api = new DataService();
+  const styles = TableGrid();
 
   // const override = css`
   //   display: block;
@@ -536,7 +538,7 @@ export default function TableGrid({ advanceNotify, addNotify, updateNotify }) {
         </div>
       </div>
       <Paper className={classes.paper}>
-        <TableContainer style={{ height: "77vh" }}>
+        <TableContainer className={styles.Table_Container}>
           <Table
             className={classes.table}
             aria-labelledby="tableTitle"

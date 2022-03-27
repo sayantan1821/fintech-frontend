@@ -18,6 +18,8 @@ import { useStyles } from "./buttonStyles";
 import { DesktopDatePicker, LocalizationProvider } from "@mui/lab";
 import AdapterDateFns from "@mui/lab/AdapterDateFns";
 import { makeStyles } from "@material-ui/core/styles";
+import DataService from "../../services/DataService";
+import Analytics from "../Analytics/Analytics";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -77,6 +79,7 @@ const AnalyticsButton = (props) => {
     baseline_create_date_end: new Date(),
     invoice_currency: "",
   });
+  const [analyticsData, setAnalyticsData] = useState({});
 
   const newUseStyles = makeStyles((theme) => ({
     appBar: {
@@ -87,7 +90,7 @@ const AnalyticsButton = (props) => {
       flex: 1,
     },
   }));
-
+  let api = new DataService();
   const classes = newUseStyles();
 
   const handleOpen = () => {
@@ -107,7 +110,6 @@ const AnalyticsButton = (props) => {
   };
 
   const handleAddDate = (date, name) => {
-    console.log(date);
     setAnalyticsInput({ ...analyticsInput, [name]: date });
   };
 
@@ -119,10 +121,15 @@ const AnalyticsButton = (props) => {
   };
   const handleAnalyticsSubmit = (evt) => {
     evt.preventDefault();
-    console.log(analyticsInput);
+    // console.log(analyticsInput);
+    api.getAnalytics(analyticsInput).then((res) => {
+      console.log(res.data);
+      setAnalyticsData(res.data);
+    });
     handleClose();
     handleOpenView();
   };
+
   return (
     <>
       <Button onClick={handleOpen} {...props}>
@@ -243,7 +250,8 @@ const AnalyticsButton = (props) => {
             flexWrap: "wrap",
           }}
         >
-          Page Ban raha hai bro...
+
+          <Analytics analyticsData={analyticsData}  />
         </DialogContent>
       </Dialog>
     </>

@@ -9,5 +9,6 @@ export const apiPath = {
     recordsByPagination: "/web_project_eclipse/api/records",
     addRecord: "/web_project_eclipse/api/addRecord",
     updateRecord: "/web_project_eclipse/api/updateRecord",
-    countRecord: "/web_project_eclipse/api/count"
+    countRecord: "/web_project_eclipse/api/count",
+    analytics: "/web_project_eclipse/api/analyticsData",
 }
