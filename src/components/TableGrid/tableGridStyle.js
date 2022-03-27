@@ -1,70 +1,124 @@
-import { alpha, makeStyles } from '@material-ui/core/styles';
+import { alpha, makeStyles } from "@material-ui/core/styles";
+import { BorderColor } from "@material-ui/icons";
 
 export const useStyles = makeStyles((theme) => ({
+  root: {
+    width: "100%",
+    fontSize: "20pt",
+    // background: "#2D4250",
+    // color: "white",
+    "& .MuiInputBase_root": {
+      color: "white",
+    },
+  },
+  paper: {
+    width: "100%",
+    marginBottom: 50,
+    background: "#2D4250",
+    color: "white",
+  },
+  Table_Container: {
+    // display: "none",
+    height: "77vh",
+  },
+
+  table: {
     root: {
-      width: "100%",
-      fontSize: "20pt",
-    },
-    paper: {
-      width: "100%",
-      marginBottom: 50,
-    },
-    Table_Container: {
-        // display: "none",
-        height: "77vh",
-    },
-    
-    table: {
-        root: {
-          "& .Mui-selected": {
-            backgroundColor: "red !important"
-          }
-        }
-      }, 
-    // MuiTableRow: {
-    //     root: {
-    //       '&$selected': {
-    //         backgroundColor: 'yellow !important' 
-    //       }
-    //     }
-    //   },
-    visuallyHidden: {
-      border: 0,
-      clip: "rect(0 0 0 0)",
-      height: 1,
-      margin: -1,
-      overflow: "hidden",
-      padding: 0,
-      position: "absolute",
-      top: 20,
-      width: 1,
-    },
-    MuiTableRow: {
-        "&:hover": {
-            backgroundColor: "blue !important"
-          },
-        backgroundColor: "#283D4A",
-        color: "white",
-        "& > .MuiTableCell-root": {
-            // backgroundColor: "#283D4A",
-            color: "white",
-          },
-      "&.Mui-selected, &.Mui-selected:hover": {
-        backgroundColor: "red",
-        "& > .MuiTableCell-root": {
-          color: "white",
-        },
+      "& .Mui-selected": {
+        backgroundColor: "red !important",
       },
     },
-    TableCell: {
-      fontSize: "13px",
-      padding: "5px",
-      height: "5px",
+  },
+  checkbox: {
+    "&$checked": {
+      color: "rgba(0, 0, 0, 0.54) !important",
     },
-    tableTool: {
-      margin: "0 15px",
-      display: "flex",
-      justifyContent: "end",
-      fontSize: "13px",
+  },
+  checked: {
+    color: "yellow !important",
+  },
+  visuallyHidden: {
+    border: 0,
+    clip: "rect(0 0 0 0)",
+    height: 1,
+    margin: -1,
+    overflow: "hidden",
+    padding: 0,
+    position: "absolute",
+    top: 20,
+    width: 1,
+  },
+  HeadTableRow: {
+    "&:hover": {
+      backgroundColor: "#21323c !important",
     },
-  }));
+    backgroundColor: "#21323c",
+    color: "white",
+    "& > .MuiTableCell-root": {
+      color: "white",
+    },
+    "&.Mui-selected, &.Mui-selected:hover": {
+      backgroundColor: "#034269",
+      "& > .MuiTableCell-root": {
+        color: "white",
+      },
+    },
+  },
+  headCellLabel: {
+    position: "sticky",
+    "&:hover": {
+      color: "white !important",
+    },
+    "&:selected": {
+      color: "white !important",
+    },
+  },
+  "MuiTableSortLabel-active": {
+    color: "white !important",
+  },
+  MuiTableRow: {
+    "&:hover": {
+      backgroundColor: "#06588ae3 !important",
+    },
+    height: "48px",
+    backgroundColor: "#283D4A",
+    color: "white",
+    "& > .MuiTableCell-root": {
+      color: "white",
+    },
+    "&.Mui-selected, &.Mui-selected:hover": {
+      backgroundColor: "#034269",
+      "& > .MuiTableCell-root": {
+        color: "white",
+      },
+    },
+  },
+  root: {
+    // color: '#14AFF1',
+    "&$indeterminate": {
+      color: "#14AFF1",
+    },
+    "&$unselected": {
+      color: "#14AFF1",
+    },
+  },
+  indeterminate: {},
+  MuiCheckbox: {
+    color: "#14AFF1",
+  },
+  TableCell: {
+    fontSize: "13px",
+    padding: "5px",
+    height: "5px",
+  },
+  tableTool: {
+    margin: "0 15px",
+    display: "flex",
+    justifyContent: "end",
+    fontSize: "13px",
+  },
+  footerIcon: {
+    background: "white",
+    borderRadius: "15px",
+  },
+}));

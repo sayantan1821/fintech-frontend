@@ -5,6 +5,8 @@ import TableHeader from "../components/TableHeader/TableHeader";
 import TableGrid from "../components/TableGrid/TableGrid";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { ThemeProvider } from '@material-ui/core/styles';
+import { theme } from "../theme";
 
 export const Dashboard = () => {
   const advanceNotify = () => {
@@ -34,15 +36,17 @@ export const Dashboard = () => {
       <Header />
       <div style={{ height: "85vh" }}>
         {/* <TableHeader deleteRows /> */}
-        <TableGrid
-          deleteRows
-          advanceNotify={advanceNotify}
-          addNotify={addNotify}
-          updateNotify={updateNotify}
-        />
+        <ThemeProvider  theme={theme}>
+          <TableGrid
+            deleteRows
+            advanceNotify={advanceNotify}
+            addNotify={addNotify}
+            updateNotify={updateNotify}
+          />
+        </ThemeProvider>
       </div>
       <Footer />
-      <ToastContainer position="bottom-right" autoClose={2000}/>
+      <ToastContainer position="bottom-right" autoClose={2000} />
     </div>
   );
 };

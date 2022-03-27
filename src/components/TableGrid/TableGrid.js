@@ -201,19 +201,18 @@ function EnhancedTableHead(props) {
   const createSortHandler = (property) => (event) => {
     onRequestSort(event, property);
   };
-
+  const styles = useStyles();
   return (
     <TableHead style={{ height: "40px", padding: "0" }}>
-      <TableRow>
+      <TableRow className={styles.HeadTableRow}>
         <TableCell padding="checkbox">
           <Checkbox
             indeterminate={numSelected > 0 && numSelected < rowCount}
             checked={rowCount > 0 && numSelected === rowCount}
             onChange={onSelectAllClick}
             inputProps={{ "aria-label": "select all desserts" }}
-            style={{
-              color: "blue",
-            }}
+            color="primary"
+            className={styles.MuiCheckbox}
           />
         </TableCell>
         {headCells.map((headCell) => (
@@ -228,6 +227,8 @@ function EnhancedTableHead(props) {
               active={orderBy === headCell.id}
               direction={orderBy === headCell.id ? order : "asc"}
               onClick={createSortHandler(headCell.id)}
+              className={styles.headCellLabel}
+              style={{color: "white"}}
             >
               {headCell.label}
               {orderBy === headCell.id ? (
@@ -480,7 +481,7 @@ export default function TableGrid({ advanceNotify, addNotify, updateNotify }) {
       /> */}
       <div
         style={{
-          height: "8vh",
+          height: "9vh",
           display: "flex",
           justifyContent: "space-between",
           margin: "0 30px",
@@ -544,7 +545,6 @@ export default function TableGrid({ advanceNotify, addNotify, updateNotify }) {
             aria-labelledby="tableTitle"
             size={true ? "small" : "medium"} //dense = true
             aria-label="enhanced table"
-            
           >
             <EnhancedTableHead
               classes={classes}
@@ -558,195 +558,197 @@ export default function TableGrid({ advanceNotify, addNotify, updateNotify }) {
             />
             {!loading ? (
               <TableBody className={styles.TableBody}>
-                {records.length > 0 ? (
-                  stableSort(records, getComparator(order, orderBy)).map(
-                    (row, index) => {
-                      const isItemSelected = isSelected(row.sl_no);
-                      const labelId = `enhanced-table-checkbox-${index}`;
+                {
+                  records.length > 0
+                    ? stableSort(records, getComparator(order, orderBy)).map(
+                        (row, index) => {
+                          const isItemSelected = isSelected(row.sl_no);
+                          const labelId = `enhanced-table-checkbox-${index}`;
 
-                      return (
-                        <TableRow
-                          hover
-                          onClick={(event) => handleClick(event, row.sl_no)}
-                          role="checkbox"
-                          aria-checked={isItemSelected}
-                          tabIndex={-1}
-                          key={index}
-                          selected={isItemSelected}
-                          // style={{ height: "48px", background: "white" }}
-                          className={styles.MuiTableRow}
-                        >
-                          <TableCell
-                            className={styles.TableCell}
-                            padding="checkbox"
-                          >
-                            <Checkbox
-                              checked={isItemSelected}
-                              inputProps={{ "aria-labelledby": labelId }}
-                              style={{
-                                color: "blue",
-                              }}
-                            />
-                          </TableCell>
-                          <TableCell
-                            component="th"
-                            id={labelId}
-                            scope="row"
-                            padding="none"
-                            align="left"
-                            className={styles.TableCell}
-                          >
-                            {row.sl_no}
-                          </TableCell>
-                          <TableCell
-                            className={styles.TableCell}
-                            align="center"
-                          >
-                            {row.business_code}
-                          </TableCell>
-                          <TableCell
-                            className={styles.TableCell}
-                            align="center"
-                          >
-                            {row.business_name}
-                          </TableCell>
-                          <TableCell
-                            className={styles.TableCell}
-                            align="center"
-                          >
-                            {row.cust_number}
-                          </TableCell>
-                          <TableCell
-                            className={styles.TableCell}
-                            align="center"
-                          >
-                            {row.name_customer}
-                          </TableCell>
-                          <TableCell
-                            className={styles.TableCell}
-                            align="center"
-                          >
-                            <pre>
-                              {row.clear_date != "0000-00-00"
-                                ? row.clear_date
-                                : "NA"}
-                            </pre>
-                          </TableCell>
-                          <TableCell
-                            className={styles.TableCell}
-                            align="center"
-                          >
-                            {row.business_year}
-                          </TableCell>
-                          <TableCell
-                            className={styles.TableCell}
-                            align="center"
-                          >
-                            {row.doc_id}
-                          </TableCell>
-                          <TableCell
-                            className={styles.TableCell}
-                            align="center"
-                          >
-                            {row.posting_date}
-                          </TableCell>
-                          <TableCell
-                            className={styles.TableCell}
-                            align="center"
-                          >
-                            {row.document_create_date}
-                          </TableCell>
-                          <TableCell
-                            className={styles.TableCell}
-                            align="center"
-                          >
-                            {row.document_create_date1}
-                          </TableCell>
-                          <TableCell
-                            className={styles.TableCell}
-                            align="center"
-                          >
-                            <pre>{row.due_in_date}</pre>
-                          </TableCell>
-                          <TableCell
-                            className={styles.TableCell}
-                            align="center"
-                          >
-                            {row.invoice_currency}
-                          </TableCell>
-                          <TableCell
-                            className={styles.TableCell}
-                            align="center"
-                          >
-                            {row.document_type}
-                          </TableCell>
-                          <TableCell
-                            className={styles.TableCell}
-                            align="center"
-                          >
-                            {row.posting_id}
-                          </TableCell>
-                          <TableCell
-                            className={styles.TableCell}
-                            align="center"
-                          >
-                            {row.area_business && row.area_business.length > 0
-                              ? row.area_business.length
-                              : "NA"}
-                          </TableCell>
-                          <TableCell
-                            className={styles.TableCell}
-                            align="center"
-                          >
-                            {row.total_open_amount}
-                          </TableCell>
-                          <TableCell
-                            className={styles.TableCell}
-                            align="center"
-                          >
-                            {row.baseline_create_date}
-                          </TableCell>
-                          <TableCell
-                            className={styles.TableCell}
-                            align="center"
-                          >
-                            {row.cust_payment_terms}
-                          </TableCell>
-                          <TableCell
-                            className={styles.TableCell}
-                            align="center"
-                          >
-                            {row.invoice_id}
-                          </TableCell>
-                          <TableCell
-                            className={styles.TableCell}
-                            align="center"
-                          >
-                            {row.isOpen}
-                          </TableCell>
-                          <TableCell
-                            className={styles.TableCell}
-                            align="center"
-                          >
-                            {row.aging_Bucket.length > 0
-                              ? row.aging_Bucket.length
-                              : "NA"}
-                          </TableCell>
-                          <TableCell
-                            className={styles.TableCell}
-                            align="center"
-                          >
-                            {row.predicted}
-                          </TableCell>
-                        </TableRow>
-                      );
-                    }
-                  )
-                ) : ""/*(
+                          return (
+                            <TableRow
+                              hover
+                              onClick={(event) => handleClick(event, row.sl_no)}
+                              role="checkbox"
+                              aria-checked={isItemSelected}
+                              tabIndex={-1}
+                              key={index}
+                              selected={isItemSelected}
+                              // style={{ height: "48px"}}
+                              className={styles.MuiTableRow}
+                            >
+                              <TableCell
+                                className={styles.TableCell}
+                                padding="checkbox"
+                              >
+                                <Checkbox
+                                  checked={isItemSelected}
+                                  inputProps={{ "aria-labelledby": labelId }}
+                                  color="primary"
+                                  className={styles.MuiCheckbox}
+                                />
+                              </TableCell>
+                              <TableCell
+                                component="th"
+                                id={labelId}
+                                scope="row"
+                                padding="none"
+                                align="left"
+                                className={styles.TableCell}
+                              >
+                                {row.sl_no}
+                              </TableCell>
+                              <TableCell
+                                className={styles.TableCell}
+                                align="center"
+                              >
+                                {row.business_code}
+                              </TableCell>
+                              <TableCell
+                                className={styles.TableCell}
+                                align="center"
+                              >
+                                {row.business_name}
+                              </TableCell>
+                              <TableCell
+                                className={styles.TableCell}
+                                align="center"
+                              >
+                                {row.cust_number}
+                              </TableCell>
+                              <TableCell
+                                className={styles.TableCell}
+                                align="center"
+                              >
+                                {row.name_customer}
+                              </TableCell>
+                              <TableCell
+                                className={styles.TableCell}
+                                align="center"
+                              >
+                                <pre>
+                                  {row.clear_date != "0000-00-00"
+                                    ? row.clear_date
+                                    : "NA"}
+                                </pre>
+                              </TableCell>
+                              <TableCell
+                                className={styles.TableCell}
+                                align="center"
+                              >
+                                {row.business_year}
+                              </TableCell>
+                              <TableCell
+                                className={styles.TableCell}
+                                align="center"
+                              >
+                                {row.doc_id}
+                              </TableCell>
+                              <TableCell
+                                className={styles.TableCell}
+                                align="center"
+                              >
+                                {row.posting_date}
+                              </TableCell>
+                              <TableCell
+                                className={styles.TableCell}
+                                align="center"
+                              >
+                                {row.document_create_date}
+                              </TableCell>
+                              <TableCell
+                                className={styles.TableCell}
+                                align="center"
+                              >
+                                {row.document_create_date1}
+                              </TableCell>
+                              <TableCell
+                                className={styles.TableCell}
+                                align="center"
+                              >
+                                <pre>{row.due_in_date}</pre>
+                              </TableCell>
+                              <TableCell
+                                className={styles.TableCell}
+                                align="center"
+                              >
+                                {row.invoice_currency}
+                              </TableCell>
+                              <TableCell
+                                className={styles.TableCell}
+                                align="center"
+                              >
+                                {row.document_type}
+                              </TableCell>
+                              <TableCell
+                                className={styles.TableCell}
+                                align="center"
+                              >
+                                {row.posting_id}
+                              </TableCell>
+                              <TableCell
+                                className={styles.TableCell}
+                                align="center"
+                              >
+                                {row.area_business &&
+                                row.area_business.length > 0
+                                  ? row.area_business.length
+                                  : "NA"}
+                              </TableCell>
+                              <TableCell
+                                className={styles.TableCell}
+                                align="center"
+                              >
+                                {row.total_open_amount}
+                              </TableCell>
+                              <TableCell
+                                className={styles.TableCell}
+                                align="center"
+                              >
+                                {row.baseline_create_date}
+                              </TableCell>
+                              <TableCell
+                                className={styles.TableCell}
+                                align="center"
+                              >
+                                {row.cust_payment_terms}
+                              </TableCell>
+                              <TableCell
+                                className={styles.TableCell}
+                                align="center"
+                              >
+                                {row.invoice_id}
+                              </TableCell>
+                              <TableCell
+                                className={styles.TableCell}
+                                align="center"
+                              >
+                                {row.isOpen}
+                              </TableCell>
+                              <TableCell
+                                className={styles.TableCell}
+                                align="center"
+                              >
+                                {row.aging_Bucket.length > 0
+                                  ? row.aging_Bucket.length
+                                  : "NA"}
+                              </TableCell>
+                              <TableCell
+                                className={styles.TableCell}
+                                align="center"
+                              >
+                                {row.predicted}
+                              </TableCell>
+                            </TableRow>
+                          );
+                        }
+                      )
+                    : "" /*(
                   <div className={style.notFound}>
                     <p>Records not found. Kindly go to the previous page.</p>
                   </div>
-                )*/}
+                )*/
+                }
               </TableBody>
             ) : (
               <p className={style.notFound}>
@@ -771,11 +773,12 @@ export default function TableGrid({ advanceNotify, addNotify, updateNotify }) {
           {records.length > 0 && (
             <Input
               defaultValue={recordPerPage}
-              inputProps={{ "aria-label": "description" }}
+              inputProps={{ "aria-label": "description", style: { color: "white" } }}
               style={{ width: "40px", fontSize: "13px", margin: "0 8px" }}
               onChange={(e) => {
                 handleRecordsPerPage(e);
               }}
+              className={styles.MuiInputBase_root}
             />
           )}
           {pageNo > 0 && (
@@ -787,7 +790,7 @@ export default function TableGrid({ advanceNotify, addNotify, updateNotify }) {
               onClick={() => handlePreviousPage()}
               style={{ marginRight: "5px" }}
             >
-              <GrFormPrevious />
+              <GrFormPrevious className={styles.footerIcon} />
             </IconButton>
           )}
           {records.length > 0 && (
@@ -804,7 +807,7 @@ export default function TableGrid({ advanceNotify, addNotify, updateNotify }) {
               className={styles.margin}
               onClick={() => handleNextPage()}
             >
-              <GrFormNext />
+              <GrFormNext className={styles.footerIcon} />
             </IconButton>
           )}
         </div>
