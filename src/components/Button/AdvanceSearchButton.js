@@ -62,7 +62,16 @@ const AdvanceSearchButton = ({
       <Button {...props} onClick={handleOpen}>
         <pre>ADVANCE SEARCH</pre>
       </Button>
-      <Dialog TransitionComponent={Transition} fullWidth={true} maxWidth="md" open={open} onClose={handleClose}>
+      <Dialog
+        TransitionComponent={Transition}
+        fullWidth={true}
+        maxWidth="md"
+        open={open}
+        onClose={handleClose}
+        PaperProps={{
+          className: styles.dialog,
+        }}
+      >
         <DialogTitle>ADVANCED SEARCVH</DialogTitle>
         <form onSubmit={handleAdvanceSubmit}>
           <DialogContent
@@ -78,8 +87,11 @@ const AdvanceSearchButton = ({
               name="doc_id"
               // defaultValue="Invoice Currency"
               className={styles.textField}
-              helperText="Enter Document Id-(doc_id)"
+              // helperText="Enter Document Id-(doc_id)"
               onChange={handleAdvanceInput}
+              InputProps={{
+                    className: styles.input,
+                  }}
               required={false}
             />
             <TextField
@@ -88,8 +100,11 @@ const AdvanceSearchButton = ({
               name="cust_number"
               // defaultValue="Total Open Amount"
               className={styles.textField}
-              helperText="Enter Customer No-(cust_number)"
+              // helperText="Enter Customer No-(cust_number)"
               onChange={handleAdvanceInput}
+              InputProps={{
+                    className: styles.input,
+                  }}
               required={false}
             />
             <TextField
@@ -98,8 +113,11 @@ const AdvanceSearchButton = ({
               name="invoice_id"
               // defaultValue="Invoice Currency"
               className={styles.textField}
-              helperText="Enter Invoice No-(invoice_id)"
+              // helperText="Enter Invoice No-(invoice_id)"
               onChange={handleAdvanceInput}
+              InputProps={{
+                    className: styles.input,
+                  }}
               required={false}
             />
             <TextField
@@ -108,14 +126,17 @@ const AdvanceSearchButton = ({
               name="buisness_year"
               // defaultValue="Total Open Amount"
               className={styles.textField}
-              helperText="Enter Business Year- (buisness_year)"
+              // helperText="Enter Business Year- (buisness_year)"
               onChange={handleAdvanceInput}
+              InputProps={{
+                    className: styles.input,
+                  }}
               required={false}
             />
           </DialogContent>
-          <DialogActions>
-            <Button type="submit">SEARCH</Button>
-            <Button onClick={handleClose}>Cancel</Button>
+          <DialogActions className={styles.DialogActions}>
+            <Button className={styles.formButton} type="submit">SEARCH</Button>
+            <Button className={styles.formButton} onClick={handleClose}>Cancel</Button>
           </DialogActions>
         </form>
       </Dialog>

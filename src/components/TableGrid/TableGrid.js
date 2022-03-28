@@ -71,24 +71,24 @@ const headCells = [
     disablePadding: false,
     label: "Business Code",
   },
-  {
-    id: "business_name",
-    numeric: false,
-    disablePadding: false,
-    label: "Business Name",
-  },
+  // {
+  //   id: "business_name",
+  //   numeric: false,
+  //   disablePadding: false,
+  //   label: "Business Name",
+  // },
   {
     id: "cust_number",
     numeric: false,
     disablePadding: false,
     label: "Customer Number",
   },
-  {
-    id: "name_customer",
-    numeric: false,
-    disablePadding: false,
-    label: "Customer Name",
-  },
+  // {
+  //   id: "name_customer",
+  //   numeric: false,
+  //   disablePadding: false,
+  //   label: "Customer Name",
+  // },
   {
     id: "clear_date",
     numeric: false,
@@ -114,12 +114,12 @@ const headCells = [
     disablePadding: false,
     label: "Document Create Date",
   },
-  {
-    id: "document_create_date1",
-    numeric: false,
-    disablePadding: false,
-    label: "Document Create Date 1",
-  },
+  // {
+  //   id: "document_create_date1",
+  //   numeric: false,
+  //   disablePadding: false,
+  //   label: "Document Create Date 1",
+  // },
   {
     id: "due_in_date",
     numeric: false,
@@ -144,12 +144,12 @@ const headCells = [
     disablePadding: false,
     label: "Posting Id",
   },
-  {
-    id: "area_business",
-    numeric: false,
-    disablePadding: false,
-    label: "Area Business",
-  },
+  // {
+  //   id: "area_business",
+  //   numeric: false,
+  //   disablePadding: false,
+  //   label: "Area Business",
+  // },
   {
     id: "total_open_amount",
     numeric: false,
@@ -174,13 +174,13 @@ const headCells = [
     disablePadding: false,
     label: "Invoice Id",
   },
-  { id: "isOpen", numeric: false, disablePadding: false, label: "Is Open" },
-  {
-    id: "aging_Bucket",
-    numeric: false,
-    disablePadding: false,
-    label: "Aging Bucket",
-  },
+  // { id: "isOpen", numeric: false, disablePadding: false, label: "Is Open" },
+  // {
+  //   id: "aging_Bucket",
+  //   numeric: false,
+  //   disablePadding: false,
+  //   label: "Aging Bucket",
+  // },
   {
     id: "predicted",
     numeric: false,
@@ -621,7 +621,7 @@ export default function TableGrid({ advanceNotify, addNotify, updateNotify }) {
                                 // style={{ height: "48px"}}
                                 className={styles.MuiTableRow}
                               >
-                                <TableCell
+                              <TableCell
                                   className={styles.TableCell}
                                   padding="checkbox"
                                 >
@@ -632,157 +632,19 @@ export default function TableGrid({ advanceNotify, addNotify, updateNotify }) {
                                     className={styles.MuiCheckbox}
                                   />
                                 </TableCell>
+                              {headCells.map((cell, idx) => (
                                 <TableCell
                                   component="th"
                                   id={labelId}
                                   scope="row"
                                   padding="none"
-                                  align="left"
-                                  className={styles.TableCell}
-                                >
-                                  {row.sl_no}
-                                </TableCell>
-                                <TableCell
-                                  className={styles.TableCell}
                                   align="center"
-                                >
-                                  {row.business_code}
-                                </TableCell>
-                                <TableCell
                                   className={styles.TableCell}
-                                  align="center"
+                                  key={idx}
                                 >
-                                  {row.business_name}
+                                  {row[cell.id] !== "0000-00-00" ? row[cell.id] : "NA"}
                                 </TableCell>
-                                <TableCell
-                                  className={styles.TableCell}
-                                  align="center"
-                                >
-                                  {row.cust_number}
-                                </TableCell>
-                                <TableCell
-                                  className={styles.TableCell}
-                                  align="center"
-                                >
-                                  {row.name_customer}
-                                </TableCell>
-                                <TableCell
-                                  className={styles.TableCell}
-                                  align="center"
-                                >
-                                  <pre>
-                                    {row.clear_date != "0000-00-00"
-                                      ? row.clear_date
-                                      : "NA"}
-                                  </pre>
-                                </TableCell>
-                                <TableCell
-                                  className={styles.TableCell}
-                                  align="center"
-                                >
-                                  {row.business_year}
-                                </TableCell>
-                                <TableCell
-                                  className={styles.TableCell}
-                                  align="center"
-                                >
-                                  {row.doc_id}
-                                </TableCell>
-                                <TableCell
-                                  className={styles.TableCell}
-                                  align="center"
-                                >
-                                  {row.posting_date}
-                                </TableCell>
-                                <TableCell
-                                  className={styles.TableCell}
-                                  align="center"
-                                >
-                                  {row.document_create_date}
-                                </TableCell>
-                                <TableCell
-                                  className={styles.TableCell}
-                                  align="center"
-                                >
-                                  {row.document_create_date1}
-                                </TableCell>
-                                <TableCell
-                                  className={styles.TableCell}
-                                  align="center"
-                                >
-                                  <pre>{row.due_in_date}</pre>
-                                </TableCell>
-                                <TableCell
-                                  className={styles.TableCell}
-                                  align="center"
-                                >
-                                  {row.invoice_currency}
-                                </TableCell>
-                                <TableCell
-                                  className={styles.TableCell}
-                                  align="center"
-                                >
-                                  {row.document_type}
-                                </TableCell>
-                                <TableCell
-                                  className={styles.TableCell}
-                                  align="center"
-                                >
-                                  {row.posting_id}
-                                </TableCell>
-                                <TableCell
-                                  className={styles.TableCell}
-                                  align="center"
-                                >
-                                  {row.area_business &&
-                                  row.area_business.length > 0
-                                    ? row.area_business.length
-                                    : "NA"}
-                                </TableCell>
-                                <TableCell
-                                  className={styles.TableCell}
-                                  align="center"
-                                >
-                                  {row.total_open_amount}
-                                </TableCell>
-                                <TableCell
-                                  className={styles.TableCell}
-                                  align="center"
-                                >
-                                  {row.baseline_create_date}
-                                </TableCell>
-                                <TableCell
-                                  className={styles.TableCell}
-                                  align="center"
-                                >
-                                  {row.cust_payment_terms}
-                                </TableCell>
-                                <TableCell
-                                  className={styles.TableCell}
-                                  align="center"
-                                >
-                                  {row.invoice_id}
-                                </TableCell>
-                                <TableCell
-                                  className={styles.TableCell}
-                                  align="center"
-                                >
-                                  {row.isOpen}
-                                </TableCell>
-                                <TableCell
-                                  className={styles.TableCell}
-                                  align="center"
-                                >
-                                  {row.aging_Bucket.length > 0
-                                    ? row.aging_Bucket.length
-                                    : "NA"}
-                                </TableCell>
-                                <TableCell
-                                  className={styles.TableCell}
-                                  align="center"
-                                >
-                                  {row.predicted}
-                                </TableCell>
+                              ))}
                               </TableRow>
                             );
                           }

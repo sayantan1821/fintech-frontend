@@ -154,9 +154,7 @@ const AddButton = ({ addRow, addNotify, ...props }) => {
   };
   const handleAddDate = (date, name) => {
     if (name === "posting_date") {
-      
-      setAddInput({ ...addInput, posting_date: date, due_in_date: date});
-      
+      setAddInput({ ...addInput, posting_date: date, due_in_date: date });
     } else if (name === "due_in_date" && date <= addInput.posting_date) {
       console.log("not possible");
       addInput.due_in_date.setDate(addInput.posting_date.getDate() + 1);
@@ -186,6 +184,10 @@ const AddButton = ({ addRow, addNotify, ...props }) => {
         fullWidth={true}
         maxWidth="lg"
         TransitionComponent={Transition}
+        // className={styles.dialog}
+        PaperProps={{
+          className: styles.dialog,
+        }}
       >
         <DialogTitle style={{ cursor: "move" }} id="draggable-dialog-title">
           Add
@@ -208,7 +210,10 @@ const AddButton = ({ addRow, addNotify, ...props }) => {
                   className={styles.textField}
                   helperText={data.helperText}
                   onChange={handleAddInput}
-                  // required={true}
+                  InputProps={{
+                    className: styles.input,
+                  }}
+                  required={true}
                 />
               ) : (
                 <LocalizationProvider key={idx} dateAdapter={AdapterDateFns}>
@@ -221,12 +226,15 @@ const AddButton = ({ addRow, addNotify, ...props }) => {
                     required={true}
                     renderInput={(params) => (
                       <TextField
-                        // required={true}
+                        required={true}
                         // name={data.name}
                         // value={addInput[data.name]}
                         className={styles.textField}
                         // label={data.label}
                         // onChange={handleAddInput}
+                        InputProps={{
+                          className: styles.input,
+                        }}
                         {...params}
                       />
                     )}
@@ -235,11 +243,22 @@ const AddButton = ({ addRow, addNotify, ...props }) => {
               )
             )}
           </DialogContent>
-          <DialogActions>
-            <Button autoFocus onClick={closeModal}>
+          <DialogActions className={styles.DialogActions}>
+            <Button
+              variant="outlined"
+              className={styles.formButton}
+              type="submit"
+            >
+              ADD
+            </Button>
+            <Button
+              autoFocus
+              variant="outlined"
+              className={styles.formButton}
+              onClick={closeModal}
+            >
               Cancel
             </Button>
-            <Button type="submit">ADD</Button>
           </DialogActions>
         </form>
       </Dialog>

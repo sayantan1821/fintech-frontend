@@ -61,11 +61,21 @@ const EditButton = ({ editRow, selected, ...props }) => {
       >
         EDIT
       </Button>
-      <Dialog TransitionComponent={Transition} fullWidth={true} maxWidth="sm" open={open} onClose={handleClose}>
+      <Dialog
+        PaperProps={{
+          className: styles.dialog,
+        }}
+        TransitionComponent={Transition}
+        fullWidth={true}
+        maxWidth="sm"
+        open={open}
+        onClose={handleClose}
+      >
         <DialogTitle>Edit</DialogTitle>
         <form onSubmit={handleEditSubmit}>
           <DialogContent
-            style={{ display: "flex", justifyContent: "space-around" }}
+            // style={{ display: "flex", justifyContent: "space-around" }}
+            className={styles.DialogContent}
           >
             <TextField
               label="Invoice Currency"
@@ -74,8 +84,12 @@ const EditButton = ({ editRow, selected, ...props }) => {
               // defaultValue="Invoice Currency"
               className={styles.textField}
               // style={{ width: "250px" }}
-              helperText="Enter Invoice Currency"
+              // helperText="Enter Invoice Currency"
               onChange={handleEditInput}
+              required={true}
+              InputProps={{
+                className: styles.input,
+              }}
             />
             <TextField
               label="Cust Payment Terms"
@@ -84,27 +98,27 @@ const EditButton = ({ editRow, selected, ...props }) => {
               // defaultValue="Total Open Amount"
               className={styles.textField}
               // style={{ width: "250px" }}
-              helperText="Enter Cust Payment Terms"
+              // helperText="Enter Cust Payment Terms"
               onChange={handleEditInput}
+              required={true}
+              InputProps={{
+                className: styles.input,
+              }}
             />
           </DialogContent>
-          <DialogActions
-            style={{ display: "flex", justifyContent: "space-around" }}
-          >
+          <DialogActions className={styles.DialogActions}>
             <Button
               type="submit"
               size="large"
               variant="outlined"
-              color="primary"
-              style={{ padding: "7px 100px" }}
+              className={styles.formButton}
             >
               UPDATE
             </Button>
             <Button
               size="large"
               variant="outlined"
-              color="primary"
-              style={{ padding: "7px 100px" }}
+              className={styles.formButton}
               onClick={handleClose}
             >
               Cancel

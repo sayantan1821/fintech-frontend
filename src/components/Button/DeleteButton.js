@@ -8,14 +8,15 @@ import {
   DialogTitle,
   Slide,
 } from "@material-ui/core";
+import { useStyles } from "./buttonStyles";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
-const DeleteButton = ({deleteRows, selected, ...props}) => {
+const DeleteButton = ({ deleteRows, selected, ...props }) => {
   const [open, setOpen] = React.useState(false);
-
+  const styles = useStyles();
   const handleDelete = (e) => {
     e.preventDefault();
     deleteRows();
@@ -45,22 +46,25 @@ const DeleteButton = ({deleteRows, selected, ...props}) => {
         onClose={handleClose}
         aria-labelledby="alert-dialog-slide-title"
         aria-describedby="alert-dialog-slide-description"
+        PaperProps={{
+          className: styles.dialog,
+        }}
       >
         <DialogTitle id="alert-dialog-slide-title">
           {"Delete Records ?"}
         </DialogTitle>
         <DialogContent>
-          <DialogContentText id="alert-dialog-slide-description">
+          <DialogContentText className={styles.DialogContentText} id="alert-dialog-slide-description">
             Are you sure you want to delete record[s] ?
           </DialogContentText>
         </DialogContent>
-        <DialogActions>
+        <DialogActions className={styles.DialogActions}>
           <Button
             onClick={handleClose}
             size="large"
             variant="outlined"
             color="primary"
-            style={{ padding: "7px 50px" }}
+            className={styles.formButton}
           >
             cancel
           </Button>
@@ -69,7 +73,7 @@ const DeleteButton = ({deleteRows, selected, ...props}) => {
             size="large"
             variant="outlined"
             color="primary"
-            style={{ padding: "7px 50px" }}
+            className={styles.formButton}
           >
             Delete
           </Button>
