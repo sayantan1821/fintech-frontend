@@ -1,5 +1,4 @@
 import { alpha, makeStyles } from "@material-ui/core/styles";
-import { BorderColor } from "@material-ui/icons";
 
 export const useStyles = makeStyles((theme) => ({
   root: {
