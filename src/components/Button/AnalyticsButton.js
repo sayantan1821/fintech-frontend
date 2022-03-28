@@ -153,7 +153,7 @@ const AnalyticsButton = (props) => {
           >
             {analyticsFormDetails.map((form, idx) =>
               form.type === "date" ? (
-                <div style={{ display: "flex", flexDirection: "column" }}>
+                <div key={idx} style={{ display: "flex", flexDirection: "column" }}>
                   <LocalizationProvider dateAdapter={AdapterDateFns}>
                     <DesktopDatePicker
                       label={form.start.label}

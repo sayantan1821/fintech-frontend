@@ -245,61 +245,6 @@ function EnhancedTableHead(props) {
   );
 }
 
-// EnhancedTableHead.propTypes = {
-//   classes: PropTypes.object.isRequired,
-//   numSelected: PropTypes.number.isRequired,
-//   onRequestSort: PropTypes.func.isRequired,
-//   onSelectAllClick: PropTypes.func.isRequired,
-//   order: PropTypes.oneOf(["asc", "desc"]).isRequired,
-//   orderBy: PropTypes.string.isRequired,
-//   rowCount: PropTypes.number.isRequired,
-// };
-
-// const useStyles = makeStyles((theme) => ({
-//   root: {
-//     width: "100%",
-//     fontSize: "20pt",
-//   },
-//   paper: {
-//     width: "100%",
-//     marginBottom: 50,
-//   },
-//   table: {
-//     minWidth: 750,
-//     fontSize: "200000pt",
-//   },
-//   visuallyHidden: {
-//     border: 0,
-//     clip: "rect(0 0 0 0)",
-//     height: 1,
-//     margin: -1,
-//     overflow: "hidden",
-//     padding: 0,
-//     position: "absolute",
-//     top: 20,
-//     width: 1,
-//   },
-//   tableRow: {
-//     "&.Mui-selected, &.Mui-selected:hover": {
-//       backgroundColor: "purple",
-//       "& > .MuiTableCell-root": {
-//         color: "yellow",
-//       },
-//     },
-//   },
-//   TableCell: {
-//     fontSize: "13px",
-//     padding: "5px",
-//     height: "5px",
-//   },
-//   tableTool: {
-//     margin: "0 15px",
-//     display: "flex",
-//     justifyContent: "end",
-//     fontSize: "13px",
-//   },
-// }));
-
 export default function TableGrid({ advanceNotify, addNotify, updateNotify }) {
   const classes = useStyles();
   const [order, setOrder] = React.useState("asc");
@@ -324,12 +269,6 @@ export default function TableGrid({ advanceNotify, addNotify, updateNotify }) {
   let [color, setColor] = useState("#000000");
   let api = new DataService();
   const styles = useStyles();
-
-  // const override = css`
-  //   display: block;
-  //   margin: 0 auto;
-  //   border-color: red;
-  // `;
 
   //get main table data
   const getData = () => {
@@ -540,6 +479,7 @@ export default function TableGrid({ advanceNotify, addNotify, updateNotify }) {
         </div>
       </div>
       <Paper className={classes.paper}>
+      
         <TableContainer className={styles.Table_Container}>
           <Scrollbars
             autoHide
@@ -598,11 +538,9 @@ export default function TableGrid({ advanceNotify, addNotify, updateNotify }) {
                 rowCount={records.length}
                 style={{ align: "left" }}
               />
-              {!loading ? (
+              {/* {!loading ? ( */}
                 <TableBody className={styles.TableBody}>
-                  {
-                    records.length > 0
-                      ? stableSort(records, getComparator(order, orderBy)).map(
+                  {stableSort(records, getComparator(order, orderBy)).map(
                           (row, index) => {
                             const isItemSelected = isSelected(row.sl_no);
                             const labelId = `enhanced-table-checkbox-${index}`;
@@ -649,14 +587,14 @@ export default function TableGrid({ advanceNotify, addNotify, updateNotify }) {
                             );
                           }
                         )
-                      : "" /*(
+                       /*(
                   <div className={style.notFound}>
                     <p>Records not found. Kindly go to the previous page.</p>
                   </div>
                 )*/
                   }
                 </TableBody>
-              ) : (
+              {/* ) : (
                 <p className={style.notFound}>
                   <PuffLoader
                     color={color}
@@ -668,7 +606,7 @@ export default function TableGrid({ advanceNotify, addNotify, updateNotify }) {
                   <br></br>
                   <p>Data Loading... Please Wait...</p>
                 </p>
-              )}
+              )} */}
             </Table>
           </Scrollbars>
         </TableContainer>
