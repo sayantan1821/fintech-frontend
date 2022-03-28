@@ -548,56 +548,36 @@ export default function TableGrid({ advanceNotify, addNotify, updateNotify }) {
             renderTrackHorizontal={({ style, ...props }) => (
               <div
                 {...props}
-                // className={s.scrollTrackVertical}
+                className={styles.scrollTrackHorizontal}
                 style={{
                   ...style,
-                  backgroundColor: "transparent",
-                  right: "2px",
-                  bottom: "2px",
-                  // top: "2px",
-                  borderRadius: "3px",
-                  width: "100%",
                 }}
               />
             )}
             renderTrackVertical={({ style, ...props }) => (
               <div
                 {...props}
-                // className={s.scrollTrackVertical}
+                className={styles.scrollTrackVertical}
                 style={{
                   ...style,
-                  backgroundColor: "transparent",
-                  right: "2px",
-                  bottom: "2px",
-                  top: "2px",
-                  borderRadius: "3px",
-                  width: "5px",
                 }}
               />
             )}
             renderThumbHorizontal={({ style, ...props }) => (
               <div
                 {...props}
-                // className={s.scrollThumbVertical}
+                className={styles.scrollThumbHorizontal}
                 style={{
                   ...style,
-                  height: "5px",
-                  borderRadius: "4px",
-                  boxShadow: "0 2px 4px 0 rgba(0, 0, 0, 0.16)",
-                  backgroundColor: "#16aeefc7",
                 }}
               />
             )}
             renderThumbVertical={({ style, ...props }) => (
               <div
                 {...props}
-                // className={s.scrollThumbVertical}
+                className={styles.scrollThumbVertical}
                 style={{
                   ...style,
-                  width: "4px",
-                  borderRadius: "4px",
-                  boxShadow: "0 2px 4px 0 rgba(0, 0, 0, 0.16)",
-                  backgroundColor: "#16aeefc7",
                 }}
               />
             )}

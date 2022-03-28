@@ -95,13 +95,14 @@ export const useStyles = makeStyles((theme) => ({
   root: {
     // color: '#14AFF1',
     "&$indeterminate": {
-      color: "#14AFF1",
+      color: "white",
     },
     "&$unselected": {
       color: "#14AFF1",
     },
   },
-  indeterminate: {},
+  indeterminate: {
+  },
   MuiCheckbox: {
     color: "#14AFF1",
   },
@@ -119,5 +120,29 @@ export const useStyles = makeStyles((theme) => ({
   footerIcon: {
     background: "white",
     borderRadius: "15px",
+  },
+  scrollTrackHorizontal: {
+    background: "transparent",
+    bottom: "2px",
+    width: "100%",
+  },
+  scrollTrackVertical: {
+    background: "transparent",
+    right: "2px",
+    top: "2px",
+    bottom: "2px",
+    width: "5px",
+  },
+  scrollThumbHorizontal: {
+    height: "4px",
+    borderRadius: "4px",
+    boxShadow: "0 2px 4px 0 rgba(0, 0, 0, 0.16)",
+    backgroundColor: "#16aeefc7",
+  },
+  scrollThumbVertical: {
+    width: "4px",
+    borderRadius: "4px",
+    boxShadow: "0 2px 4px 0 rgba(0, 0, 0, 0.16)",
+    backgroundColor: "#16aeefc7",
   },
 }));
