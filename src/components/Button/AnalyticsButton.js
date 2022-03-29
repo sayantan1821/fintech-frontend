@@ -71,12 +71,12 @@ const AnalyticsButton = (props) => {
     },
   ];
   const [analyticsInput, setAnalyticsInput] = useState({
-    clear_date_start: new Date(),
-    clear_date_end: new Date(),
-    due_in_date_start: new Date(),
-    due_in_date_end: new Date(),
-    baseline_create_date_start: new Date(),
-    baseline_create_date_end: new Date(),
+    clear_date_start: null,
+    clear_date_end: null,
+    due_in_date_start: null,
+    due_in_date_end: null,
+    baseline_create_date_start: null,
+    baseline_create_date_end: null,
     invoice_currency: "",
   });
   const [analyticsData, setAnalyticsData] = useState([]);
@@ -141,6 +141,9 @@ const AnalyticsButton = (props) => {
         maxWidth="md"
         open={open}
         onClose={handleClose}
+        PaperProps={{
+          className: styles.dialog,
+        }}
       >
         <DialogTitle>ANALYTICS VIEW</DialogTitle>
         <form onSubmit={handleAnalyticsSubmit}>
@@ -153,7 +156,11 @@ const AnalyticsButton = (props) => {
           >
             {analyticsFormDetails.map((form, idx) =>
               form.type === "date" ? (
-                <div key={idx} style={{ display: "flex", flexDirection: "column" }}>
+                <div
+                  key={idx}
+                  className={styles.analyticsDateContainer}
+                  // style={{ display: "flex", flexDirection: "column" }}
+                >
                   <LocalizationProvider dateAdapter={AdapterDateFns}>
                     <DesktopDatePicker
                       label={form.start.label}
@@ -170,6 +177,9 @@ const AnalyticsButton = (props) => {
                           className={styles.textField}
                           // label={data.label}
                           // onChange={handleAddInput}
+                          InputProps={{
+                            className: styles.input,
+                          }}
                           {...params}
                         />
                       )}
@@ -191,6 +201,9 @@ const AnalyticsButton = (props) => {
                           className={styles.textField}
                           // label={data.label}
                           // onChange={handleAddInput}
+                          InputProps={{
+                            className: styles.input,
+                          }}
                           {...params}
                         />
                       )}
@@ -204,16 +217,19 @@ const AnalyticsButton = (props) => {
                   id="margin-normal"
                   name={form.name}
                   className={styles.textField}
-                  helperText={form.helperText}
+                  // helperText={form.helperText}
                   onChange={handleAnalyticsInput}
+                  InputProps={{
+                    className: styles.input,
+                  }}
                   // required={true}
                 />
               )
             )}
           </DialogContent>
-          <DialogActions>
-            <Button type="submit">SUBMIT</Button>
-            <Button onClick={handleClose}>Cancel</Button>
+          <DialogActions className={styles.DialogActions}>
+            <Button className={styles.formButton} type="submit">SUBMIT</Button>
+            <Button className={styles.formButton} onClick={handleClose}>Cancel</Button>
           </DialogActions>
         </form>
       </Dialog>
@@ -250,8 +266,7 @@ const AnalyticsButton = (props) => {
             flexWrap: "wrap",
           }}
         >
-
-          <Analytics analyticsData={analyticsData}  />
+          <Analytics analyticsData={analyticsData} />
         </DialogContent>
       </Dialog>
     </>

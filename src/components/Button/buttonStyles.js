@@ -41,6 +41,7 @@ export const useStyles = makeStyles((theme) => ({
     // marginTop: 30,
     // color: "white",
     width: 300,
+    height: 50,
     // marginLeft: "auto",
     // marginRight: "auto",
     paddingBottom: 0,
@@ -55,6 +56,11 @@ export const useStyles = makeStyles((theme) => ({
     marginTop: "10px",
     width: "full",
     background: "transparent",
+  },
+  analyticsDateContainer: {
+display: "flex",
+flexDirection: "column",
+marginBottom: 30
   },
   formButton: {
     color: "white",

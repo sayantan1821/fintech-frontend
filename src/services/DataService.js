@@ -12,8 +12,10 @@ export default class DataService {
     });
   };
   convertDate = (date) => {
-    let convertedDate;
-    if (typeof date === "object") {
+    // console.log(date);
+    let convertedDate = null;
+    
+    if (date !== null && typeof date === "object") {
       let month = String(date.getMonth() + 1);
       let day = String(date.getDate());
       const year = String(date.getFullYear());
