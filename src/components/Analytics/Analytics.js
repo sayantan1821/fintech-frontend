@@ -43,6 +43,7 @@ const Analytics = ({ analyticsData }) => {
     //       ...custData,
     //       [analyticsData.business_code] : analyticsData.no_of_cust,
     //   })
+    console.log([analyticsData]);
     var a = 0,
       b = 0,
       c = 0,
@@ -55,32 +56,33 @@ const Analytics = ({ analyticsData }) => {
       j = 0,
       k = 0,
       l = 0;
-    analyticsData.map((d) => {
-      if (d.business_code === "U001") {
-        a = d.no_of_cust;
-        g = d.sum_of_open_amount;
-      }
-      if (d.business_code === "U002") {
-        b = d.no_of_cust;
-        h = d.sum_of_open_amount;
-      }
-      if (d.business_code === "U005") {
-        c = d.no_of_cust;
-        i = d.sum_of_open_amount;
-      }
-      if (d.business_code === "U007") {
-        d = d.no_of_cust;
-        j = d.sum_of_open_amount;
-      }
-      if (d.business_code === "U013") {
-        e = d.no_of_cust;
-        k = d.sum_of_open_amount;
-      }
-      if (d.business_code === "CA02") {
-        f = d.no_of_cust;
-        l = d.sum_of_open_amount;
-      }
-    });
+    analyticsData &&
+      analyticsData.map((data) => {
+        if (data.business_code === "U001") {
+          a = data.no_of_cust;
+          g = data.sum_of_open_amount;
+        }
+        if (data.business_code === "U002") {
+          b = data.no_of_cust;
+          h = data.sum_of_open_amount;
+        }
+        if (data.business_code === "U005") {
+          c = data.no_of_cust;
+          i = data.sum_of_open_amount;
+        }
+        if (data.business_code === "U007") {
+          d = data.no_of_cust;
+          j = data.sum_of_open_amount;
+        }
+        if (data.business_code === "U013") {
+          e = data.no_of_cust;
+          k = data.sum_of_open_amount;
+        }
+        if (data.business_code === "CA02") {
+          f = data.no_of_cust;
+          l = data.sum_of_open_amount;
+        }
+      });
     setCustData({
       U001: a,
       U002: b,
@@ -101,6 +103,7 @@ const Analytics = ({ analyticsData }) => {
   }, [analyticsData]);
 
   const options = {
+    normalized: true,
     responsive: true,
     plugins: {
       legend: {
@@ -115,7 +118,7 @@ const Analytics = ({ analyticsData }) => {
 
   const labels = ["U001", "U002", "U005", "U007", "U013", "CA02"];
 
-  const data = {
+  const datas = {
     labels,
     datasets: [
       {
@@ -132,8 +135,8 @@ const Analytics = ({ analyticsData }) => {
   };
 
   return (
-    <div style={{ width: "100%" }}>
-      <Bar options={options} data={data} />
+    <div style={{width: "70%", height: "80%"}}>
+      <Bar options={options} data={datas}/>
     </div>
   );
 };

@@ -79,7 +79,7 @@ const AnalyticsButton = (props) => {
     baseline_create_date_end: new Date(),
     invoice_currency: "",
   });
-  const [analyticsData, setAnalyticsData] = useState({});
+  const [analyticsData, setAnalyticsData] = useState([]);
 
   const newUseStyles = makeStyles((theme) => ({
     appBar: {

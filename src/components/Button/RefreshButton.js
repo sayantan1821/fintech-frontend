@@ -28,6 +28,7 @@ const RefreshButton = ({
       aria-label="refresh"
       onClick={handleRefresh}
       className={styles.Refresh}
+      style={{padding: "6px 16px"}}
     >
       <FiRefreshCw />
     </IconButton>

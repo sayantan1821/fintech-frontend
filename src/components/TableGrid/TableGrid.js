@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useReducer } from "react";
-import PropTypes from "prop-types";
 import {
   makeStyles,
   Table,
@@ -181,12 +180,12 @@ const headCells = [
   //   disablePadding: false,
   //   label: "Aging Bucket",
   // },
-  {
-    id: "predicted",
-    numeric: false,
-    disablePadding: false,
-    label: "Predicted",
-  },
+  // {
+  //   id: "predicted",
+  //   numeric: false,
+  //   disablePadding: false,
+  //   label: "Predicted",
+  // },
 ];
 
 function EnhancedTableHead(props) {
@@ -272,7 +271,6 @@ export default function TableGrid({ advanceNotify, addNotify, updateNotify }) {
 
   //get main table data
   const getData = () => {
-    setLoading(true);
     recordPerPage.length === 0 && setRecordPerPage(0);
     api.recordsByPagination(pageNo, recordPerPage).then((res) => {
       setRecords([...res.data]);
@@ -282,7 +280,6 @@ export default function TableGrid({ advanceNotify, addNotify, updateNotify }) {
 
   //get advance search and normal search data
   const getAdvanceSearchData = () => {
-    setLoading(true);
     api
       .advancedSearch(
         advanceInput.doc_id,
@@ -342,7 +339,9 @@ export default function TableGrid({ advanceNotify, addNotify, updateNotify }) {
     });
   };
 
+  //useEffect
   useEffect(() => {
+    setLoading(true);
     tableContent === "mainTable" && getData();
     tableContent === "advanceTable" && getAdvanceSearchData();
     getCount();
@@ -421,7 +420,7 @@ export default function TableGrid({ advanceNotify, addNotify, updateNotify }) {
       /> */}
       <div
         style={{
-          height: "9vh",
+          height: "7vh",
           display: "flex",
           justifyContent: "space-between",
           margin: "0 30px",
@@ -478,6 +477,7 @@ export default function TableGrid({ advanceNotify, addNotify, updateNotify }) {
           </ButtonGroup>
         </div>
       </div>
+      Hey there Bugs are still Alive !!
       <Paper className={classes.paper}>
       
         <TableContainer className={styles.Table_Container}>
