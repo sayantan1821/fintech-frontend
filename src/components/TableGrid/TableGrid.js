@@ -265,17 +265,22 @@ export default function TableGrid({ advanceNotify, addNotify, updateNotify }) {
     }
   );
   let [loading, setLoading] = useState(false);
-  let [color, setColor] = useState("#000000");
   let api = new DataService();
   const styles = useStyles();
 
   //get main table data
   const getData = () => {
     recordPerPage.length === 0 && setRecordPerPage(0);
-    api.recordsByPagination(pageNo, recordPerPage).then((res) => {
-      setRecords([...res.data.records]);
-      setLoading(false);
-    });
+    api
+      .recordsByPagination(pageNo, recordPerPage)
+      .then((res) => {
+        setRecords([...res.data.records]);
+        setTotal(res.data.count.count);
+        setLoading(false);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   };
 
   //get advance search and normal search data
@@ -290,18 +295,13 @@ export default function TableGrid({ advanceNotify, addNotify, updateNotify }) {
         recordPerPage
       )
       .then((res) => {
-        console.log(res.data);
-        setRecords(res.data);
+        setRecords(res.data.advanceSearch);
+        setTotal(res.data.count.count);
         setLoading(false);
-        // evt && advanceNotify();
+      })
+      .catch((error) => {
+        console.log(error);
       });
-  };
-
-  //get total no. of records
-  const getCount = async () => {
-    api.countRecord().then((res) => {
-      setTotal(res.data.count);
-    });
   };
 
   //delete rows
@@ -344,7 +344,6 @@ export default function TableGrid({ advanceNotify, addNotify, updateNotify }) {
     setLoading(true);
     tableContent === "mainTable" && getData();
     tableContent === "advanceTable" && getAdvanceSearchData();
-    getCount();
   }, [pageNo, state, recordPerPage]);
 
   const handleRequestSort = (event, property) => {
@@ -398,7 +397,8 @@ export default function TableGrid({ advanceNotify, addNotify, updateNotify }) {
 
   //handle record per page
   const handleRecordsPerPage = (e) => {
-    setRecordPerPage(parseInt(e.target.value));
+    if((e.target.value) !== '') setRecordPerPage(parseInt(e.target.value));
+    else setRecordPerPage(parseInt(10))
     e.preventDefault();
   };
 
@@ -406,10 +406,7 @@ export default function TableGrid({ advanceNotify, addNotify, updateNotify }) {
 
   return (
     <div className={styles.root}>
-      <div
-      className={styles.gridContainer}
-
-      >
+      <div className={styles.gridContainer}>
         <div>
           {/* <ButtonGroup
             variant="contained"
@@ -456,163 +453,160 @@ export default function TableGrid({ advanceNotify, addNotify, updateNotify }) {
             color="primary"
             aria-label="contained primary button group"
           > */}
+          <pre>
             <AddButton addRow={addRow} addNotify={addNotify} />
             <EditButton editRow={editRow} selected={selected} />
             <DeleteButton deleteRows={deleteRows} selected={selected} />
+          </pre>
           {/* </ButtonGroup> */}
         </div>
       </div>
       <Paper className={classes.paper}>
-        <TableContainer className={styles.Table_Container}>
-          <Scrollbars
-            autoHide
-            autoHideTimeout={1000}
-            autoHideDuration={200}
-            renderTrackHorizontal={({ style, ...props }) => (
-              <div
-                {...props}
-                className={styles.scrollTrackHorizontal}
-                style={{
-                  ...style,
-                }}
-              />
-            )}
-            renderTrackVertical={({ style, ...props }) => (
-              <div
-                {...props}
-                className={styles.scrollTrackVertical}
-                style={{
-                  ...style,
-                }}
-              />
-            )}
-            renderThumbHorizontal={({ style, ...props }) => (
-              <div
-                {...props}
-                className={styles.scrollThumbHorizontal}
-                style={{
-                  ...style,
-                }}
-              />
-            )}
-            renderThumbVertical={({ style, ...props }) => (
-              <div
-                {...props}
-                className={styles.scrollThumbVertical}
-                style={{
-                  ...style,
-                }}
-              />
-            )}
-          >
-            <Table
-              className={styles.table}
-              aria-labelledby="tableTitle"
-              size={true ? "small" : "medium"} //dense = true
-              aria-label="enhanced table"
-            >
-              <EnhancedTableHead
-                classes={classes}
-                numSelected={selected.length}
-                order={order}
-                orderBy={orderBy}
-                onSelectAllClick={handleSelectAllClick}
-                onRequestSort={handleRequestSort}
-                rowCount={records.length}
-                style={{ align: "left" }}
-              />
-              {/* {!loading ? ( */}
-              <TableBody className={styles.TableBody}>
-                {
-                  stableSort(records, getComparator(order, orderBy)).map(
-                    (row, index) => {
-                      const isItemSelected = isSelected(row.sl_no);
-                      const labelId = `enhanced-table-checkbox-${index}`;
-
-                      return (
-                        <TableRow
-                          hover
-                          onClick={(event) => handleClick(event, row.sl_no)}
-                          role="checkbox"
-                          aria-checked={isItemSelected}
-                          tabIndex={-1}
-                          key={index}
-                          selected={isItemSelected}
-                          // style={{ height: "48px"}}
-                          className={styles.MuiTableRow}
-                        >
-                          <TableCell
-                            className={styles.TableCell}
-                            padding="checkbox"
-                          >
-                            <Checkbox
-                              checked={isItemSelected}
-                              inputProps={{ "aria-labelledby": labelId }}
-                              color="primary"
-                              className={styles.MuiCheckbox}
-                            />
-                          </TableCell>
-                          {headCells.map((cell, idx) => (
-                            <TableCell
-                              component="th"
-                              id={labelId}
-                              scope="row"
-                              padding="none"
-                              align="center"
-                              className={styles.TableCell}
-                              key={idx}
-                            >
-                              {row[cell.id] !== "0000-00-00"
-                                ? row[cell.id]
-                                : "NA"}
-                            </TableCell>
-                          ))}
-                        </TableRow>
-                      );
-                    }
-                  )
-                  /*(
-                  <div className={style.notFound}>
-                    <p>Records not found. Kindly go to the previous page.</p>
-                  </div>
-                )*/
-                }
-              </TableBody>
-              {/* ) : (
-                <p className={style.notFound}>
-                  <PuffLoader
-                    color={color}
-                    loading={true}
-                    // css={override}
-                    size={45}
-                    // style={{position: "relative"}}
+        {!loading ? (
+          <TableContainer className={styles.Table_Container}>
+            {records.length > 0 ? (
+              <Scrollbars
+                autoHide
+                autoHideTimeout={1000}
+                autoHideDuration={200}
+                renderTrackHorizontal={({ style, ...props }) => (
+                  <div
+                    {...props}
+                    className={styles.scrollTrackHorizontal}
+                    style={{
+                      ...style,
+                    }}
                   />
-                  <br></br>
-                  <p>Data Loading... Please Wait...</p>
-                </p>
-              )} */}
-            </Table>
-          </Scrollbars>
-        </TableContainer>
+                )}
+                renderTrackVertical={({ style, ...props }) => (
+                  <div
+                    {...props}
+                    className={styles.scrollTrackVertical}
+                    style={{
+                      ...style,
+                    }}
+                  />
+                )}
+                renderThumbHorizontal={({ style, ...props }) => (
+                  <div
+                    {...props}
+                    className={styles.scrollThumbHorizontal}
+                    style={{
+                      ...style,
+                    }}
+                  />
+                )}
+                renderThumbVertical={({ style, ...props }) => (
+                  <div
+                    {...props}
+                    className={styles.scrollThumbVertical}
+                    style={{
+                      ...style,
+                    }}
+                  />
+                )}
+              >
+                <Table
+                  className={styles.table}
+                  aria-labelledby="tableTitle"
+                  size={true ? "small" : "medium"} //dense = true
+                  aria-label="enhanced table"
+                >
+                  <EnhancedTableHead
+                    classes={classes}
+                    numSelected={selected.length}
+                    order={order}
+                    orderBy={orderBy}
+                    onSelectAllClick={handleSelectAllClick}
+                    onRequestSort={handleRequestSort}
+                    rowCount={records.length}
+                    style={{ align: "left" }}
+                  />
+                  <TableBody className={styles.TableBody}>
+                    {stableSort(records, getComparator(order, orderBy)).map(
+                      (row, index) => {
+                        const isItemSelected = isSelected(row.sl_no);
+                        const labelId = `enhanced-table-checkbox-${index}`;
+
+                        return (
+                          <TableRow
+                            hover
+                            onClick={(event) => handleClick(event, row.sl_no)}
+                            role="checkbox"
+                            aria-checked={isItemSelected}
+                            tabIndex={-1}
+                            key={index}
+                            selected={isItemSelected}
+                            // style={{ height: "48px"}}
+                            className={styles.MuiTableRow}
+                          >
+                            <TableCell
+                              className={styles.TableCell}
+                              padding="checkbox"
+                            >
+                              <Checkbox
+                                checked={isItemSelected}
+                                inputProps={{ "aria-labelledby": labelId }}
+                                color="primary"
+                                className={styles.MuiCheckbox}
+                              />
+                            </TableCell>
+                            {headCells.map((cell, idx) => (
+                              <TableCell
+                                component="th"
+                                id={labelId}
+                                scope="row"
+                                padding="none"
+                                align="center"
+                                className={styles.TableCell}
+                                key={idx}
+                              >
+                                {row[cell.id] !== "0000-00-00"
+                                  ? row[cell.id]
+                                  : "NA"}
+                              </TableCell>
+                            ))}
+                          </TableRow>
+                        );
+                      }
+                    )}
+                  </TableBody>
+                </Table>
+              </Scrollbars>
+            ) : (
+              <div className={style.notFound}>
+                <p>Records Not Found</p>
+              </div>
+            )}
+          </TableContainer>
+        ) : (
+          <div className={style.notFound}>
+            <PuffLoader
+              color="#fff"
+              loading={true}
+              // css={override}
+              size={45}
+              // style={{position: "relative"}}
+            />
+            <br></br>
+            <p>Data Loading... Please Wait...</p>
+          </div>
+        )}
 
         <div className={styles.tableTool}>
-          {records.length > 0 && (
-            <p style={{ margin: "auto 0" }}>Rows Per Page : </p>
-          )}
-          {records.length > 0 && (
-            <Input
-              defaultValue={recordPerPage}
-              inputProps={{
-                "aria-label": "description",
-                style: { color: "white" },
-              }}
-              style={{ width: "40px", fontSize: "13px", margin: "0 8px" }}
-              onChange={(e) => {
-                handleRecordsPerPage(e);
-              }}
-              className={styles.MuiInputBase_root}
-            />
-          )}
+          <p style={{ margin: "auto 0" }}>Rows Per Page : </p>
+          <Input
+            defaultValue={recordPerPage}
+            inputProps={{
+              "aria-label": "description",
+              style: { color: "white" },
+            }}
+            style={{ width: "40px", fontSize: "13px", margin: "0 8px" }}
+            onChange={(e) => {
+              handleRecordsPerPage(e);
+            }}
+            className={styles.MuiInputBase_root}
+          />
           {pageNo > 0 && (
             <IconButton
               variant="contained"
@@ -631,7 +625,7 @@ export default function TableGrid({ advanceNotify, addNotify, updateNotify }) {
               {Math.ceil(total / recordPerPage)}
             </p>
           )}
-          {records.length > 0 && (
+          {Math.ceil(total / recordPerPage) > pageNo + 1 && (
             <IconButton
               variant="contained"
               size="small"

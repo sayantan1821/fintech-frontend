@@ -14,5 +14,6 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    color: #00000091;
+    background-color: #283D4A;
+    color: #fff;
 }

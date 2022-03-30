@@ -23,7 +23,7 @@ export const useStyles = makeStyles((theme) => ({
   paper: {
     width: "100%",
     marginBottom: 50,
-    background: "#2D4250",
+    background: "#283D4A !important",
     color: "white",
   },
   Table_Container: {

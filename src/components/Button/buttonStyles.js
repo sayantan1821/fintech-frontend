@@ -161,18 +161,11 @@ export const useStyles = makeStyles((theme) => ({
     border: "2px solid #14AFF1",
     width: "200px",
     maxWidth: "100%",
-    // ":disabled": {
-    //   color: "red !important",
-    // }
-
-    // "& > *": {
-    //   margin: theme.spacing(1)
-    // },
-
-    // "&$disabled": {
-    //   background: "rgba(0, 0, 0, 0.12)",
-    //   color: "red",
-    //   boxShadow: "none"
-    // }
-  }
+  },
+  cudButtonDisabled: {
+    color: "white !important",
+    // border: "2px solid transparent",
+    width: "200px",
+    maxWidth: "100%",
+  },
 }));
