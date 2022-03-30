@@ -15,7 +15,6 @@ export const Header = () => {
           <img src={logo} />
         </div>
       </div>
-      <h3>Invoice List</h3>
     </div>
   );
 };

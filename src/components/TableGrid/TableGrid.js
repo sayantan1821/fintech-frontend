@@ -397,9 +397,7 @@ export default function TableGrid({ advanceNotify, addNotify, updateNotify }) {
 
   //handle record per page
   const handleRecordsPerPage = (e) => {
-    // if((e.target.value) !== '') setRecordPerPage(parseInt(e.target.value));
-    // else setRecordPerPage(parseInt(10))
-    setRecordPerPage(parseInt(e.target.value))
+    if((e.target.value) !== '') setRecordPerPage(parseInt(e.target.value));
     e.preventDefault();
   };
 
