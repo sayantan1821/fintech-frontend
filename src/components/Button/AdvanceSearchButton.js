@@ -59,7 +59,7 @@ const AdvanceSearchButton = ({
   };
   return (
     <>
-      <Button {...props} onClick={handleOpen}>
+      <Button {...props} variant="outlined" className={styles.advanceButton} onClick={handleOpen}>
         <pre>ADVANCE SEARCH</pre>
       </Button>
       <Dialog

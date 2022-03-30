@@ -6,10 +6,11 @@ import {
   BarElement,
   Title,
   Tooltip,
+  ArcElement,
   Legend,
 } from "chart.js";
 
-import { Bar } from "react-chartjs-2";
+import { Bar, Pie } from "react-chartjs-2";
 
 ChartJS.register(
   CategoryScale,
@@ -17,10 +18,11 @@ ChartJS.register(
   BarElement,
   Title,
   Tooltip,
-  Legend
+  Legend,
+  ArcElement
 );
 
-const Analytics = ({ analyticsData }) => {
+const Analytics = ({ analyticsData, currencyData }) => {
   const [custData, setCustData] = useState({
     U001: null,
     U002: null,
@@ -38,12 +40,14 @@ const Analytics = ({ analyticsData }) => {
     CA02: null,
   });
 
+  let chartInstance = null;
   useEffect(() => {
     //   setCustData({
     //       ...custData,
     //       [analyticsData.business_code] : analyticsData.no_of_cust,
     //   })
-    console.log([analyticsData]);
+    console.log(currencyData);
+    // console.log([analyticsData]);
     var a = 0,
       b = 0,
       c = 0,
@@ -116,6 +120,54 @@ const Analytics = ({ analyticsData }) => {
     },
   };
 
+  const pieOptions = {
+    legend: {
+      display: false,
+      position: "right",
+      plugins: {
+        legend: {
+          position: "top",
+        },
+        title: {
+          display: true,
+          text: "Pie Chart",
+        },
+      },
+      legendCallback: function (chart) {
+        // Return the HTML string here.
+        console.log(chart);
+        return [
+          <ul>
+            <li>z</li>
+            <li>zzzz</li>
+            <li>ppp</li>
+            <li>adasda</li>
+          </ul>,
+        ];
+      },
+    },
+    elements: {
+      arc: {
+        borderWidth: 0,
+      },
+    },
+  };
+  const pieData = {
+    maintainAspectRatio: true,
+    responsive: true,
+    labels: ["USD", "CAD"],
+    datasets: [
+      {
+        data: currencyData,
+        backgroundColor: ["rgba(255, 99, 132, 0.5)", "rgba(53, 162, 235, 0.5)"],
+        hoverBackgroundColor: [
+          "rgba(255, 99, 132, 0.7)",
+          "rgba(53, 162, 235, 0.7)",
+        ],
+      },
+    ],
+  };
+
   const labels = ["U001", "U002", "U005", "U007", "U013", "CA02"];
 
   const datas = {
@@ -135,8 +187,21 @@ const Analytics = ({ analyticsData }) => {
   };
 
   return (
-    <div style={{width: "70%", height: "80%"}}>
-      <Bar options={options} data={datas}/>
+    <div style={{ width: "70%", height: "80%", margin: "auto" }}>
+      <div style={{ margin: "0 auto 70px", width: "40vw" }}>
+        <Bar options={options} data={datas} />
+      </div>
+      <div style={{ width: "30vw", margin: "auto", textAlign: "center" }}>
+      <h4>Pie Chart</h4>
+      <br></br>
+        <Pie
+          data={pieData}
+          options={pieOptions}
+          ref={(input) => {
+            chartInstance = input;
+          }}
+        />
+      </div>
     </div>
   );
 };

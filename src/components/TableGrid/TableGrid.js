@@ -398,7 +398,7 @@ export default function TableGrid({ advanceNotify, addNotify, updateNotify }) {
 
   //handle record per page
   const handleRecordsPerPage = (e) => {
-    setRecordPerPage(e.target.value);
+    setRecordPerPage(parseInt(e.target.value));
     e.preventDefault();
   };
 
@@ -406,18 +406,6 @@ export default function TableGrid({ advanceNotify, addNotify, updateNotify }) {
 
   return (
     <div className={classes.root}>
-      {/* <TableHeader
-        deleteRows={deleteRows}
-        selected={selected}
-        setRecords={setRecords}
-        setTableState={setTableState}
-        tableState={tableState}
-        setAdvanceState={setAdvanceState}
-        advanceState={advanceState}
-        advanceNotify={advanceNotify}
-        addNotify={addNotify}
-        updateNotify={updateNotify}
-      /> */}
       <div
         style={{
           height: "7vh",
@@ -428,12 +416,13 @@ export default function TableGrid({ advanceNotify, addNotify, updateNotify }) {
         }}
       >
         <div>
-          <ButtonGroup
+          {/* <ButtonGroup
             variant="contained"
             color="primary"
             aria-label="contained primary button group"
-          >
-            <PredictButton />
+          > */}
+          <pre>
+            <PredictButton selected={selected} />
             <AnalyticsButton />
             <AdvanceSearchButton
               setAdvanceInput={setAdvanceInput}
@@ -445,7 +434,8 @@ export default function TableGrid({ advanceNotify, addNotify, updateNotify }) {
               setRecordPerPage={setRecordPerPage}
               advanceNotify={advanceNotify}
             />
-          </ButtonGroup>
+          </pre>
+          {/* </ButtonGroup> */}
         </div>
         <RefreshButton
           setTableContent={setTableContent}
@@ -466,20 +456,18 @@ export default function TableGrid({ advanceNotify, addNotify, updateNotify }) {
         />
 
         <div>
-          <ButtonGroup
+          {/* <ButtonGroup
             variant="outlined"
             color="primary"
             aria-label="contained primary button group"
-          >
+          > */}
             <AddButton addRow={addRow} addNotify={addNotify} />
             <EditButton editRow={editRow} selected={selected} />
             <DeleteButton deleteRows={deleteRows} selected={selected} />
-          </ButtonGroup>
+          {/* </ButtonGroup> */}
         </div>
       </div>
-      Hey there Bugs are still Alive !!
       <Paper className={classes.paper}>
-      
         <TableContainer className={styles.Table_Container}>
           <Scrollbars
             autoHide
@@ -539,61 +527,62 @@ export default function TableGrid({ advanceNotify, addNotify, updateNotify }) {
                 style={{ align: "left" }}
               />
               {/* {!loading ? ( */}
-                <TableBody className={styles.TableBody}>
-                  {stableSort(records, getComparator(order, orderBy)).map(
-                          (row, index) => {
-                            const isItemSelected = isSelected(row.sl_no);
-                            const labelId = `enhanced-table-checkbox-${index}`;
+              <TableBody className={styles.TableBody}>
+                {
+                  stableSort(records, getComparator(order, orderBy)).map(
+                    (row, index) => {
+                      const isItemSelected = isSelected(row.sl_no);
+                      const labelId = `enhanced-table-checkbox-${index}`;
 
-                            return (
-                              <TableRow
-                                hover
-                                onClick={(event) =>
-                                  handleClick(event, row.sl_no)
-                                }
-                                role="checkbox"
-                                aria-checked={isItemSelected}
-                                tabIndex={-1}
-                                key={index}
-                                selected={isItemSelected}
-                                // style={{ height: "48px"}}
-                                className={styles.MuiTableRow}
-                              >
-                              <TableCell
-                                  className={styles.TableCell}
-                                  padding="checkbox"
-                                >
-                                  <Checkbox
-                                    checked={isItemSelected}
-                                    inputProps={{ "aria-labelledby": labelId }}
-                                    color="primary"
-                                    className={styles.MuiCheckbox}
-                                  />
-                                </TableCell>
-                              {headCells.map((cell, idx) => (
-                                <TableCell
-                                  component="th"
-                                  id={labelId}
-                                  scope="row"
-                                  padding="none"
-                                  align="center"
-                                  className={styles.TableCell}
-                                  key={idx}
-                                >
-                                  {row[cell.id] !== "0000-00-00" ? row[cell.id] : "NA"}
-                                </TableCell>
-                              ))}
-                              </TableRow>
-                            );
-                          }
-                        )
-                       /*(
+                      return (
+                        <TableRow
+                          hover
+                          onClick={(event) => handleClick(event, row.sl_no)}
+                          role="checkbox"
+                          aria-checked={isItemSelected}
+                          tabIndex={-1}
+                          key={index}
+                          selected={isItemSelected}
+                          // style={{ height: "48px"}}
+                          className={styles.MuiTableRow}
+                        >
+                          <TableCell
+                            className={styles.TableCell}
+                            padding="checkbox"
+                          >
+                            <Checkbox
+                              checked={isItemSelected}
+                              inputProps={{ "aria-labelledby": labelId }}
+                              color="primary"
+                              className={styles.MuiCheckbox}
+                            />
+                          </TableCell>
+                          {headCells.map((cell, idx) => (
+                            <TableCell
+                              component="th"
+                              id={labelId}
+                              scope="row"
+                              padding="none"
+                              align="center"
+                              className={styles.TableCell}
+                              key={idx}
+                            >
+                              {row[cell.id] !== "0000-00-00"
+                                ? row[cell.id]
+                                : "NA"}
+                            </TableCell>
+                          ))}
+                        </TableRow>
+                      );
+                    }
+                  )
+                  /*(
                   <div className={style.notFound}>
                     <p>Records not found. Kindly go to the previous page.</p>
                   </div>
                 )*/
-                  }
-                </TableBody>
+                }
+              </TableBody>
               {/* ) : (
                 <p className={style.notFound}>
                   <PuffLoader

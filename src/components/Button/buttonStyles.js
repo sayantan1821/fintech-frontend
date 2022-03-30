@@ -58,9 +58,9 @@ export const useStyles = makeStyles((theme) => ({
     background: "transparent",
   },
   analyticsDateContainer: {
-display: "flex",
-flexDirection: "column",
-marginBottom: 30
+    display: "flex",
+    flexDirection: "column",
+    marginBottom: 30,
   },
   formButton: {
     color: "white",
@@ -126,4 +126,26 @@ marginBottom: 30
     display: "flex",
     justifyContent: "center",
   },
+  advanceButton: {
+    // background: "#2D4250",
+    color: "white",
+    border: "2px solid white",
+  },
+  appBar: {
+    position: "relative",
+    background: "#2D4250",
+  },
+  analyticsTitle: {
+    marginLeft: theme.spacing(2),
+    flex: 1,
+    color: "white",
+  },
+  backIcon: {
+    color: "white"
+  },
+  analyticsButton: {
+    color: "white",
+  },
+  predictButton: {
+  }
 }));

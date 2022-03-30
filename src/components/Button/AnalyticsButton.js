@@ -80,6 +80,7 @@ const AnalyticsButton = (props) => {
     invoice_currency: "",
   });
   const [analyticsData, setAnalyticsData] = useState([]);
+  const [currencyData, setCurrencyData] = useState([]);
 
   const newUseStyles = makeStyles((theme) => ({
     appBar: {
@@ -88,7 +89,14 @@ const AnalyticsButton = (props) => {
     title: {
       marginLeft: theme.spacing(2),
       flex: 1,
+      color: "white",
     },
+    backIcon: {
+      color: "white"
+    },
+    analyticsButton: {
+      color: "white",
+    }
   }));
   let api = new DataService();
   const classes = newUseStyles();
@@ -123,8 +131,8 @@ const AnalyticsButton = (props) => {
     evt.preventDefault();
     // console.log(analyticsInput);
     api.getAnalytics(analyticsInput).then((res) => {
-      console.log(res.data);
-      setAnalyticsData(res.data);
+      setCurrencyData( Object.values(res.data.currency));
+      setAnalyticsData(res.data.businessCode);
     });
     handleClose();
     handleOpenView();
@@ -132,7 +140,7 @@ const AnalyticsButton = (props) => {
 
   return (
     <>
-      <Button onClick={handleOpen} {...props}>
+      <Button className={styles.advanceButton} onClick={handleOpen} {...props}>
         <pre>ANALYTICS VIEW</pre>
       </Button>
       <Dialog
@@ -241,20 +249,21 @@ const AnalyticsButton = (props) => {
         open={openView}
         onClose={handleCloseView}
       >
-        <AppBar className={classes.appBar}>
+        <AppBar className={styles.appBar}>
           <Toolbar>
             <IconButton
               edge="start"
               color="inherit"
               onClick={handleCloseView}
               aria-label="close"
+              className={styles.backIcon}
             >
               <ArrowBackIcon />
             </IconButton>
-            <Typography variant="h6" className={classes.title}>
+            <Typography variant="h6" className={styles.analyticsTitle}>
               Analytics VIEW
             </Typography>
-            <Button autoFocus color="inherit" onClick={handleCloseView}>
+            <Button autoFocus className={styles.analyticsButton} onClick={handleCloseView}>
               CLOSE
             </Button>
           </Toolbar>
@@ -266,7 +275,7 @@ const AnalyticsButton = (props) => {
             flexWrap: "wrap",
           }}
         >
-          <Analytics analyticsData={analyticsData} />
+          <Analytics analyticsData={analyticsData} currencyData={currencyData}/>
         </DialogContent>
       </Dialog>
     </>
