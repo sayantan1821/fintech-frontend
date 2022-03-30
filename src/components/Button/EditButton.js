@@ -57,6 +57,7 @@ const EditButton = ({ editRow, selected, ...props }) => {
         {...props}
         variant="outlined"
         onClick={handleOpen}
+        className={selected.length == 1 ? styles.cudButtonEnabled : styles.cudButtonDisabled}
         disabled={selected.length == 1 ? false : true}
       >
         EDIT

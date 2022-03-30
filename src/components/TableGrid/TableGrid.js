@@ -273,7 +273,7 @@ export default function TableGrid({ advanceNotify, addNotify, updateNotify }) {
   const getData = () => {
     recordPerPage.length === 0 && setRecordPerPage(0);
     api.recordsByPagination(pageNo, recordPerPage).then((res) => {
-      setRecords([...res.data]);
+      setRecords([...res.data.records]);
       setLoading(false);
     });
   };
@@ -405,15 +405,10 @@ export default function TableGrid({ advanceNotify, addNotify, updateNotify }) {
   const isSelected = (name) => selected.indexOf(name) !== -1;
 
   return (
-    <div className={classes.root}>
+    <div className={styles.root}>
       <div
-        style={{
-          height: "7vh",
-          display: "flex",
-          justifyContent: "space-between",
-          margin: "0 30px",
-          alignItems: "center",
-        }}
+      className={styles.gridContainer}
+
       >
         <div>
           {/* <ButtonGroup

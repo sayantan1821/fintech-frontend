@@ -9,6 +9,16 @@ export const useStyles = makeStyles((theme) => ({
     "& .MuiInputBase_root": {
       color: "white",
     },
+    background: "#283D4A !important",
+  },
+  gridContainer: {
+    height: "6vh",
+    display: "flex",
+    justifyContent: "space-between",
+    // margin: "0 30px",
+    padding: "0 30px",
+    alignItems: "center",
+    background: "#283D4A !important",
   },
   paper: {
     width: "100%",
@@ -137,12 +147,18 @@ export const useStyles = makeStyles((theme) => ({
     height: "4px",
     borderRadius: "4px",
     boxShadow: "0 2px 4px 0 rgba(0, 0, 0, 0.16)",
-    backgroundColor: "#16aeefc7",
+    backgroundColor: "#ffffff4f",
+    "&:hover": {
+      background: "#fff",
+    }
   },
   scrollThumbVertical: {
     width: "4px",
     borderRadius: "4px",
     boxShadow: "0 2px 4px 0 rgba(0, 0, 0, 0.16)",
-    backgroundColor: "#16aeefc7",
+    backgroundColor: "#ffffff4f",
+    "&:hover": {
+      background: "#fff",
+    }
   },
 }));

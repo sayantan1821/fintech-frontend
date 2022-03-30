@@ -33,6 +33,7 @@ const DeleteButton = ({ deleteRows, selected, ...props }) => {
     <>
       <Button
         {...props}
+        className={selected.length > 0 ? styles.cudButtonEnabled : styles.cudButtonDisabled}
         variant="outlined"
         disabled={selected.length > 0 ? false : true}
         onClick={handleClickOpen}

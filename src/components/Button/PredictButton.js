@@ -10,7 +10,7 @@ const PredictButton = ({ selected, ...props }) => {
         variant="contained"
         style={{
           background: selected.length > 0 ? "#14AFF1" : "#10101061",
-          color: "white",
+          color: selected.length > 0 ? "white" : "#4a4949",
         }}
         disabled={selected.length == 1 ? false : true}
         className={styles.predictButton}

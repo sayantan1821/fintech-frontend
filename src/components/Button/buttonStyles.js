@@ -82,17 +82,19 @@ export const useStyles = makeStyles((theme) => ({
   search: {
     position: "relative",
     borderRadius: theme.shape.borderRadius,
-    backgroundColor: alpha(theme.palette.common.white, 0.15),
+    backgroundColor: "#ffffffb3",
     "&:hover": {
-      backgroundColor: alpha(theme.palette.common.white, 0.25),
+      backgroundColor: "#ffffff",
     },
     marginLeft: 0,
-    width: "100%",
+    width: "300px !important",
     [theme.breakpoints.up("sm")]: {
       marginLeft: theme.spacing(1),
       width: "auto",
     },
-    border: "1px solid black",
+    border: "2px solid #14AFF1",
+    maxWidth: "100% !important",
+    // width: "500px"
   },
   searchIcon: {
     padding: theme.spacing(0, 2),
@@ -121,7 +123,8 @@ export const useStyles = makeStyles((theme) => ({
   },
   Refresh: {
     padding: theme.spacing(1, 2),
-    border: "1px solid black",
+    border: "2px solid #14AFF1",
+    color: "white",
     borderRadius: theme.shape.borderRadius,
     display: "flex",
     justifyContent: "center",
@@ -129,11 +132,12 @@ export const useStyles = makeStyles((theme) => ({
   advanceButton: {
     // background: "#2D4250",
     color: "white",
-    border: "2px solid white",
+    border: "2px solid #14AFF1",
+    padding: "5px 8px",
   },
   appBar: {
     position: "relative",
-    background: "#2D4250",
+    background: "#2D4250 !important",
   },
   analyticsTitle: {
     marginLeft: theme.spacing(2),
@@ -141,11 +145,34 @@ export const useStyles = makeStyles((theme) => ({
     color: "white",
   },
   backIcon: {
-    color: "white"
+    color: "white",
   },
   analyticsButton: {
     color: "white",
   },
-  predictButton: {
+  predictButton: {},
+  analyticsDialogContent: {
+    display: "flex",
+    justifyContent: "space-around",
+    flexWrap: "wrap",
+  },
+  cudButtonEnabled: {
+    color: "white",
+    border: "2px solid #14AFF1",
+    width: "200px",
+    maxWidth: "100%",
+    // ":disabled": {
+    //   color: "red !important",
+    // }
+
+    // "& > *": {
+    //   margin: theme.spacing(1)
+    // },
+
+    // "&$disabled": {
+    //   background: "rgba(0, 0, 0, 0.12)",
+    //   color: "red",
+    //   boxShadow: "none"
+    // }
   }
 }));

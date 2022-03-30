@@ -82,24 +82,8 @@ const AnalyticsButton = (props) => {
   const [analyticsData, setAnalyticsData] = useState([]);
   const [currencyData, setCurrencyData] = useState([]);
 
-  const newUseStyles = makeStyles((theme) => ({
-    appBar: {
-      position: "relative",
-    },
-    title: {
-      marginLeft: theme.spacing(2),
-      flex: 1,
-      color: "white",
-    },
-    backIcon: {
-      color: "white"
-    },
-    analyticsButton: {
-      color: "white",
-    }
-  }));
+
   let api = new DataService();
-  const classes = newUseStyles();
 
   const handleOpen = () => {
     setOpen(true);
@@ -156,11 +140,8 @@ const AnalyticsButton = (props) => {
         <DialogTitle>ANALYTICS VIEW</DialogTitle>
         <form onSubmit={handleAnalyticsSubmit}>
           <DialogContent
-            style={{
-              display: "flex",
-              justifyContent: "space-around",
-              flexWrap: "wrap",
-            }}
+          className={styles.analyticsDialogContent}
+          
           >
             {analyticsFormDetails.map((form, idx) =>
               form.type === "date" ? (
@@ -253,7 +234,7 @@ const AnalyticsButton = (props) => {
           <Toolbar>
             <IconButton
               edge="start"
-              color="inherit"
+              // color="inherit"
               onClick={handleCloseView}
               aria-label="close"
               className={styles.backIcon}
@@ -269,11 +250,7 @@ const AnalyticsButton = (props) => {
           </Toolbar>
         </AppBar>
         <DialogContent
-          style={{
-            display: "flex",
-            justifyContent: "space-around",
-            flexWrap: "wrap",
-          }}
+          className={styles.analyticsDialogContent}
         >
           <Analytics analyticsData={analyticsData} currencyData={currencyData}/>
         </DialogContent>

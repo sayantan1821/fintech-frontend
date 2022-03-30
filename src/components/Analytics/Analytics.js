@@ -133,18 +133,6 @@ const Analytics = ({ analyticsData, currencyData }) => {
           text: "Pie Chart",
         },
       },
-      legendCallback: function (chart) {
-        // Return the HTML string here.
-        console.log(chart);
-        return [
-          <ul>
-            <li>z</li>
-            <li>zzzz</li>
-            <li>ppp</li>
-            <li>adasda</li>
-          </ul>,
-        ];
-      },
     },
     elements: {
       arc: {
