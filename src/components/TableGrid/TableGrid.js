@@ -270,7 +270,7 @@ export default function TableGrid({ advanceNotify, addNotify, updateNotify }) {
 
   //get main table data
   const getData = () => {
-    recordPerPage.length === 0 && setRecordPerPage(0);
+    recordPerPage.length === 0 && setRecordPerPage(10);
     api
       .recordsByPagination(pageNo, recordPerPage)
       .then((res) => {
@@ -397,8 +397,9 @@ export default function TableGrid({ advanceNotify, addNotify, updateNotify }) {
 
   //handle record per page
   const handleRecordsPerPage = (e) => {
-    if((e.target.value) !== '') setRecordPerPage(parseInt(e.target.value));
-    else setRecordPerPage(parseInt(10))
+    // if((e.target.value) !== '') setRecordPerPage(parseInt(e.target.value));
+    // else setRecordPerPage(parseInt(10))
+    setRecordPerPage(parseInt(e.target.value))
     e.preventDefault();
   };
 
@@ -596,7 +597,7 @@ export default function TableGrid({ advanceNotify, addNotify, updateNotify }) {
         <div className={styles.tableTool}>
           <p style={{ margin: "auto 0" }}>Rows Per Page : </p>
           <Input
-            defaultValue={recordPerPage}
+            value={recordPerPage}
             inputProps={{
               "aria-label": "description",
               style: { color: "white" },

@@ -107,9 +107,9 @@ export const useStyles = makeStyles((theme) => ({
     "&$indeterminate": {
       color: "white",
     },
-    "&$unselected": {
-      color: "#14AFF1",
-    },
+    // "&$unselected": {
+    //   color: "#14AFF1",
+    // },
   },
   indeterminate: {
   },

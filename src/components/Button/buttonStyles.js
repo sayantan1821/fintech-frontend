@@ -148,7 +148,7 @@ export const useStyles = makeStyles((theme) => ({
     color: "white",
   },
   analyticsButton: {
-    color: "white",
+    // color: "white",
   },
   predictButton: {},
   analyticsDialogContent: {
@@ -159,13 +159,14 @@ export const useStyles = makeStyles((theme) => ({
   cudButtonEnabled: {
     color: "white",
     border: "2px solid #14AFF1",
-    width: "200px",
-    maxWidth: "100%",
+    width: "10vw",
+    maxWidth: "15vw",
+    // minWidth: "20px"
   },
   cudButtonDisabled: {
     color: "white !important",
     // border: "2px solid transparent",
-    width: "200px",
+    width: "10vw",
     maxWidth: "100%",
   },
 }));
