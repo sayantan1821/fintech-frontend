@@ -159,14 +159,11 @@ export const useStyles = makeStyles((theme) => ({
   cudButtonEnabled: {
     color: "white",
     border: "2px solid #14AFF1",
-    width: "10vw",
-    maxWidth: "15vw",
-    // minWidth: "20px"
+    width: "15rem",
   },
   cudButtonDisabled: {
     color: "white !important",
     // border: "2px solid transparent",
-    width: "10vw",
-    maxWidth: "100%",
+    // width: "15em",
   },
 }));

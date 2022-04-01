@@ -446,23 +446,23 @@ export default function TableGrid({ advanceNotify, addNotify, updateNotify }) {
           setRecordPerPage={setRecordPerPage}
         />
 
-        <div>
+        <div style={{display: "flex", }}>
           {/* <ButtonGroup
             variant="outlined"
             color="primary"
             aria-label="contained primary button group"
           > */}
-          <pre>
+          {/* <pre> */}
             <AddButton addRow={addRow} addNotify={addNotify} />
             <EditButton editRow={editRow} selected={selected} />
             <DeleteButton deleteRows={deleteRows} selected={selected} />
-          </pre>
+          {/* </pre> */}
           {/* </ButtonGroup> */}
         </div>
       </div>
       <Paper className={classes.paper}>
         {!loading ? (
-          <TableContainer className={styles.Table_Container}>
+          <TableContainer className={styles.Table_Container} style={{height: "77vh"}}>
             {records.length > 0 ? (
               <Scrollbars
                 autoHide
