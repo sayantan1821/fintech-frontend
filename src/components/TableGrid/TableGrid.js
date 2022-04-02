@@ -205,20 +205,12 @@ function EnhancedTableHead(props) {
   };
   const styles = useStyles();
   return (
-    <TableHead style={{ height: "40px", padding: "0", background: "red" }}>
+    <TableHead>
       <TableRow
         className={styles.HeadTableRow}
-        style={{ background: "red" }}
-        sx={{
-          backgroundColor: "yellow",
-          borderBottom: "2px solid black",
-          "& th": {
-            fontSize: "1.25rem",
-            color: "rgba(96, 96, 96)",
-          },
-        }}
+        
       >
-        <TableCell padding="checkbox" style={{ position: "sticky", top: "0" }}>
+        <TableCell padding="checkbox" className={styles.HeadTableCell}  >
           <Checkbox
             indeterminate={numSelected > 0 && numSelected < rowCount}
             checked={rowCount > 0 && numSelected === rowCount}
@@ -235,6 +227,7 @@ function EnhancedTableHead(props) {
             align="center"
             padding={headCell.disablePadding ? "none" : "normal"}
             sortDirection={orderBy === headCell.id ? order : false}
+            className={styles.HeadTableCell}
           >
             <TableSortLabel
               active={orderBy === headCell.id}
@@ -527,7 +520,7 @@ export default function TableGrid({ advanceNotify, addNotify, updateNotify }) {
                   aria-labelledby="tableTitle"
                   size={true ? "small" : "medium"} //dense = true
                   aria-label="enhanced table"
-                  stickyHeader
+                  // stickyHeader
                 >
                   <EnhancedTableHead
                     classes={classes}

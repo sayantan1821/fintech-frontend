@@ -73,6 +73,12 @@ export const useStyles = makeStyles((theme) => ({
       },
     },
   },
+  HeadTableCell: {
+    background: "#21323c",
+    position: "sticky",
+    zIndex: "10",
+    top: "0vh",
+  },
   headCellLabel: {
     position: "sticky",
     "&:hover": {
@@ -111,8 +117,7 @@ export const useStyles = makeStyles((theme) => ({
     //   color: "#14AFF1",
     // },
   },
-  indeterminate: {
-  },
+  indeterminate: {},
   MuiCheckbox: {
     color: "#14AFF1",
   },
@@ -150,7 +155,7 @@ export const useStyles = makeStyles((theme) => ({
     backgroundColor: "#ffffff4f",
     "&:hover": {
       background: "#fff",
-    }
+    },
   },
   scrollThumbVertical: {
     width: "4px",
@@ -159,6 +164,6 @@ export const useStyles = makeStyles((theme) => ({
     backgroundColor: "#ffffff4f",
     "&:hover": {
       background: "#fff",
-    }
+    },
   },
 }));
