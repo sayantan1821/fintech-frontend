@@ -4,3 +4,6 @@
 .MuiTableSortLabel-icon {
   color: white !important;
 }
+.MuiButton-root {
+  display: none;
+}

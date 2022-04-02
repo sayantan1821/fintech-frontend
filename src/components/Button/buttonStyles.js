@@ -159,11 +159,32 @@ export const useStyles = makeStyles((theme) => ({
   cudButtonEnabled: {
     color: "white",
     border: "2px solid #14AFF1",
-    width: "15rem",
+    // padding: theme.spacing(1),
+    [theme.breakpoints.down('md')]: {
+      padding: "4px 5px",
+    },
+    [theme.breakpoints.up('md')]: {
+      padding: "4px 40px",
+    },
+    [theme.breakpoints.up('lg')]: {
+      padding: "4px 80px",
+      // display: "none",
+    },
   },
   cudButtonDisabled: {
     color: "white !important",
+    
     // border: "2px solid transparent",
     // width: "15em",
+    [theme.breakpoints.down('md')]: {
+      padding: "4px 5px",
+    },
+    [theme.breakpoints.up('md')]: {
+      padding: "4px 40px",
+    },
+    [theme.breakpoints.up('lg')]: {
+      padding: "4px 80px",
+      // display: "none",
+    },
   },
 }));

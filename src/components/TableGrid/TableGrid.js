@@ -13,6 +13,8 @@ import {
   IconButton,
   Input,
   ButtonGroup,
+  StyledOption,
+  CustomSelect,
 } from "@material-ui/core";
 import DataService from "../../services/DataService";
 import { GrFormPrevious, GrFormNext } from "react-icons/gr";
@@ -203,9 +205,20 @@ function EnhancedTableHead(props) {
   };
   const styles = useStyles();
   return (
-    <TableHead style={{ height: "40px", padding: "0" }}>
-      <TableRow className={styles.HeadTableRow}>
-        <TableCell padding="checkbox">
+    <TableHead style={{ height: "40px", padding: "0", background: "red" }}>
+      <TableRow
+        className={styles.HeadTableRow}
+        style={{ background: "red" }}
+        sx={{
+          backgroundColor: "yellow",
+          borderBottom: "2px solid black",
+          "& th": {
+            fontSize: "1.25rem",
+            color: "rgba(96, 96, 96)",
+          },
+        }}
+      >
+        <TableCell padding="checkbox" style={{ position: "sticky", top: "0" }}>
           <Checkbox
             indeterminate={numSelected > 0 && numSelected < rowCount}
             checked={rowCount > 0 && numSelected === rowCount}
@@ -397,8 +410,9 @@ export default function TableGrid({ advanceNotify, addNotify, updateNotify }) {
 
   //handle record per page
   const handleRecordsPerPage = (e) => {
-    if((e.target.value) !== '') setRecordPerPage(parseInt(e.target.value));
+    // if (e.target.value !== "") setRecordPerPage(parseInt(e.target.value));
     e.preventDefault();
+    setRecordPerPage(parseInt(e.target.value));
   };
 
   const isSelected = (name) => selected.indexOf(name) !== -1;
@@ -446,23 +460,26 @@ export default function TableGrid({ advanceNotify, addNotify, updateNotify }) {
           setRecordPerPage={setRecordPerPage}
         />
 
-        <div style={{display: "flex", }}>
+        <div style={{ display: "flex", maxWidth: "100%" }}>
           {/* <ButtonGroup
             variant="outlined"
             color="primary"
             aria-label="contained primary button group"
           > */}
           {/* <pre> */}
-            <AddButton addRow={addRow} addNotify={addNotify} />
-            <EditButton editRow={editRow} selected={selected} />
-            <DeleteButton deleteRows={deleteRows} selected={selected} />
+          <AddButton addRow={addRow} addNotify={addNotify} />
+          <EditButton editRow={editRow} selected={selected} />
+          <DeleteButton deleteRows={deleteRows} selected={selected} />
           {/* </pre> */}
           {/* </ButtonGroup> */}
         </div>
       </div>
       <Paper className={classes.paper}>
         {!loading ? (
-          <TableContainer className={styles.Table_Container} style={{height: "77vh"}}>
+          <TableContainer
+            className={styles.Table_Container}
+            style={{ height: "77vh" }}
+          >
             {records.length > 0 ? (
               <Scrollbars
                 autoHide
@@ -510,6 +527,7 @@ export default function TableGrid({ advanceNotify, addNotify, updateNotify }) {
                   aria-labelledby="tableTitle"
                   size={true ? "small" : "medium"} //dense = true
                   aria-label="enhanced table"
+                  stickyHeader
                 >
                   <EnhancedTableHead
                     classes={classes}
@@ -594,7 +612,7 @@ export default function TableGrid({ advanceNotify, addNotify, updateNotify }) {
 
         <div className={styles.tableTool}>
           <p style={{ margin: "auto 0" }}>Rows Per Page : </p>
-          <Input
+          {/* <Input
             value={recordPerPage}
             inputProps={{
               "aria-label": "description",
@@ -605,7 +623,17 @@ export default function TableGrid({ advanceNotify, addNotify, updateNotify }) {
               handleRecordsPerPage(e);
             }}
             className={styles.MuiInputBase_root}
-          />
+          /> */}
+          <select
+            value={recordPerPage}
+            onChange={handleRecordsPerPage}
+            style={{ height: "16px", margin: "auto 4px" }}
+          >
+            <option defaultValue>10</option>
+            <option value={5}>5</option>
+            <option value={20}>20</option>
+            <option value={50}>50</option>
+          </select>
           {pageNo > 0 && (
             <IconButton
               variant="contained"

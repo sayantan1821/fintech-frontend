@@ -16,4 +16,12 @@ export const theme = createTheme ({
       color: ["#d5d7d8", "!important"],
     },
   },
+  // breakpoints: {
+  //   values: {
+  //     mobile: 0,
+  //     tablet: 640,
+  //     laptop: 1024,
+  //     desktop: 1200,
+  //   },
+  // },
 });

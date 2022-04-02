@@ -171,10 +171,12 @@ const AddButton = ({ addRow, addNotify, ...props }) => {
   };
   return (
     <>
-      <Button className={styles.cudButtonEnabled} {...props} variant="outlined" onClick={openModal}>
-        {/* <span style={{fontSize: "16px", textAlign: "center", display: "flex", justifyContent: "center"}}>
-          <GrAdd size="16px" /> ADD
-        </span> */}
+      <Button
+        className={styles.cudButtonEnabled}
+        {...props}
+        variant="outlined"
+        onClick={openModal}
+      >
         ADD
       </Button>
       <Dialog
