@@ -12,7 +12,7 @@ export const useStyles = makeStyles((theme) => ({
     background: "#283D4A !important",
   },
   gridContainer: {
-    height: "6vh",
+    height: "8vh",
     display: "flex",
     justifyContent: "space-between",
     // margin: "0 30px",

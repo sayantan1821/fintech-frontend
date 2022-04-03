@@ -50,7 +50,7 @@ export const useStyles = makeStyles((theme) => ({
     background: "white",
   },
   input: {
-    color: "white !important",
+    color: "",
   },
   DialogActions: {
     marginTop: "10px",

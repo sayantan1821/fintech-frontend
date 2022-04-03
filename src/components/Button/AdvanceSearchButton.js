@@ -98,6 +98,7 @@ const AdvanceSearchButton = ({
               label="Customer No-(cust_number)"
               id="margin-normal"
               name="cust_number"
+              value={advanceInput.cust_number}
               // defaultValue="Total Open Amount"
               className={styles.textField}
               // helperText="Enter Customer No-(cust_number)"
