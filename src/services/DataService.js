@@ -18,7 +18,7 @@ export default class DataService {
   convertDate = (date) => {
     // console.log(date);
     let convertedDate = null;
-    
+
     if (date !== null && typeof date === "object") {
       let month = String(date.getMonth() + 1);
       let day = String(date.getDate());
@@ -225,7 +225,14 @@ export default class DataService {
     );
   };
   getMlPredict = (data) => {
-    return this.mlClient.post(apiPath)
-  }
-
+    return this.mlClient.post(
+      apiPath.mlPredict,
+      { data: data },
+      {
+        headers: {
+          "Content-Type": "text/plain",
+        },
+      }
+    );
+  };
 }

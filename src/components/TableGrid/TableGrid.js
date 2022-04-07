@@ -347,9 +347,19 @@ export default function TableGrid({ advanceNotify, addNotify, updateNotify }) {
 
   //useEffect
   useEffect(() => {
+    var pdata = JSON.stringify({
+      "data": [
+        1930587884,
+        1930762361,
+        1929714798
+      ]
+    });
+    api.getMlPredict(pdata).then((res) => {
+      console.log(res.data);
+    })
     setLoading(true);
-    tableContent === "mainTable" && getData();
-    tableContent === "advanceTable" && getAdvanceSearchData();
+    // tableContent === "mainTable" && getData();
+    // tableContent === "advanceTable" && getAdvanceSearchData();
   }, [pageNo, state, recordPerPage]);
 
   const handleRequestSort = (event, property) => {
