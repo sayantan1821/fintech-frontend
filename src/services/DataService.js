@@ -1,5 +1,5 @@
 import axios from "axios";
-import { backendBaseUrl, mlBaseUrl, apiPath } from "../constant";
+import { baseUrl, mlBaseUrl, apiPath } from "../constant";
 
 export default class DataService {
   constructor() {
@@ -9,7 +9,7 @@ export default class DataService {
   }
   init = () => {
     this.client = axios.create({
-      baseURL: backendBaseUrl,
+      baseURL: baseUrl,
     });
     this.mlClient = axios.create({
       baseURL: mlBaseUrl,
@@ -225,12 +225,15 @@ export default class DataService {
     );
   };
   getMlPredict = (data) => {
+
     return this.mlClient.post(
       apiPath.mlPredict,
-      { data: data },
+      {
+        data: data,
+      },
       {
         headers: {
-          "Content-Type": "text/plain",
+          "Content-Type": "application/json",
         },
       }
     );

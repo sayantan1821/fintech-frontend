@@ -1,5 +1,5 @@
-export const backendBaseUrl = process.env.JAVA_BACKEND_URL;
-export const mlBaseUrl = process.env.ML_SERVER_URL;
+export const baseUrl = process.env.REACT_APP_CLIENT_URL;
+export const mlBaseUrl = "http://localhost:5000";
 
 export const apiPath = {
     getRecordById: "/web_project_eclipse/api/recordById",

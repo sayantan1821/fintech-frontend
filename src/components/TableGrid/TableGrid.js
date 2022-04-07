@@ -345,21 +345,20 @@ export default function TableGrid({ advanceNotify, addNotify, updateNotify }) {
     });
   };
 
-  //useEffect
-  useEffect(() => {
-    var pdata = JSON.stringify({
-      "data": [
-        1930587884,
-        1930762361,
-        1929714798
-      ]
-    });
-    api.getMlPredict(pdata).then((res) => {
+  const getPrediction = () => {
+    api.getMlPredict([1930587884, 1930762361, 1929714798]).then((res) => {
       console.log(res.data);
     })
+    .catch((error) => {
+      console.log(error);
+    })
+  }
+  //useEffect
+  useEffect(() => {
+    getPrediction()
     setLoading(true);
-    // tableContent === "mainTable" && getData();
-    // tableContent === "advanceTable" && getAdvanceSearchData();
+    tableContent === "mainTable" && getData();
+    tableContent === "advanceTable" && getAdvanceSearchData();
   }, [pageNo, state, recordPerPage]);
 
   const handleRequestSort = (event, property) => {
