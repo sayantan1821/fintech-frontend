@@ -1,14 +1,18 @@
 import axios from "axios";
-import { baseUrl, apiPath } from "../constant";
+import { backendBaseUrl, mlBaseUrl, apiPath } from "../constant";
 
 export default class DataService {
   constructor() {
     this.client = null;
+    this.mlClient = null;
     this.init();
   }
   init = () => {
     this.client = axios.create({
-      baseURL: baseUrl,
+      baseURL: backendBaseUrl,
+    });
+    this.mlClient = axios.create({
+      baseURL: mlBaseUrl,
     });
   };
   convertDate = (date) => {
@@ -220,4 +224,8 @@ export default class DataService {
         analyticsData.invoice_currency
     );
   };
+  getMlPredict = (data) => {
+    return this.mlClient.post(apiPath)
+  }
+
 }
