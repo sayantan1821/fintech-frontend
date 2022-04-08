@@ -3,7 +3,7 @@ import { Button } from "@material-ui/core";
 import { useStyles } from "./buttonStyles";
 
 const PredictButton = ({ selected, getPrediction, selectedDoc, ...props }) => {
-  console.log(selectedDoc);
+
   const styles = useStyles();
   return (
     <>

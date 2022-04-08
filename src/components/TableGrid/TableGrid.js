@@ -344,16 +344,32 @@ export default function TableGrid({ advanceNotify, addNotify, updateNotify }) {
   };
 
   const getPrediction = () => {
-    setLoading(true);
+    // setLoading(true);
     api
       .getMlPredict(selectedDoc)
       .then((res) => {
         console.log(res.data);
-        setLoading(false);
+        res.data.map((predData) => {
+          updatePredict(parseInt(predData.doc_id), predData.aging_bucket);
+        });
+        setState(state + 1);
       })
       .catch((error) => {
         console.log(error);
         setLoading(false);
+      });
+    
+  };
+
+  const updatePredict = (docId, agingBucket) => {
+    api
+      .updatePredict(docId, agingBucket)
+      .then((res) => {
+        console.log(docId + "predicted");
+        
+      })
+      .catch((err) => {
+        console.log(err);
       });
   };
   //useEffect

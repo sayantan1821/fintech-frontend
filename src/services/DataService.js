@@ -225,7 +225,6 @@ export default class DataService {
     );
   };
   getMlPredict = (data) => {
-
     return this.mlClient.post(
       apiPath.mlPredict,
       {
@@ -236,6 +235,15 @@ export default class DataService {
           "Content-Type": "application/json",
         },
       }
+    );
+  };
+  updatePredict = (doc_id, aging_bucket) => {
+    return this.client.get(
+      apiPath.updatePredict +
+        "?doc_id=" +
+        doc_id +
+        "&aging_bucket=" +
+        aging_bucket
     );
   };
 }

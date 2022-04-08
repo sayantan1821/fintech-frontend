@@ -12,5 +12,6 @@ export const apiPath = {
     updateRecord: "/web_project_eclipse/api/updateRecord",
     countRecord: "/web_project_eclipse/api/count",
     analytics: "/web_project_eclipse/api/analyticsData",
+    updatePredict: "/web_project_eclipse/api/updatePredict",
     mlPredict: "/get_prediction",
 }
