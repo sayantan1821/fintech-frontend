@@ -369,6 +369,7 @@ export default function TableGrid({ advanceNotify, addNotify, updateNotify }) {
     setOrderBy(property);
   };
 
+  //handle select all row
   const handleSelectAllClick = (event) => {
     if (event.target.checked) {
       const newSelecteds = records.map((n) => n.sl_no);
@@ -381,6 +382,7 @@ export default function TableGrid({ advanceNotify, addNotify, updateNotify }) {
     setSelectedDoc([]);
   };
 
+  //handle select individual roww select
   const handleClick = (event, slNo, docId, isOpen) => {
     const selectedIndex = selected.indexOf(slNo);
     let newSelected = [];
