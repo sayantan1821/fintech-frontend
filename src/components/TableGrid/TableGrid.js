@@ -252,6 +252,7 @@ export default function TableGrid({ advanceNotify, addNotify, updateNotify }) {
   const [order, setOrder] = React.useState("asc");
   const [orderBy, setOrderBy] = React.useState("calories");
   const [selected, setSelected] = React.useState([]);
+  const [selectedDoc, setSelectedDoc] = React.useState([]);
   const [records, setRecords] = useState([]);
   const [pageNo, setPageNo] = useState(0);
   const [state, setState] = useState(0);
@@ -345,7 +346,7 @@ export default function TableGrid({ advanceNotify, addNotify, updateNotify }) {
   const getPrediction = () => {
     setLoading(true);
     api
-      .getMlPredict([1930587884, 1930762361, 1929714798])
+      .getMlPredict(selectedDoc)
       .then((res) => {
         console.log(res.data);
         setLoading(false);
@@ -372,17 +373,20 @@ export default function TableGrid({ advanceNotify, addNotify, updateNotify }) {
     if (event.target.checked) {
       const newSelecteds = records.map((n) => n.sl_no);
       setSelected(newSelecteds);
+      const newDocSelecteds = records.map((n) => parseInt(n.doc_id));
+      setSelectedDoc(newDocSelecteds);
       return;
     }
     setSelected([]);
+    setSelectedDoc([]);
   };
 
-  const handleClick = (event, name) => {
-    const selectedIndex = selected.indexOf(name);
+  const handleClick = (event, slNo, docId, isOpen) => {
+    const selectedIndex = selected.indexOf(slNo);
     let newSelected = [];
 
     if (selectedIndex === -1) {
-      newSelected = newSelected.concat(selected, name);
+      newSelected = newSelected.concat(selected, slNo);
     } else if (selectedIndex === 0) {
       newSelected = newSelected.concat(selected.slice(1));
     } else if (selectedIndex === selected.length - 1) {
@@ -393,8 +397,25 @@ export default function TableGrid({ advanceNotify, addNotify, updateNotify }) {
         selected.slice(selectedIndex + 1)
       );
     }
-
     setSelected(newSelected);
+
+    docId = parseInt(docId);
+    const selectedDocIndex = selectedDoc.indexOf(docId);
+    let newSelectedDoc = [];
+
+    if (selectedDocIndex === -1) {
+      newSelectedDoc = newSelectedDoc.concat(selectedDoc, docId);
+    } else if (selectedDocIndex === 0) {
+      newSelectedDoc = newSelectedDoc.concat(selectedDoc.slice(1));
+    } else if (selectedDocIndex === selectedDoc.length - 1) {
+      newSelectedDoc = newSelectedDoc.concat(selectedDoc.slice(0, -1));
+    } else if (selectedDocIndex > 0) {
+      newSelectedDoc = newSelectedDoc.concat(
+        selectedDoc.slice(0, selectedDocIndex),
+        selectedDoc.slice(selectedDocIndex + 1)
+      );
+    }
+    setSelectedDoc(newSelectedDoc);
   };
 
   //handle next page
@@ -418,7 +439,7 @@ export default function TableGrid({ advanceNotify, addNotify, updateNotify }) {
     setRecordPerPage(parseInt(e.target.value));
   };
 
-  const isSelected = (name) => selected.indexOf(name) !== -1;
+  const isSelected = (slNo) => selected.indexOf(slNo) !== -1;
 
   return (
     <div className={styles.root}>
@@ -430,7 +451,11 @@ export default function TableGrid({ advanceNotify, addNotify, updateNotify }) {
             aria-label="contained primary button group"
           > */}
           <pre>
-            <PredictButton selected={selected} getPrediction={getPrediction} />
+            <PredictButton
+              selected={selected}
+              selectedDoc={selectedDoc}
+              getPrediction={getPrediction}
+            />
             <AnalyticsButton />
             <AdvanceSearchButton
               setAdvanceInput={setAdvanceInput}
@@ -551,7 +576,14 @@ export default function TableGrid({ advanceNotify, addNotify, updateNotify }) {
                         return (
                           <TableRow
                             hover
-                            onClick={(event) => handleClick(event, row.sl_no)}
+                            onClick={(event) =>
+                              handleClick(
+                                event,
+                                row.sl_no,
+                                row.doc_id,
+                                row.isOpen
+                              )
+                            }
                             role="checkbox"
                             aria-checked={isItemSelected}
                             tabIndex={-1}
