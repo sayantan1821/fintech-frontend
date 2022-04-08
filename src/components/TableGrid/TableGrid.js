@@ -176,12 +176,12 @@ const headCells = [
     label: "Invoice Id",
   },
   // { id: "isOpen", numeric: false, disablePadding: false, label: "Is Open" },
-  // {
-  //   id: "aging_Bucket",
-  //   numeric: false,
-  //   disablePadding: false,
-  //   label: "Aging Bucket",
-  // },
+  {
+    id: "aging_Bucket",
+    numeric: false,
+    disablePadding: false,
+    label: "Aging Bucket",
+  },
   // {
   //   id: "predicted",
   //   numeric: false,
@@ -206,11 +206,8 @@ function EnhancedTableHead(props) {
   const styles = useStyles();
   return (
     <TableHead>
-      <TableRow
-        className={styles.HeadTableRow}
-        
-      >
-        <TableCell padding="checkbox" className={styles.HeadTableCell}  >
+      <TableRow className={styles.HeadTableRow}>
+        <TableCell padding="checkbox" className={styles.HeadTableCell}>
           <Checkbox
             indeterminate={numSelected > 0 && numSelected < rowCount}
             checked={rowCount > 0 && numSelected === rowCount}
@@ -346,16 +343,20 @@ export default function TableGrid({ advanceNotify, addNotify, updateNotify }) {
   };
 
   const getPrediction = () => {
-    api.getMlPredict([1930587884, 1930762361, 1929714798]).then((res) => {
-      console.log(res.data);
-    })
-    .catch((error) => {
-      console.log(error);
-    })
-  }
+    setLoading(true);
+    api
+      .getMlPredict([1930587884, 1930762361, 1929714798])
+      .then((res) => {
+        console.log(res.data);
+        setLoading(false);
+      })
+      .catch((error) => {
+        console.log(error);
+        setLoading(false);
+      });
+  };
   //useEffect
   useEffect(() => {
-    getPrediction()
     setLoading(true);
     tableContent === "mainTable" && getData();
     tableContent === "advanceTable" && getAdvanceSearchData();
@@ -429,7 +430,7 @@ export default function TableGrid({ advanceNotify, addNotify, updateNotify }) {
             aria-label="contained primary button group"
           > */}
           <pre>
-            <PredictButton selected={selected} />
+            <PredictButton selected={selected} getPrediction={getPrediction} />
             <AnalyticsButton />
             <AdvanceSearchButton
               setAdvanceInput={setAdvanceInput}
