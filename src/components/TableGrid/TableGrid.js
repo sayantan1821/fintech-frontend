@@ -11,6 +11,7 @@ import {
   Paper,
   Checkbox,
   IconButton,
+  TablePagination,
   Input,
   ButtonGroup,
   StyledOption,
@@ -358,7 +359,6 @@ export default function TableGrid({ advanceNotify, addNotify, updateNotify }) {
         console.log(error);
         setLoading(false);
       });
-    
   };
 
   const updatePredict = (docId, agingBucket) => {
@@ -366,7 +366,6 @@ export default function TableGrid({ advanceNotify, addNotify, updateNotify }) {
       .updatePredict(docId, agingBucket)
       .then((res) => {
         console.log(docId + "predicted");
-        
       })
       .catch((err) => {
         console.log(err);
@@ -455,6 +454,17 @@ export default function TableGrid({ advanceNotify, addNotify, updateNotify }) {
     // if (e.target.value !== "") setRecordPerPage(parseInt(e.target.value));
     e.preventDefault();
     setRecordPerPage(parseInt(e.target.value));
+  };
+
+  const handleChangePage = (event, newPage) => {
+    setPageNo(newPage);
+    console.log(newPage);
+    
+  };
+
+  const handleChangeRowsPerPage = (event) => {
+    setRecordPerPage(parseInt(event.target.value, 10));
+    setPageNo(0);
   };
 
   const isSelected = (slNo) => selected.indexOf(slNo) !== -1;
@@ -663,9 +673,9 @@ export default function TableGrid({ advanceNotify, addNotify, updateNotify }) {
           </div>
         )}
 
-        <div className={styles.tableTool}>
-          <p style={{ margin: "auto 0" }}>Rows Per Page : </p>
-          {/* <Input
+        {/* <div className={styles.tableTool}>
+          <p style={{ margin: "auto 0" }}>Rows Per Page : </p> */}
+        {/* <Input
             value={recordPerPage}
             inputProps={{
               "aria-label": "description",
@@ -677,7 +687,7 @@ export default function TableGrid({ advanceNotify, addNotify, updateNotify }) {
             }}
             className={styles.MuiInputBase_root}
           /> */}
-          <select
+        {/* <select
             value={recordPerPage}
             onChange={handleRecordsPerPage}
             style={{ height: "16px", margin: "auto 4px" }}
@@ -716,7 +726,16 @@ export default function TableGrid({ advanceNotify, addNotify, updateNotify }) {
               <GrFormNext className={styles.footerIcon} />
             </IconButton>
           )}
-        </div>
+        </div> */}
+        <TablePagination
+          component="div"
+          count={total}
+          page={pageNo}
+          onPageChange={handleChangePage}
+          rowsPerPage={recordPerPage}
+          onRowsPerPageChange={handleChangeRowsPerPage}
+          style={{ color: "white" }}
+        />
       </Paper>
     </div>
   );
