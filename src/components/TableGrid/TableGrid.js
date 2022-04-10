@@ -388,6 +388,7 @@ export default function TableGrid({ advanceNotify, addNotify, updateNotify }) {
     tableContent === "advanceTable" && getAdvanceSearchData();
   }, [pageNo, state, recordPerPage, orderBy, order]);
 
+
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === "asc";
     setOrder(isAsc ? "desc" : "asc");

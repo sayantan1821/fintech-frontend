@@ -52,7 +52,9 @@ export default class DataService {
     cust_number,
     buisness_year,
     pageNo,
-    recordsPerPage
+    recordsPerPage,
+    orderBy,
+    order,
   ) => {
     return this.client.get(
       apiPath.advanceSearch +
@@ -67,7 +69,11 @@ export default class DataService {
         "&pageNo=" +
         pageNo +
         "&recordsPerPage=" +
-        recordsPerPage
+        recordsPerPage+
+        "&orderBy=" +
+        orderBy +
+        "&order=" +
+        order
     );
   };
   deleteRecords = (sl_nos) => {
