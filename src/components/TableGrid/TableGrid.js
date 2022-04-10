@@ -195,6 +195,8 @@ function EnhancedTableHead(props) {
   const {
     classes,
     onSelectAllClick,
+    setOrderBy,
+    setOrder,
     order,
     orderBy,
     numSelected,
@@ -202,7 +204,9 @@ function EnhancedTableHead(props) {
     onRequestSort,
   } = props;
   const createSortHandler = (property) => (event) => {
-    onRequestSort(event, property);
+    // onRequestSort(event, property);
+    if(orderBy === property) setOrder(order === "asc" ? "desc" : "asc")
+    setOrderBy(property)
   };
   const styles = useStyles();
   return (
@@ -251,7 +255,7 @@ function EnhancedTableHead(props) {
 export default function TableGrid({ advanceNotify, addNotify, updateNotify }) {
   const classes = useStyles();
   const [order, setOrder] = React.useState("asc");
-  const [orderBy, setOrderBy] = React.useState("calories");
+  const [orderBy, setOrderBy] = React.useState("sl_no");
   const [selected, setSelected] = React.useState([]);
   const [selectedDoc, setSelectedDoc] = React.useState([]);
   const [records, setRecords] = useState([]);
@@ -277,9 +281,8 @@ export default function TableGrid({ advanceNotify, addNotify, updateNotify }) {
   const getData = () => {
     recordPerPage.length === 0 && setRecordPerPage(10);
     api
-      .recordsByPagination(pageNo, recordPerPage)
+      .recordsByPagination(pageNo, recordPerPage, orderBy, order)
       .then((res) => {
-        console.log("getting data");
         setRecords([...res.data.records]);
         setTotal(res.data.count.count);
         setLoading(false);
@@ -298,7 +301,9 @@ export default function TableGrid({ advanceNotify, addNotify, updateNotify }) {
         advanceInput.cust_number,
         advanceInput.buisness_year,
         pageNo,
-        recordPerPage
+        recordPerPage,
+        orderBy,
+        order
       )
       .then((res) => {
         setRecords(res.data.advanceSearch);
@@ -383,7 +388,7 @@ export default function TableGrid({ advanceNotify, addNotify, updateNotify }) {
     setLoading(true);
     tableContent === "mainTable" && getData();
     tableContent === "advanceTable" && getAdvanceSearchData();
-  }, [pageNo, state, recordPerPage]);
+  }, [pageNo, state, recordPerPage, orderBy, order]);
 
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === "asc";
@@ -445,7 +450,8 @@ export default function TableGrid({ advanceNotify, addNotify, updateNotify }) {
   //handle next page
   const handleNextPage = () => {
     setPageNo(pageNo + 1);
-    console.log(pageNo);
+    setSelectedDoc([])
+    setSelected([])
   };
 
   //handle previous page
@@ -453,7 +459,8 @@ export default function TableGrid({ advanceNotify, addNotify, updateNotify }) {
     if (pageNo > 0) {
       setPageNo(pageNo - 1);
     }
-    console.log(pageNo);
+    setSelectedDoc([])
+    setSelected([])
   };
 
   //handle record per page
@@ -466,6 +473,8 @@ export default function TableGrid({ advanceNotify, addNotify, updateNotify }) {
   const handleChangePage = (event, newPage) => {
     setPageNo(newPage);
     console.log(newPage);
+    setSelectedDoc([])
+    setSelected([])
   };
 
   const handleChangeRowsPerPage = (event) => {
@@ -599,10 +608,13 @@ export default function TableGrid({ advanceNotify, addNotify, updateNotify }) {
                     onSelectAllClick={handleSelectAllClick}
                     onRequestSort={handleRequestSort}
                     rowCount={records.length}
+                    setOrderBy={setOrderBy}
+                    setOrder={setOrder}
                     style={{ align: "left" }}
                   />
                   <TableBody className={styles.TableBody}>
-                    {stableSort(records, getComparator(order, orderBy)).map(
+                    {/* {stableSort(records, getComparator(order, orderBy)).map( */}
+                    {records.map(
                       (row, index) => {
                         const isItemSelected = isSelected(row.sl_no);
                         const labelId = `enhanced-table-checkbox-${index}`;

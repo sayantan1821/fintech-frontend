@@ -15,6 +15,7 @@ export default class DataService {
       baseURL: mlBaseUrl,
     });
   };
+
   convertDate = (date) => {
     // console.log(date);
     let convertedDate = null;
@@ -75,13 +76,17 @@ export default class DataService {
   removeFromView = (sl_nos) => {
     return this.client.get(apiPath.removeFromView + "?sl_nos=" + sl_nos);
   };
-  recordsByPagination = (pageNo, recordsPerPage) => {
+  recordsByPagination = (pageNo, recordsPerPage, orderBy, order) => {
     return this.client.get(
       apiPath.recordsByPagination +
         "?pageNo=" +
         pageNo +
         "&recordsPerPage=" +
-        recordsPerPage
+        recordsPerPage +
+        "&orderBy=" +
+        orderBy +
+        "&order=" +
+        order
     );
   };
   addRecord = (addData) => {
