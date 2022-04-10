@@ -2,6 +2,7 @@ import React from "react";
 import { FiRefreshCw } from "react-icons/fi";
 import { useStyles } from "./buttonStyles";
 import IconButton from "@material-ui/core/IconButton";
+import RefreshIcon from '@material-ui/icons/Refresh';
 const RefreshButton = ({
   setTableContent,
   setState,
@@ -30,7 +31,7 @@ const RefreshButton = ({
       className={styles.Refresh}
       style={{padding: "6px 16px"}}
     >
-      <FiRefreshCw />
+      <RefreshIcon />
     </IconButton>
   );
 };

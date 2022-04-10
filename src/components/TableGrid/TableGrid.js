@@ -19,7 +19,6 @@ import {
 } from "@material-ui/core";
 import DataService from "../../services/DataService";
 import { GrFormPrevious, GrFormNext } from "react-icons/gr";
-
 import AddButton from "../Button/AddButton";
 import EditButton from "../Button/EditButton";
 import DeleteButton from "../Button/DeleteButton";
@@ -30,7 +29,6 @@ import SearchBar from "../Button/SearchBar";
 import RefreshButton from "../Button/RefreshButton";
 import style from "./TableGrid.module.css";
 import PuffLoader from "react-spinners/PuffLoader";
-import { TransitionGroup } from "react-transition-group";
 import { useStyles } from "./tableGridStyle";
 import { Scrollbars } from "react-custom-scrollbars-2";
 
@@ -205,8 +203,8 @@ function EnhancedTableHead(props) {
   } = props;
   const createSortHandler = (property) => (event) => {
     // onRequestSort(event, property);
-    if(orderBy === property) setOrder(order === "asc" ? "desc" : "asc")
-    setOrderBy(property)
+    if (orderBy === property) setOrder(order === "asc" ? "desc" : "asc");
+    setOrderBy(property);
   };
   const styles = useStyles();
   return (
@@ -450,8 +448,8 @@ export default function TableGrid({ advanceNotify, addNotify, updateNotify }) {
   //handle next page
   const handleNextPage = () => {
     setPageNo(pageNo + 1);
-    setSelectedDoc([])
-    setSelected([])
+    setSelectedDoc([]);
+    setSelected([]);
   };
 
   //handle previous page
@@ -459,8 +457,8 @@ export default function TableGrid({ advanceNotify, addNotify, updateNotify }) {
     if (pageNo > 0) {
       setPageNo(pageNo - 1);
     }
-    setSelectedDoc([])
-    setSelected([])
+    setSelectedDoc([]);
+    setSelected([]);
   };
 
   //handle record per page
@@ -470,13 +468,15 @@ export default function TableGrid({ advanceNotify, addNotify, updateNotify }) {
     setRecordPerPage(parseInt(e.target.value));
   };
 
+  //handle mui pagination page change
   const handleChangePage = (event, newPage) => {
     setPageNo(newPage);
     console.log(newPage);
-    setSelectedDoc([])
-    setSelected([])
+    setSelectedDoc([]);
+    setSelected([]);
   };
 
+  //handle mui pagination record per page
   const handleChangeRowsPerPage = (event) => {
     setRecordPerPage(parseInt(event.target.value, 10));
     setPageNo(0);
@@ -614,60 +614,58 @@ export default function TableGrid({ advanceNotify, addNotify, updateNotify }) {
                   />
                   <TableBody className={styles.TableBody}>
                     {/* {stableSort(records, getComparator(order, orderBy)).map( */}
-                    {records.map(
-                      (row, index) => {
-                        const isItemSelected = isSelected(row.sl_no);
-                        const labelId = `enhanced-table-checkbox-${index}`;
+                    {records.map((row, index) => {
+                      const isItemSelected = isSelected(row.sl_no);
+                      const labelId = `enhanced-table-checkbox-${index}`;
 
-                        return (
-                          <TableRow
-                            hover
-                            onClick={(event) =>
-                              handleClick(
-                                event,
-                                row.sl_no,
-                                row.doc_id,
-                                row.isOpen
-                              )
-                            }
-                            role="checkbox"
-                            aria-checked={isItemSelected}
-                            tabIndex={-1}
-                            key={index}
-                            selected={isItemSelected}
-                            // style={{ height: "48px"}}
-                            className={styles.MuiTableRow}
+                      return (
+                        <TableRow
+                          hover
+                          onClick={(event) =>
+                            handleClick(
+                              event,
+                              row.sl_no,
+                              row.doc_id,
+                              row.isOpen
+                            )
+                          }
+                          role="checkbox"
+                          aria-checked={isItemSelected}
+                          tabIndex={-1}
+                          key={index}
+                          selected={isItemSelected}
+                          // style={{ height: "48px"}}
+                          className={styles.MuiTableRow}
+                        >
+                          <TableCell
+                            className={styles.TableCell}
+                            padding="checkbox"
                           >
+                            <Checkbox
+                              checked={isItemSelected}
+                              inputProps={{ "aria-labelledby": labelId }}
+                              color="primary"
+                              className={styles.MuiCheckbox}
+                            />
+                          </TableCell>
+                          {headCells.map((cell, idx) => (
                             <TableCell
+                              component="th"
+                              id={labelId}
+                              scope="row"
+                              padding="none"
+                              align="center"
                               className={styles.TableCell}
-                              padding="checkbox"
+                              key={idx}
                             >
-                              <Checkbox
-                                checked={isItemSelected}
-                                inputProps={{ "aria-labelledby": labelId }}
-                                color="primary"
-                                className={styles.MuiCheckbox}
-                              />
+                              {row[cell.id] !== "0000-00-00"
+                                ? row[cell.id]
+                                : "NA"}
                             </TableCell>
-                            {headCells.map((cell, idx) => (
-                              <TableCell
-                                component="th"
-                                id={labelId}
-                                scope="row"
-                                padding="none"
-                                align="center"
-                                className={styles.TableCell}
-                                key={idx}
-                              >
-                                {row[cell.id] !== "0000-00-00"
-                                  ? row[cell.id]
-                                  : "NA"}
-                              </TableCell>
-                            ))}
-                          </TableRow>
-                        );
-                      }
-                    )}
+                          ))}
+                        </TableRow>
+                      );
+                    })}
                   </TableBody>
                 </Table>
               </Scrollbars>
@@ -693,6 +691,9 @@ export default function TableGrid({ advanceNotify, addNotify, updateNotify }) {
 
         {/* <div className={styles.tableTool}>
           <p style={{ margin: "auto 0" }}>Rows Per Page : </p> */}
+
+        {/* ----Row per page user input textfield----- */}
+
         {/* <Input
             value={recordPerPage}
             inputProps={{
@@ -705,6 +706,9 @@ export default function TableGrid({ advanceNotify, addNotify, updateNotify }) {
             }}
             className={styles.MuiInputBase_root}
           /> */}
+
+        {/* ---Row per page user input selectfield---- */}
+
         {/* <select
             value={recordPerPage}
             onChange={handleRecordsPerPage}
