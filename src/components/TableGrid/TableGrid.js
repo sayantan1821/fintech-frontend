@@ -279,6 +279,7 @@ export default function TableGrid({ advanceNotify, addNotify, updateNotify }) {
     api
       .recordsByPagination(pageNo, recordPerPage)
       .then((res) => {
+        console.log("getting data");
         setRecords([...res.data.records]);
         setTotal(res.data.count.count);
         setLoading(false);
@@ -345,7 +346,7 @@ export default function TableGrid({ advanceNotify, addNotify, updateNotify }) {
   };
 
   const getPrediction = () => {
-    // setLoading(true);
+    setLoading(true);
     api
       .getMlPredict(selectedDoc)
       .then((res) => {
@@ -353,7 +354,13 @@ export default function TableGrid({ advanceNotify, addNotify, updateNotify }) {
         res.data.map((predData) => {
           updatePredict(parseInt(predData.doc_id), predData.aging_bucket);
         });
-        setState(state + 1);
+        console.log("before update");
+        setTimeout(() => {
+          console.log("wait 2 sec");
+          setState(state + 1);
+          // tableContent === "mainTable" && getData();
+          // tableContent === "advanceTable" && getAdvanceSearchData();
+        }, 2000);
       })
       .catch((error) => {
         console.log(error);
@@ -459,7 +466,6 @@ export default function TableGrid({ advanceNotify, addNotify, updateNotify }) {
   const handleChangePage = (event, newPage) => {
     setPageNo(newPage);
     console.log(newPage);
-    
   };
 
   const handleChangeRowsPerPage = (event) => {
