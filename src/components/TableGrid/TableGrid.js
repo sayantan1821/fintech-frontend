@@ -1,21 +1,16 @@
 import React, { useState, useEffect, useReducer } from "react";
 import {
-  makeStyles,
   Table,
   TableBody,
   TableCell,
   TableContainer,
-  TableHead,
   TableRow,
   TableSortLabel,
   Paper,
   Checkbox,
-  IconButton,
   TablePagination,
   Input,
   ButtonGroup,
-  StyledOption,
-  CustomSelect,
 } from "@material-ui/core";
 import DataService from "../../services/DataService";
 import { GrFormPrevious, GrFormNext } from "react-icons/gr";
@@ -31,8 +26,9 @@ import style from "./TableGrid.module.css";
 import PuffLoader from "react-spinners/PuffLoader";
 import { useStyles } from "./tableGridStyle";
 import { Scrollbars } from "react-custom-scrollbars-2";
+import EnhancedTableHead from "../TableHeader/EnhancedTableHead";
 
-function descendingComparator(a, b, orderBy) {
+const descendingComparator = (a, b, orderBy) => {
   if (b[orderBy] < a[orderBy]) {
     return -1;
   }
@@ -40,15 +36,15 @@ function descendingComparator(a, b, orderBy) {
     return 1;
   }
   return 0;
-}
+};
 
-function getComparator(order, orderBy) {
+const getComparator = (order, orderBy) => {
   return order === "desc"
     ? (a, b) => descendingComparator(a, b, orderBy)
     : (a, b) => -descendingComparator(a, b, orderBy);
-}
+};
 
-function stableSort(array, comparator) {
+const stableSort = (array, comparator) => {
   const stabilizedThis = array.map((el, index) => [el, index]);
   stabilizedThis.sort((a, b) => {
     const order = comparator(a[0], b[0]);
@@ -56,7 +52,7 @@ function stableSort(array, comparator) {
     return a[1] - b[1];
   });
   return stabilizedThis.map((el) => el[0]);
-}
+};
 
 const headCells = [
   {
@@ -189,73 +185,12 @@ const headCells = [
   // },
 ];
 
-function EnhancedTableHead(props) {
-  const {
-    classes,
-    onSelectAllClick,
-    setOrderBy,
-    setOrder,
-    order,
-    orderBy,
-    numSelected,
-    rowCount,
-    onRequestSort,
-  } = props;
-  const createSortHandler = (property) => (event) => {
-    // onRequestSort(event, property);
-    if (orderBy === property) setOrder(order === "asc" ? "desc" : "asc");
-    setOrderBy(property);
-  };
-  const styles = useStyles();
-  return (
-    <TableHead>
-      <TableRow className={styles.HeadTableRow}>
-        <TableCell padding="checkbox" className={styles.HeadTableCell}>
-          <Checkbox
-            indeterminate={numSelected > 0 && numSelected < rowCount}
-            checked={rowCount > 0 && numSelected === rowCount}
-            onChange={onSelectAllClick}
-            inputProps={{ "aria-label": "select all desserts" }}
-            color="primary"
-            className={styles.MuiCheckbox}
-          />
-        </TableCell>
-        {headCells.map((headCell) => (
-          <TableCell
-            key={headCell.id}
-            // align={headCell.numeric ? "right" : "left"}
-            align="center"
-            padding={headCell.disablePadding ? "none" : "normal"}
-            sortDirection={orderBy === headCell.id ? order : false}
-            className={styles.HeadTableCell}
-          >
-            <TableSortLabel
-              active={orderBy === headCell.id}
-              direction={orderBy === headCell.id ? order : "asc"}
-              onClick={createSortHandler(headCell.id)}
-              className={styles.headCellLabel}
-              style={{ color: "white" }}
-            >
-              {headCell.label}
-              {orderBy === headCell.id ? (
-                <span className={classes.visuallyHidden}>
-                  {order === "desc" ? "sorted descending" : "sorted ascending"}
-                </span>
-              ) : null}
-            </TableSortLabel>
-          </TableCell>
-        ))}
-      </TableRow>
-    </TableHead>
-  );
-}
-
-export default function TableGrid({ advanceNotify, addNotify, updateNotify }) {
+const TableGrid = ({ advanceNotify, addNotify, updateNotify }) => {
   const classes = useStyles();
-  const [order, setOrder] = React.useState("asc");
-  const [orderBy, setOrderBy] = React.useState("sl_no");
-  const [selected, setSelected] = React.useState([]);
-  const [selectedDoc, setSelectedDoc] = React.useState([]);
+  const [order, setOrder] = useState("asc");
+  const [orderBy, setOrderBy] = useState("sl_no");
+  const [selected, setSelected] = useState([]);
+  const [selectedDoc, setSelectedDoc] = useState([]);
   const [records, setRecords] = useState([]);
   const [pageNo, setPageNo] = useState(0);
   const [state, setState] = useState(0);
@@ -348,22 +283,18 @@ export default function TableGrid({ advanceNotify, addNotify, updateNotify }) {
     });
   };
 
+  //get predicted data from flask server
   const getPrediction = () => {
     setLoading(true);
     api
       .getMlPredict(selectedDoc)
       .then((res) => {
-        console.log(res.data);
         res.data.map((predData) => {
           updatePredict(parseInt(predData.doc_id), predData.aging_bucket);
         });
-        console.log("before update");
         setTimeout(() => {
-          console.log("wait 2 sec");
           setState(state + 1);
-          // tableContent === "mainTable" && getData();
-          // tableContent === "advanceTable" && getAdvanceSearchData();
-        }, 2000);
+        }, 1000);
       })
       .catch((error) => {
         console.log(error);
@@ -371,6 +302,7 @@ export default function TableGrid({ advanceNotify, addNotify, updateNotify }) {
       });
   };
 
+  //update database predict column and fetch again
   const updatePredict = (docId, agingBucket) => {
     api
       .updatePredict(docId, agingBucket)
@@ -381,6 +313,7 @@ export default function TableGrid({ advanceNotify, addNotify, updateNotify }) {
         console.log(err);
       });
   };
+
   //useEffect
   useEffect(() => {
     setLoading(true);
@@ -388,7 +321,7 @@ export default function TableGrid({ advanceNotify, addNotify, updateNotify }) {
     tableContent === "advanceTable" && getAdvanceSearchData();
   }, [pageNo, state, recordPerPage, orderBy, order]);
 
-
+  //handle client side sort request
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === "asc";
     setOrder(isAsc ? "desc" : "asc");
@@ -762,4 +695,5 @@ export default function TableGrid({ advanceNotify, addNotify, updateNotify }) {
       </Paper>
     </div>
   );
-}
+};
+export default TableGrid;
