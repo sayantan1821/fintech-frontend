@@ -28,7 +28,7 @@ export const useStyles = makeStyles((theme) => ({
   },
   Table_Container: {
     // display: "none",
-    height: "77vh",
+    height: "76vh",
   },
 
   table: {
@@ -95,7 +95,7 @@ export const useStyles = makeStyles((theme) => ({
     "&:hover": {
       backgroundColor: "#06588ae3 !important",
     },
-    height: "48px",
+    height: "47px",
     backgroundColor: "#283D4A",
     color: "white",
     "& > .MuiTableCell-root": {

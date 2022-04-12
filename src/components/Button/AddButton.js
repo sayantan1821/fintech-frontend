@@ -4,7 +4,6 @@ import {
   Dialog,
   DialogActions,
   DialogContent,
-  DialogContentText,
   DialogTitle,
   Slide,
   TextField,
@@ -30,7 +29,7 @@ const AddButton = ({ addRow, addNotify, ...props }) => {
       helperText: "",
     },
     {
-      type: "text",
+      type: "number",
       name: "cust_number",
       label: "Customer Number",
       helperText: "",
@@ -48,7 +47,7 @@ const AddButton = ({ addRow, addNotify, ...props }) => {
       helperText: "",
     },
     {
-      type: "text",
+      type: "number",
       name: "doc_id",
       label: "Document ID",
       helperText: "",
@@ -84,13 +83,13 @@ const AddButton = ({ addRow, addNotify, ...props }) => {
       helperText: "",
     },
     {
-      type: "text",
+      type: "number",
       name: "posting_id",
       label: "Posting ID",
       helperText: "",
     },
     {
-      type: "text",
+      type: "double",
       name: "total_open_amount",
       label: "Total Open Amount",
       helperText: "",
@@ -108,7 +107,7 @@ const AddButton = ({ addRow, addNotify, ...props }) => {
       helperText: "",
     },
     {
-      type: "text",
+      type: "number",
       name: "invoice_id",
       label: "Invoice ID",
       helperText: "",
@@ -146,9 +145,11 @@ const AddButton = ({ addRow, addNotify, ...props }) => {
   const closeModal = () => {
     setOpen(false);
   };
-  const handleAddInput = (evt) => {
+  const handleAddInput = (evt, type) => {
     const name = evt.target.name;
-    const newValue = evt.target.value;
+    let newValue = evt.target.value;
+    if (type === "number") newValue = parseInt(newValue);
+    if (type === "double") newValue = parseFloat(newValue);
     console.log(newValue);
     setAddInput({ [name]: newValue });
   };
@@ -168,6 +169,24 @@ const AddButton = ({ addRow, addNotify, ...props }) => {
     evt.preventDefault();
     addRow(addInput);
     closeModal();
+    setAddInput({
+      sl_no: "",
+      business_code: "",
+      cust_number: "",
+      clear_date: new Date(),
+      buisness_year: "",
+      doc_id: "",
+      posting_date: new Date(),
+      document_create_date: new Date(),
+      due_in_date: new Date(),
+      invoice_currency: "",
+      document_type: "",
+      posting_id: "",
+      total_open_amount: "",
+      baseline_create_date: new Date(),
+      cust_payment_terms: "",
+      invoice_id: "",
+    });
   };
   return (
     <>
@@ -203,7 +222,7 @@ const AddButton = ({ addRow, addNotify, ...props }) => {
             }}
           >
             {addFormDetails.map((data, idx) =>
-              data.type === "text" ? (
+              data.type !== "date" ? (
                 <TextField
                   key={idx}
                   label={data.label}
@@ -211,7 +230,8 @@ const AddButton = ({ addRow, addNotify, ...props }) => {
                   name={data.name}
                   className={styles.textField}
                   helperText={data.helperText}
-                  onChange={handleAddInput}
+                  onChange={(e) => handleAddInput(e, data.type)}
+                  value={addInput[data.name]}
                   InputProps={{
                     className: styles.input,
                   }}

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Button,
   Dialog,
@@ -28,14 +28,39 @@ const AdvanceSearchButton = ({
 }) => {
   const [open, setOpen] = React.useState(false);
   const styles = useStyles();
-
+  const [advanceFormDetails] = useState([
+    {
+      type: "number",
+      name: "doc_id",
+      label: "Document ID",
+      helperText: "",
+    },
+    {
+      type: "number",
+      name: "cust_number",
+      label: "Customer Number",
+      helperText: "",
+    },
+    {
+      type: "number",
+      name: "invoice_id",
+      label: "Invoice ID",
+      helperText: "",
+    },
+    {
+      type: "number",
+      name: "buisness_year",
+      label: "Business Year",
+      helperText: "",
+    },
+  ]);
   const handleOpen = () => {
-    setAdvanceInput({
-      doc_id: "",
-      cust_number: "",
-      invoice_id: "",
-      buisness_year: "",
-    });
+    // setAdvanceInput({
+    //   doc_id: "",
+    //   cust_number: "",
+    //   invoice_id: "",
+    //   buisness_year: "",
+    // });
     setOpen(true);
   };
 
@@ -59,7 +84,12 @@ const AdvanceSearchButton = ({
   };
   return (
     <>
-      <Button {...props} variant="outlined" className={styles.advanceButton} onClick={handleOpen}>
+      <Button
+        {...props}
+        variant="outlined"
+        className={styles.advanceButton}
+        onClick={handleOpen}
+      >
         <pre>ADVANCE SEARCH</pre>
       </Button>
       <Dialog
@@ -81,7 +111,24 @@ const AdvanceSearchButton = ({
               flexWrap: "wrap",
             }}
           >
-            <TextField
+            {advanceFormDetails.map((data, idx) => (
+              <TextField
+              key={idx}
+                label={data.label}
+                id="margin-normal"
+                name={data.name}
+                // defaultValue="Invoice Currency"
+                value={advanceInput[data.name]}
+                className={styles.textField}
+                // helperText="Enter Document Id-(doc_id)"
+                onChange={handleAdvanceInput}
+                InputProps={{
+                  className: styles.input,
+                }}
+                required={false}
+              />
+            ))}
+            {/* <TextField
               label="Document Id-(doc_id)"
               id="margin-normal"
               name="doc_id"
@@ -90,8 +137,8 @@ const AdvanceSearchButton = ({
               // helperText="Enter Document Id-(doc_id)"
               onChange={handleAdvanceInput}
               InputProps={{
-                    className: styles.input,
-                  }}
+                className: styles.input,
+              }}
               required={false}
             />
             <TextField
@@ -104,8 +151,8 @@ const AdvanceSearchButton = ({
               // helperText="Enter Customer No-(cust_number)"
               onChange={handleAdvanceInput}
               InputProps={{
-                    className: styles.input,
-                  }}
+                className: styles.input,
+              }}
               required={false}
             />
             <TextField
@@ -117,8 +164,8 @@ const AdvanceSearchButton = ({
               // helperText="Enter Invoice No-(invoice_id)"
               onChange={handleAdvanceInput}
               InputProps={{
-                    className: styles.input,
-                  }}
+                className: styles.input,
+              }}
               required={false}
             />
             <TextField
@@ -130,14 +177,18 @@ const AdvanceSearchButton = ({
               // helperText="Enter Business Year- (buisness_year)"
               onChange={handleAdvanceInput}
               InputProps={{
-                    className: styles.input,
-                  }}
+                className: styles.input,
+              }}
               required={false}
-            />
+            /> */}
           </DialogContent>
           <DialogActions className={styles.DialogActions}>
-            <Button className={styles.formButton} type="submit">SEARCH</Button>
-            <Button className={styles.formButton} onClick={handleClose}>Cancel</Button>
+            <Button className={styles.formButton} type="submit">
+              SEARCH
+            </Button>
+            <Button className={styles.formButton} onClick={handleClose}>
+              Cancel
+            </Button>
           </DialogActions>
         </form>
       </Dialog>

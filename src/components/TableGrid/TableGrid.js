@@ -483,7 +483,7 @@ const TableGrid = ({ advanceNotify, addNotify, updateNotify }) => {
         {!loading ? (
           <TableContainer
             className={styles.Table_Container}
-            style={{ height: "77vh" }}
+            style={{ height: "76vh" }}
           >
             {records.length > 0 ? (
               <Scrollbars

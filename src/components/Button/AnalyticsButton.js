@@ -113,7 +113,6 @@ const AnalyticsButton = (props) => {
   };
   const handleAnalyticsSubmit = (evt) => {
     evt.preventDefault();
-    // console.log(analyticsInput);
     api.getAnalytics(analyticsInput).then((res) => {
       setCurrencyData( Object.values(res.data.currency));
       setAnalyticsData(res.data.businessCode);
