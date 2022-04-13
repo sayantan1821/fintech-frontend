@@ -42,71 +42,71 @@ const Analytics = ({ analyticsData, currencyData }) => {
 
   let chartInstance = null;
   useEffect(() => {
-    console.log(analyticsData);
-      analyticsData.map((data) => {
-        setCustData({
-          ...custData,
-          [data.business_code]: data.no_of_cust,
-        })
-      })
-      console.log(custData);
+    // console.log(analyticsData);
+      // analyticsData.map((data) => {
+      //   setCustData({
+      //     ...custData,
+      //     [data.business_code]: data.no_of_cust,
+      //   })
+      // })
+      // console.log(custData);
     // console.log(currencyData);
     // console.log([analyticsData]);
-    // var a = 0,
-    //   b = 0,
-    //   c = 0,
-    //   d = 0,
-    //   e = 0,
-    //   f = 0,
-    //   g = 0,
-    //   h = 0,
-    //   i = 0,
-    //   j = 0,
-    //   k = 0,
-    //   l = 0;
-    // analyticsData &&
-    //   analyticsData.map((data) => {
-    //     if (data.business_code === "U001") {
-    //       a = data.no_of_cust;
-    //       g = data.sum_of_open_amount;
-    //     }
-    //     if (data.business_code === "U002") {
-    //       b = data.no_of_cust;
-    //       h = data.sum_of_open_amount;
-    //     }
-    //     if (data.business_code === "U005") {
-    //       c = data.no_of_cust;
-    //       i = data.sum_of_open_amount;
-    //     }
-    //     if (data.business_code === "U007") {
-    //       d = data.no_of_cust;
-    //       j = data.sum_of_open_amount;
-    //     }
-    //     if (data.business_code === "U013") {
-    //       e = data.no_of_cust;
-    //       k = data.sum_of_open_amount;
-    //     }
-    //     if (data.business_code === "CA02") {
-    //       f = data.no_of_cust;
-    //       l = data.sum_of_open_amount;
-    //     }
-    //   });
-    // setCustData({
-    //   U001: a,
-    //   U002: b,
-    //   U005: c,
-    //   U007: d,
-    //   U013: e,
-    //   CA02: f,
-    // });
-    // setAmountData({
-    //   U001: g,
-    //   U002: h,
-    //   U005: i,
-    //   U007: j,
-    //   U013: k,
-    //   CA02: l,
-    // });
+    var a = 0,
+      b = 0,
+      c = 0,
+      d = 0,
+      e = 0,
+      f = 0,
+      g = 0,
+      h = 0,
+      i = 0,
+      j = 0,
+      k = 0,
+      l = 0;
+    analyticsData &&
+      analyticsData.map((data) => {
+        if (data.business_code === "U001") {
+          a = data.no_of_cust;
+          g = data.sum_of_open_amount;
+        }
+        if (data.business_code === "U002") {
+          b = data.no_of_cust;
+          h = data.sum_of_open_amount;
+        }
+        if (data.business_code === "U005") {
+          c = data.no_of_cust;
+          i = data.sum_of_open_amount;
+        }
+        if (data.business_code === "U007") {
+          d = data.no_of_cust;
+          j = data.sum_of_open_amount;
+        }
+        if (data.business_code === "U013") {
+          e = data.no_of_cust;
+          k = data.sum_of_open_amount;
+        }
+        if (data.business_code === "CA02") {
+          f = data.no_of_cust;
+          l = data.sum_of_open_amount;
+        }
+      });
+    setCustData({
+      U001: a,
+      U002: b,
+      U005: c,
+      U007: d,
+      U013: e,
+      CA02: f,
+    });
+    setAmountData({
+      U001: g,
+      U002: h,
+      U005: i,
+      U007: j,
+      U013: k,
+      CA02: l,
+    });
     // console.log(a, b, c, d, e, f);
   }, [analyticsData]);
 
