@@ -33,6 +33,11 @@
     color: white;
 }
 .logo img {
-    height: 30px;
+    height: 60px;
     color: white !important;
+}
+.subTitle {
+    padding: 17px 0 7px;
+    margin-left: 15px;
+    font-size: 1.2em;
 }

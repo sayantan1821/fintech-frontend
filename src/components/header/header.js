@@ -1,6 +1,6 @@
 import style from "./header.module.css";
 import companyLogo from "../../assets/companyLogo.svg";
-import logo from "../../assets/icons8-receipt-64.png";
+import logo from "../../assets/icons8-receipt-64 (1).png";
 import React from "react";
 
 export const Header = () => {
@@ -15,6 +15,7 @@ export const Header = () => {
           <img src={logo} />
         </div>
       </div>
+      <div className={style.subTitle}>Invoice List</div>
     </div>
   );
 };

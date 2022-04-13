@@ -483,7 +483,7 @@ const TableGrid = ({ advanceNotify, addNotify, updateNotify }) => {
         {!loading ? (
           <TableContainer
             className={styles.Table_Container}
-            style={{ height: "76vh" }}
+            style={{ height: "70vh" }}
           >
             {records.length > 0 ? (
               <Scrollbars
@@ -568,7 +568,7 @@ const TableGrid = ({ advanceNotify, addNotify, updateNotify }) => {
                           tabIndex={-1}
                           key={index}
                           selected={isItemSelected}
-                          // style={{ height: "48px"}}
+                          style={{ height: "44px"}}
                           className={styles.MuiTableRow}
                         >
                           <TableCell
